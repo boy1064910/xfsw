@@ -1,0 +1,14 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8001/eureka/
+server:
+  port: 8000
+spring:
+  application:
+    name: xfsw-fe-gateway
+zuul:
+  routes:
+    fe-order:
+      path: /fe-order/**
+      serviceId: xfsw-web-fe-order

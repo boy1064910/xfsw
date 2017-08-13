@@ -15,11 +15,21 @@
 	
 	<modules>
 		<module>xfsw-web-eureka</module>
+		<module>xfsw-web-fe-entry</module>
+		<module>xfsw-web-fe-gateway</module>
+		<module>xfsw-web-fe-order</module>
 	</modules>
 	
 	<!--依赖管理，用于管理spring-cloud的依赖 -->
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Dalston.SR2</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-parent</artifactId>

@@ -1,0 +1,20 @@
+spring:
+  profiles: eureka02
+  application:  
+    name: xfsw-eureka-server
+security:   
+  basic:  
+    enabled: true #eureka用户是否认证  
+  user:  
+    name: xfsw #eureka 用户名  
+    password: xfsw-eureka #eureka 密码  
+server:
+  port: 8002     #指定服务端口
+eureka:
+  instance:
+    hostname: peer2 #discovery服务的主机ip（注册服务面向内网）
+  client:
+    registerWithEureka: false  #是否将eureka自身作为应用注册到eureka注册中心
+    fetchRegistry: false  #从eureka server获取注册信息
+    serviceUrl:
+      defaultZone: http://peer1:8001/eureka/
