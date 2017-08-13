@@ -1,0 +1,32 @@
+spring:
+  profiles: eureka-01
+  application:  
+    name: XFSW-EUREKA  
+server:
+  port: 8001     #指定服务端口
+eureka:
+  instance:
+    hostname: eureka.xfsw.com	#discovery服务的主机ip（注册服务面向内网）
+  client:
+    registerWithEureka: false  #是否将eureka自身作为应用注册到eureka注册中心
+    fetchRegistry: false       
+    serviceUrl:
+      defaultZone: http://localhost:8002/eureka/
+
+---
+spring:
+  profiles: eureka-02
+  application:  
+    name: XFSW-EUREKA  
+server:
+  port: 8002     #指定服务端口
+eureka:
+  instance:
+    hostname: eureka.xfsw.com	#discovery服务的主机ip（注册服务面向内网）
+  client:
+    registerWithEureka: false  #是否将eureka自身作为应用注册到eureka注册中心
+    fetchRegistry: false       
+    serviceUrl:
+      defaultZone: http://localhost:8001/eureka/
+
+
