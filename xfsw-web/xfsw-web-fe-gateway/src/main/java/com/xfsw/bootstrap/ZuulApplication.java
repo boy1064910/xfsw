@@ -5,6 +5,7 @@ package com.xfsw.bootstrap;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 
 /**
@@ -13,6 +14,7 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
  * @version 0.0.1
  */
 @EnableZuulProxy
+@EnableEurekaClient
 @SpringCloudApplication
 public class ZuulApplication {
 

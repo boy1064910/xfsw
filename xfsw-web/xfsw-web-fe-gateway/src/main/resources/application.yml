@@ -6,9 +6,12 @@ server:
   port: 8000
 spring:
   application:
-    name: xfsw-fe-gateway
+    name: service-zuul
 zuul:
   routes:
-    fe-order:
-      path: /fe-order/**
-      serviceId: xfsw-web-fe-order
+    api-a:
+      path: /api-a/**
+      serviceId: service-ribbon
+    api-b:
+      path: /api-b/**
+      serviceId: service-feign
