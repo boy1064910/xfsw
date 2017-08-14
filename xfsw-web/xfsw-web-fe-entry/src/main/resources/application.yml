@@ -1,21 +1,10 @@
 spring:
   application:
-    name: xfsw-web-fe-gateway
-    
-server:
-  port: 8101
+    name: xfsw-web-fe-entry
 
-zuul:
-  routes:
-    api-a:
-      path: /api-a/**
-      url: http://localhost:8201
-    api-b:
-      path: /api-b/**
-      serviceId: service-feign
-    api-c:
-      path: /api-c/**
-      url: http://www.baidu.com
+server:
+  port: 8201
+
 eureka:
   client:
     serviceUrl:
