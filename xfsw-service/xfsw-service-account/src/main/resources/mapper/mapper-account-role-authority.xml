@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RoleAuthority">
+
+  	<!-- 查询角色所有的权限ID -->
+  	<select id="selectAllAuthorityHashIdsByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT a.hashId AS hashId 
+		FROM RoleCategoryAuthority ra,CategoryAuthority a 
+  		WHERE ra.authorityId = a.id AND roleId = #{roleId} AND hashId IS NOT NULL
+  		UNION
+  		SELECT la.id AS hashId 
+  		FROM RoleLinkAuthority rla,LinkAuthority la
+  		WHERE rla.authorityId = la.id AND rla.roleId = #{roleId}
+  		UNION
+  		SELECT id AS hashId
+  		FROM CommonAuthority
+  		ORDER BY hashId ASC
+  	</select>
+  	
+  	<!-- 查询角色所有的菜单权限ID -->
+  	<select id="selectCategoryAuthorityByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  		SELECT a.id
+		FROM RoleCategoryAuthority ra,CategoryAuthority a 
+  		WHERE ra.authorityId = a.id AND roleId = #{roleId}
+  		ORDER BY a.pid,a.orderIndex ASC
+  	</select>
+  	
+  	<select id="selectUnionAuthorityIdListByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  		SELECT a.id FROM CategoryAuthority a,RoleCategoryAuthority ra WHERE ra.authorityId = a.id AND ra.roleId = #{roleId}
+  		UNION 
+  		SELECT la.id FROM LinkAuthority la,RoleLinkAuthority rla WHERE rla.authorityId = la.id AND rla.roleId = #{roleId}
+  	</select>
+  	
+  	<select id="selectAuthorityModelListByPid" parameterType="java.lang.Integer" resultType="AuthorityModel">
+  		SELECT id,pid AS pId,name,1 AS type,0 AS orderIndex FROM CategoryAuthority WHERE id = #{pid}
+		UNION
+		SELECT id,pid AS pId,name,1 AS type,orderIndex FROM CategoryAuthority WHERE pid = #{pid}
+		UNION
+		SELECT id,authorityId AS pId,name,2 AS type,999 as orderIndex FROM LinkAuthority 
+		WHERE authorityId IN
+		(
+			SELECT id FROM CategoryAuthority WHERE pid = #{pid}
+		)
+		UNION
+		SELECT id,authorityId AS pId,name,2 AS type,999 FROM LinkAuthority WHERE authorityId = #{pid}
+		ORDER BY orderIndex ASC
+  	</select> 
+</mapper>

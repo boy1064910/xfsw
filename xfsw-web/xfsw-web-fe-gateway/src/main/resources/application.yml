@@ -8,7 +8,7 @@ server:
 zuul:
   routes:
     api-a:
-      path: /api-a/**
+      path: /entry/**
       url: http://localhost:8201
     api-b:
       path: /api-b/**

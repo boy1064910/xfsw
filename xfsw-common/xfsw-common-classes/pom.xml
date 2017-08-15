@@ -1,0 +1,10 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.xfsw</groupId>
+    <artifactId>xfsw-common</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>xfsw-common-classes</artifactId>
+  <description>公共类资源,所有的通用模块或者业务模块公共遵循调用的类资源，比如返回结果结构、分页结构</description>
+</project>

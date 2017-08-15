@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LinkAuthority">
+
+  	<insert id="insertLinkAuthority" parameterType="LinkAuthority" >
+  		INSERT INTO LinkAuthority(id,authorityId,name,url,lastUpdater,lastUpdateTime)
+  		VALUES(#{id},#{authorityId},#{name},#{url},#{lastUpdater},NOW())
+  	</insert>
+
+	<update id="updateLinkAuthority" parameterType="LinkAuthority">
+  		UPDATE LinkAuthority SET name = #{name},url = #{url},id = #{id} WHERE id = #{oldId}
+  	</update>
+  	
+  	<select id="selectIdListByCategoryAuthorityId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  		SELECT id FROM LinkAuthority WHERE authorityId = #{authorityId}
+  	</select>
+
+<!--   	<select id="selectListByAuthorityId" parameterType="java.lang.Integer" resultType="LinkAuthority"> -->
+<!-- 	    SELECT * FROM LinkAuthority WHERE authorityId = #{authorityId} -->
+<!--   	</select> -->
+  	
+<!--   	<delete id="deleteByIds"> -->
+<!--   		DELETE FROM LinkAuthority  -->
+<!--   		WHERE id IN -->
+<!--   		<foreach collection="array" item="id" open="(" close=")" separator=","> -->
+<!--   			#{id} -->
+<!--   		</foreach> -->
+<!--   	</delete> -->
+  	
+<!--   	<insert id="insertList"> -->
+<!--   		INSERT INTO LinkAuthority(id,authorityId,url) -->
+<!--   		VALUES -->
+<!--   		<foreach collection="list" item="linkAuthority" index="index" open="" close="" separator=","> -->
+<!--             (#{linkAuthority.id},#{linkAuthority.authorityId},#{linkAuthority.url}) -->
+<!--         </foreach> -->
+<!--   	</insert> -->
+  	
+
+  	
+<!--   	<delete id="deleteLinkAuthority" parameterType="java.lang.Integer"> -->
+<!--   		DELETE FROM LinkAuthority WHERE id = #{id} -->
+<!--   	</delete> -->
+  	
+<!--   	<select id="selectAll" resultType="LinkAuthority"> -->
+<!--   		SELECT * FROM LinkAuthority -->
+<!--   	</select> -->
+  	
+<!--   	<select id="selectAllLinkAuthorityTreeModelList" resultType="AuthorityModel"> -->
+<!-- 		SELECT id,authorityId AS pId,name,2 AS type FROM LinkAuthority -->
+<!-- 	</select> -->
+</mapper>

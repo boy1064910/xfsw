@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MessageCode">
+	<resultMap type="java.util.Map" id="checkMessageCodeResult">
+		<result property="c0" column="c0" javaType="int" jdbcType="NUMERIC"/>
+		<result property="c1" column="c1" javaType="int" jdbcType="NUMERIC"/>
+		<result property="c2" column="c2" javaType="int" jdbcType="NUMERIC"/>
+		<result property="c3" column="c3" javaType="int" jdbcType="NUMERIC"/>
+	</resultMap>
+
+  	<!-- 短信验证码业务逻辑校验 -->
+  	<select id="checkMessageCode" parameterType="MessageCode" resultMap="checkMessageCodeResult">
+  		SELECT
+  		<!-- 单个账号单个业务当天发送短信次数 -->
+  		(
+  		SELECT COUNT(id) FROM MessageCode
+	    WHERE 
+	    	account = #{account} AND TIMESTAMPDIFF(DAY,DATE_FORMAT(sendTime,'%y-%m-%d'),CURDATE())=0 AND businessType = #{businessType} AND mediumType = #{mediumType}
+	    ) AS c0,
+  		<!-- 单个IP当天发送短信次数 -->
+  		(
+  		SELECT COUNT(id) FROM MessageCode
+	    WHERE 
+	    	ip = #{ip} AND TIMESTAMPDIFF(DAY,DATE_FORMAT(sendTime,'%y-%m-%d'),CURDATE())=0 AND mediumType = #{mediumType}
+	    ) AS c1,
+  		<!-- 单个账号单个IP单个业务当天发送短信次数 -->
+  		(
+  		SELECT COUNT(id) FROM MessageCode
+	    WHERE 
+	    	account = #{account} AND ip = #{ip} AND TIMESTAMPDIFF(DAY,DATE_FORMAT(sendTime,'%y-%m-%d'),CURDATE())=0 AND businessType = #{businessType} AND mediumType = #{mediumType}
+  		) AS c2,
+  		<!-- 单个账号单个IP地址单个业务60秒内发送次数 -->
+  		(
+  		SELECT COUNT(id) FROM MessageCode
+	    WHERE 
+	    	account = #{account} AND ip = #{ip} AND mediumType = #{mediumType} AND businessType = #{businessType} AND mediumType = #{mediumType}
+	    	<![CDATA[
+	    	AND TIMESTAMPDIFF(SECOND,sendTime,NOW())<=60
+	    	]]>
+	    ) AS c3
+  	</select>
+  	
+  	<insert id="sendMessageCode" parameterType="MessageCode" useGeneratedKeys="true" keyProperty="id">
+  		INSERT INTO MessageCode(mediumType,mediumTypeRemark,code,ip,account,sendTime,businessType,businessTypeRemark) 
+  		VALUES(#{mediumType},#{mediumTypeRemark},#{code},#{ip},#{account},NOW(),#{businessType},#{businessTypeRemark})
+  	</insert>
+  	
+  	<select id="verifyCode" parameterType="MessageCode" resultType="java.lang.Integer">
+  		SELECT COUNT(id) FROM MessageCode WHERE mediumType = #{mediumType} AND code = #{code} AND account = #{account} AND businessType = #{businessType}
+  	</select>
+  	
+  	<update id="updateCodeStatus" parameterType="java.lang.Integer">
+	    UPDATE MessageCode 
+	    SET isValid = 1
+	    WHERE 
+	    	id = #{id}
+  	</update>
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RoleAuthoritySql">
+
+	<update id="updateRoleAuthoritySqlByAuthorityId" parameterType="LinkAuthority">
+		UPDATE RoleAuthoritySql set authorityHashId = #{id} WHERE authorityHashId = #{oldId}
+	</update>
+	
+	<insert id="bakByRoleIdAndAuthorityIds" parameterType="java.util.Map">
+		INSERT INTO RoleAuthoritySql_copy (
+			SELECT * FROM RoleAuthoritySql 
+			WHERE 
+				roleId = #{roleId}
+				AND authorityHashId IN
+				<foreach collection="authorityIds" item="id" index="index" open="(" close=")" separator=",">
+					#{id}
+				</foreach>
+		)
+	</insert>
+	
+	<delete id="deleteByRoleIdAndAuthorityIds" parameterType="java.util.Map">
+		DELETE FROM RoleAuthoritySql 
+		WHERE 
+			roleId = #{roleId}
+			AND authorityHashId IN
+			<foreach collection="authorityIds" item="id" index="index" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
+	</delete>
+
+	<select id="selectRoleAuthoritySqlModelListByRoleId" parameterType="java.lang.Integer" resultType="RoleAuthoritySqlModel">
+		SELECT 
+			la.id,la.name,la.url,ras.id AS roleAuthoritySqlId,ras.countSql,ras.dataSql,ras.dataSubfixSql,ras.dataPool
+		FROM
+			RoleLinkAuthority rla,LinkAuthority la
+		LEFT JOIN RoleAuthoritySql ras ON la.id = ras.authorityHashId AND ras.roleId = #{roleId}
+		WHERE
+			rla.roleId = #{roleId} AND rla.authorityId = la.id AND la.url LIKE '/manager/data%'
+	</select>
+	
+	<update id="updateRoleAuthoritySql" parameterType="RoleAuthoritySql" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO 
+			RoleAuthoritySql (roleId,authorityHashId,countSql,dataSql,dataSubfixSql,dataPool,lastUpdater,lastUpdateTime) 
+		VALUES 
+			(#{roleId},#{authorityHashId},#{countSql},#{dataSql},#{dataSubfixSql},#{dataPool},#{lastUpdater},NOW())  
+  		ON DUPLICATE KEY UPDATE 
+  			countSql = #{countSql},dataSql = #{dataSql},dataSubfixSql = #{dataSubfixSql},dataPool = #{dataPool},lastUpdater = #{lastUpdater},lastUpdateTime = NOW()
+	</update>
+</mapper>

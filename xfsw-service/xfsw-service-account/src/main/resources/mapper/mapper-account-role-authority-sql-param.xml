@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RoleAuthoritySqlParam">
+
+	<insert id="bakByRoleIdAndAuthorityIds" parameterType="java.util.Map">
+		INSERT INTO RoleAuthoritySqlParam_copy(
+			SELECT * FROM RoleAuthoritySqlParam WHERE roleAuthoritySqlId IN(
+				SELECT id FROM RoleAuthoritySql 
+				WHERE 
+					roleId = #{roleId}
+					AND authorityHashId IN
+					<foreach collection="authorityIds" item="id" index="index" open="(" close=")" separator=",">
+						#{id}
+					</foreach>
+			)
+		)
+	</insert>
+	
+	<delete id="deleteByRoleIdAndAuthorityIds" parameterType="java.util.Map">
+		DELETE FROM RoleAuthoritySqlParam WHERE roleAuthoritySqlId IN(
+			SELECT id FROM RoleAuthoritySql 
+			WHERE 
+				roleId = #{roleId}
+				AND authorityHashId IN
+				<foreach collection="authorityIds" item="id" index="index" open="(" close=")" separator=",">
+					#{id}
+				</foreach>
+		)
+	</delete>
+	
+	<update id="updateRoleAuthoritySqlParam" parameterType="RoleAuthoritySqlParam">
+		UPDATE 
+			RoleAuthoritySqlParam
+		SET
+			paramsName = #{paramsName},paramsSql = #{paramsSql},countParamSql = #{countParamSql},
+			sign = #{sign},lastUpdater = #{lastUpdater},lastUpdateTime = NOW()
+		WHERE
+			id = #{id}
+	</update>
+</mapper>

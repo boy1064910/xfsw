@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RoleCategoryAuthority">
+
+	<select id="selectAuthorityIdsByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+	    SELECT ra.authorityId FROM RoleCategoryAuthority ra,CategoryAuthority a where ra.authorityId = a.id AND ra.roleId = #{roleId} ORDER BY a.pid,a.orderIndex ASC
+  	</select>
+  	
+  	<insert id="insertRoleCategoryAuthorityList" parameterType="java.util.Map">
+  		INSERT INTO RoleCategoryAuthority(roleId,authorityId,lastUpdater,lastUpdateTime) 
+  		VALUES
+  		<foreach collection="authorityIds" item="authorityId" index="index" open="" close="" separator=",">
+            (#{roleId},#{authorityId},#{lastUpdater},NOW())
+        </foreach>
+  	</insert>
+  	
+  	<insert id="bakByRoleIdAndAuthorityIds" parameterType="java.util.Map">
+		INSERT INTO RoleCategoryAuthority_copy(
+			SELECT * FROM RoleCategoryAuthority
+			WHERE 
+				roleId = #{roleId}
+				AND authorityId IN
+				<foreach collection="authorityIds" item="id" index="index" open="(" close=")" separator=",">
+					#{id}
+				</foreach>
+		)
+	</insert>
+  	
+  	<delete id="deleteByRoleIdAndAuthorityIds" parameterType="java.util.Map">
+		DELETE FROM RoleCategoryAuthority
+		WHERE 
+			roleId = #{roleId}
+			AND authorityId IN
+			<foreach collection="authorityIds" item="id" index="index" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
+	</delete>
+</mapper>

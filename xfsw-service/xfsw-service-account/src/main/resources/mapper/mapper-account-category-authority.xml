@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CategoryAuthority">
+
+	<select id="selectAll" resultType="CategoryAuthority">
+		SELECT * FROM CategoryAuthority ORDER BY pid,orderIndex ASC
+	</select>
+
+	<insert id="insertAuthority" parameterType="CategoryAuthority" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO CategoryAuthority(name,pid,hashId,url,remark,orderIndex,ico,lastUpdater,lastUpdateTime) 
+		VALUES(#{name},#{pid},#{hashId},#{url},#{remark},#{orderIndex},#{ico},#{lastUpdater},NOW())
+	</insert>
+	
+	<update id="updateCategoryAuthority" parameterType="CategoryAuthority">
+		UPDATE CategoryAuthority SET 
+			hashId = #{hashId},name = #{name},pid = #{pid},url = #{url},
+			remark = #{remark},orderIndex = #{orderIndex},ico = #{ico},lastUpdater = #{lastUpdater},lastUpdateTime = NOW()
+		WHERE id = #{id}
+	</update>
+	
+	<select id="selectFirstAuthorityModelList" resultType="AuthorityModel">
+		SELECT id,pid AS pId,name,1 AS type FROM CategoryAuthority WHERE pid = 0
+	</select>
+</mapper>

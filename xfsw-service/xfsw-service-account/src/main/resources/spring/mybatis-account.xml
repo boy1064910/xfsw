@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="defaultStatementTimeout" value="600" />
+		<setting name="logImpl" value="SLF4J" />
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<setting name="callSettersOnNulls" value="true"/>
+	</settings>
+
+	<typeAliases>
+		<!-- entity -->
+		<typeAlias type="com.xfsw.universe.entity.User" alias="User" />
+		<typeAlias type="com.xfsw.universe.entity.MessageCode" alias="MessageCode" />
+		<typeAlias type="com.xfsw.universe.entity.CategoryAuthority" alias="CategoryAuthority" />
+		<typeAlias type="com.xfsw.universe.entity.CommonAuthority" alias="CommonAuthority" />
+		<typeAlias type="com.xfsw.universe.entity.LinkAuthority" alias="LinkAuthority" />
+		<typeAlias type="com.xfsw.universe.entity.Role" alias="Role" />
+		<typeAlias type="com.xfsw.universe.entity.RoleCategoryAuthority" alias="RoleCategoryAuthority" />
+		<typeAlias type="com.xfsw.universe.entity.RoleAuthoritySql" alias="RoleAuthoritySql" />
+		<typeAlias type="com.xfsw.universe.entity.RoleAuthoritySqlParam" alias="RoleAuthoritySqlParam" />
+		<typeAlias type="com.xfsw.universe.entity.RoleLinkAuthority" alias="RoleLinkAuthority" />
+		
+		<!-- model -->
+		<typeAlias type="com.xfsw.universe.model.AuthorityModel" alias="AuthorityModel" />
+		<typeAlias type="com.xfsw.universe.model.RoleAuthoritySqlModel" alias="RoleAuthoritySqlModel" />
+		<typeAlias type="com.xfsw.universe.model.UserInfoModel" alias="UserInfoModel" />
+	</typeAliases>
+
+</configuration>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Authority">
+
+	<select id="selectAuthorityList" parameterType="java.lang.Integer" resultType="AuthorityModel">
+		SELECT hashId AS id,name,1 AS type FROM CategoryAuthority WHERE pid != 0
+		UNION
+		SELECT id,name,2 AS type FROM LinkAuthority
+	</select>
+</mapper>
