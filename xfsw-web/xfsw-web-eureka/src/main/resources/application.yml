@@ -1,5 +1,4 @@
 spring:
-  profiles: eureka1
   application:  
     name: xfsw-eureka-server
 security:   
@@ -21,3 +20,6 @@ eureka:
     fetchRegistry: false  #从eureka server获取注册信息
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+      
+      
