@@ -1,6 +1,0 @@
-spring:
-  cloud:
-    config:
-      name: xfsw-web-fe-entry
-      url: http://localhost:8021/
-      label: master

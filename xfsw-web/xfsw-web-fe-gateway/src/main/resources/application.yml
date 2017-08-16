@@ -9,7 +9,7 @@ zuul:
   routes:
     api-a:
       path: /entry/**
-      url: http://localhost:8201
+      url: http://localhost:8101
     api-b:
       path: /api-b/**
       serviceId: service-feign

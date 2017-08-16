@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("entry")
 public class EntryController {
 
-	@Value("${neo.name}")
+	@Value("${from}")
     private String name;
 	
 	@GetMapping(value="/tt",produces="application/json")
