@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.xfsw.bootstrap;
+package com.xfsw;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

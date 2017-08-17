@@ -8,8 +8,8 @@ server:
 zuul:
   routes:
     api-a:
-      path: /entry/**
-      url: http://localhost:8101
+      path: /xfsw-web-entry/**
+      serviceId: xfsw-web-fe-entry
     api-b:
       path: /api-b/**
       serviceId: service-feign
