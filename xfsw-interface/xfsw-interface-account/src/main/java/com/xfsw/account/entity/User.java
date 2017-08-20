@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package com.xfsw.account.entity;
 
 import java.io.Serializable;
@@ -6,11 +9,6 @@ import java.util.Date;
 /**
  * @author liuxifan
  *
- */
-/**
- * 用户服务中的用户实体类
- * @author xiaopeng.liu
- * @version 0.0.1
  */
 public class User implements Serializable {
 
@@ -28,6 +26,10 @@ public class User implements Serializable {
 	private String unionId;
 	private String serviceOpenId;
 	private String miniOpenId;
+	
+	//辅助字段
+	private Integer[] authorityIds;//所有权限ID数组（公共权限、菜单权限和请求权限）
+	private Integer[] categoryAuthorityIds;//菜单权限ID数组
 	
 	public Integer getId() {
 		return id;
@@ -76,6 +78,18 @@ public class User implements Serializable {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public Integer[] getAuthorityIds() {
+		return authorityIds;
+	}
+	public void setAuthorityIds(Integer[] authorityIds) {
+		this.authorityIds = authorityIds;
+	}
+	public Integer[] getCategoryAuthorityIds() {
+		return categoryAuthorityIds;
+	}
+	public void setCategoryAuthorityIds(Integer[] categoryAuthorityIds) {
+		this.categoryAuthorityIds = categoryAuthorityIds;
 	}
 	public Integer getRoleId() {
 		return roleId;

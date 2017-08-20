@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -38,46 +40,48 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("deprecation")
 public class HttpRequestUtil {
 
-//	private static Logger logger = LoggerFactory.getLogger(HttpRequestUtil.class);
+	private static Logger logger = LoggerFactory.getLogger(HttpRequestUtil.class);
 
 	private static CloseableHttpClient httpClient = HttpClientBuilder.create().build();
 
-//	public static void downloadFile(String url, String filePath) {
-//		long startTime = System.currentTimeMillis();
-//		HttpGet httpget = null;
-//		InputStream instream = null;
-//		try {
-//			httpget = new HttpGet(url);
-//			// 伪装成google的爬虫JAVA问题查询
-//			httpget.setHeader("User-Agent", "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)");
-//			// Execute HTTP request
-//			logger.info("executing request " + httpget.getURI());
-//			HttpResponse response = httpClient.execute(httpget);
-//			FileUtil.createFile(filePath);
-//			File storeFile = new File(filePath);
-//			FileOutputStream output = new FileOutputStream(storeFile);
-//			// 得到网络资源的字节数组,并写入文件
-//			HttpEntity entity = response.getEntity();
-//			if (entity != null) {
-//				instream = entity.getContent();
-//				byte b[] = new byte[1024];
-//				int j = 0;
-//				while ((j = instream.read(b)) != -1) {
-//					output.write(b, 0, j);
-//				}
-//				output.flush();
-//				output.close();
-//			}
-//		} catch (Exception e) {
-//			throw new RuntimeException("url:" + url + ",下载文件失败！" + e.getMessage(), e);
-//		}
-//		TimeUtil.loggerLostTime(startTime);
-//	}
-//	
+	public static void downloadFile(String url, String filePath) {
+		long startTime = System.currentTimeMillis();
+		HttpGet httpget = null;
+		InputStream instream = null;
+		try {
+			httpget = new HttpGet(url);
+			// 伪装成google的爬虫JAVA问题查询
+			httpget.setHeader("User-Agent", "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)");
+			// Execute HTTP request
+			logger.info("executing request " + httpget.getURI());
+			HttpResponse response = httpClient.execute(httpget);
+			FileUtil.createFile(filePath);
+			File storeFile = new File(filePath);
+			FileOutputStream output = new FileOutputStream(storeFile);
+			// 得到网络资源的字节数组,并写入文件
+			HttpEntity entity = response.getEntity();
+			if (entity != null) {
+				instream = entity.getContent();
+				byte b[] = new byte[1024];
+				int j = 0;
+				while ((j = instream.read(b)) != -1) {
+					output.write(b, 0, j);
+				}
+				output.flush();
+				output.close();
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("url:" + url + ",下载文件失败！" + e.getMessage(), e);
+		}
+		TimeUtil.loggerLostTime(startTime);
+	}
+	
 	/**
 	 * 通过http链接获取文件资源
 	 * @param url
@@ -85,29 +89,29 @@ public class HttpRequestUtil {
 	 * @author xiaopeng.liu@decked.com.cn
 	 * 2016年7月23日下午3:30:21
 	 */
-//	public static InputStream downloadInputStream(String url) {
-//		long startTime = System.currentTimeMillis();
-//		HttpGet httpget = null;
-//		try {
-//			httpget = new HttpGet(url);
-//			// 伪装成google的爬虫JAVA问题查询
-//			httpget.setHeader("User-Agent", "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)");
-//			// Execute HTTP request
-//			logger.info("executing request " + httpget.getURI());
-//			HttpResponse response = httpClient.execute(httpget);
-//			// 得到网络资源的字节数组,并写入文件
-//			HttpEntity entity = response.getEntity();
-//			TimeUtil.loggerLostTime(startTime);
-//			if (entity != null) {
-//				return entity.getContent();
-//			}
-//			else{
-//				throw new RuntimeException("url:" + url + ",下载文件为空！");
-//			}
-//		} catch (Exception e) {
-//			throw new RuntimeException("url:" + url + ",下载文件失败！" + e.getMessage(), e);
-//		}
-//	}
+	public static InputStream downloadInputStream(String url) {
+		long startTime = System.currentTimeMillis();
+		HttpGet httpget = null;
+		try {
+			httpget = new HttpGet(url);
+			// 伪装成google的爬虫JAVA问题查询
+			httpget.setHeader("User-Agent", "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)");
+			// Execute HTTP request
+			logger.info("executing request " + httpget.getURI());
+			HttpResponse response = httpClient.execute(httpget);
+			// 得到网络资源的字节数组,并写入文件
+			HttpEntity entity = response.getEntity();
+			TimeUtil.loggerLostTime(startTime);
+			if (entity != null) {
+				return entity.getContent();
+			}
+			else{
+				throw new RuntimeException("url:" + url + ",下载文件为空！");
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("url:" + url + ",下载文件失败！" + e.getMessage(), e);
+		}
+	}
 
 	/**
 	 * 通过http链接获取文件资源
@@ -117,30 +121,30 @@ public class HttpRequestUtil {
 	 * @author xiaopeng.liu@decked.com.cn
 	 * 2016年7月23日下午3:36:59
 	 */
-//	public static InputStream downloadInputStream(String url,List<NameValuePair> params){
-//		long startTime = System.currentTimeMillis();
-//		HttpGet httpget = null;
-//		try {
-//			String paramsStr = EntityUtils.toString(new UrlEncodedFormEntity(params));
-//			httpget = new HttpGet(url+"?"+paramsStr);
-//			// 伪装成google的爬虫JAVA问题查询
-//			httpget.setHeader("User-Agent", "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)");
-//			// Execute HTTP request
-//			logger.info("executing request " + httpget.getURI());
-//			HttpResponse response = httpClient.execute(httpget);
-//			// 得到网络资源的字节数组,并写入文件
-//			HttpEntity entity = response.getEntity();
-//			TimeUtil.loggerLostTime(startTime);
-//			if (entity != null) {
-//				return entity.getContent();
-//			}
-//			else{
-//				throw new RuntimeException("url:" + url + ",下载文件为空！");
-//			}
-//		} catch (Exception e) {
-//			throw new RuntimeException("url:" + url + ",下载文件失败！" + e.getMessage(), e);
-//		}
-//	}
+	public static InputStream downloadInputStream(String url,List<NameValuePair> params){
+		long startTime = System.currentTimeMillis();
+		HttpGet httpget = null;
+		try {
+			String paramsStr = EntityUtils.toString(new UrlEncodedFormEntity(params));
+			httpget = new HttpGet(url+"?"+paramsStr);
+			// 伪装成google的爬虫JAVA问题查询
+			httpget.setHeader("User-Agent", "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)");
+			// Execute HTTP request
+			logger.info("executing request " + httpget.getURI());
+			HttpResponse response = httpClient.execute(httpget);
+			// 得到网络资源的字节数组,并写入文件
+			HttpEntity entity = response.getEntity();
+			TimeUtil.loggerLostTime(startTime);
+			if (entity != null) {
+				return entity.getContent();
+			}
+			else{
+				throw new RuntimeException("url:" + url + ",下载文件为空！");
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("url:" + url + ",下载文件失败！" + e.getMessage(), e);
+		}
+	}
 	
 	public static String get(String url) {
 		HttpGet httpget = new HttpGet(url);

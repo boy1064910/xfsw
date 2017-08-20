@@ -11,21 +11,21 @@
 
 	<typeAliases>
 		<!-- entity -->
-		<typeAlias type="com.xfsw.universe.entity.User" alias="User" />
-		<typeAlias type="com.xfsw.universe.entity.MessageCode" alias="MessageCode" />
-		<typeAlias type="com.xfsw.universe.entity.CategoryAuthority" alias="CategoryAuthority" />
-		<typeAlias type="com.xfsw.universe.entity.CommonAuthority" alias="CommonAuthority" />
-		<typeAlias type="com.xfsw.universe.entity.LinkAuthority" alias="LinkAuthority" />
-		<typeAlias type="com.xfsw.universe.entity.Role" alias="Role" />
-		<typeAlias type="com.xfsw.universe.entity.RoleCategoryAuthority" alias="RoleCategoryAuthority" />
-		<typeAlias type="com.xfsw.universe.entity.RoleAuthoritySql" alias="RoleAuthoritySql" />
-		<typeAlias type="com.xfsw.universe.entity.RoleAuthoritySqlParam" alias="RoleAuthoritySqlParam" />
-		<typeAlias type="com.xfsw.universe.entity.RoleLinkAuthority" alias="RoleLinkAuthority" />
+		<typeAlias type="com.xfsw.account.entity.User" alias="User" />
+		<typeAlias type="com.xfsw.account.entity.MessageCode" alias="MessageCode" />
+		<typeAlias type="com.xfsw.account.entity.CategoryAuthority" alias="CategoryAuthority" />
+		<typeAlias type="com.xfsw.account.entity.CommonAuthority" alias="CommonAuthority" />
+		<typeAlias type="com.xfsw.account.entity.LinkAuthority" alias="LinkAuthority" />
+		<typeAlias type="com.xfsw.account.entity.Role" alias="Role" />
+		<typeAlias type="com.xfsw.account.entity.RoleCategoryAuthority" alias="RoleCategoryAuthority" />
+		<typeAlias type="com.xfsw.account.entity.RoleAuthoritySql" alias="RoleAuthoritySql" />
+		<typeAlias type="com.xfsw.account.entity.RoleAuthoritySqlParam" alias="RoleAuthoritySqlParam" />
+		<typeAlias type="com.xfsw.account.entity.RoleLinkAuthority" alias="RoleLinkAuthority" />
 		
 		<!-- model -->
-		<typeAlias type="com.xfsw.universe.model.AuthorityModel" alias="AuthorityModel" />
-		<typeAlias type="com.xfsw.universe.model.RoleAuthoritySqlModel" alias="RoleAuthoritySqlModel" />
-		<typeAlias type="com.xfsw.universe.model.UserInfoModel" alias="UserInfoModel" />
+		<typeAlias type="com.xfsw.account.model.AuthorityModel" alias="AuthorityModel" />
+		<typeAlias type="com.xfsw.account.model.RoleAuthoritySqlModel" alias="RoleAuthoritySqlModel" />
+		<typeAlias type="com.xfsw.account.model.UserInfoModel" alias="UserInfoModel" />
 	</typeAliases>
 
 </configuration>

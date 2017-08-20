@@ -10,14 +10,6 @@ package com.xfsw.common.consts;
  */
 public class CommonConstant {
 
-	/** 平台cookie中sessionid的key */
-	public final static String XFSW_SESSION_ID = "xfsw_session";
-	/** 平台cookie中sessionid的过期时间 */
-	public final static Integer XFSW_PLATFORM_SESSION_EXPIRE = 60 * 60 * 2 * 1000;
-	/** 平台用户redis key前缀 */
-	public final static String XFSW_PLATFORM_USER_SESSION_REDIS_PREFIX = "account.";
-	
-	
 	/**所有菜单权限缓存前缀*/
 	public final static String XFSW_ALL_CATEGORY_AUTHORITY = "authority_all_category";
 	/**权限缓存过期时间*/

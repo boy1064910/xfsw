@@ -18,6 +18,10 @@ public class ResponseModel implements Serializable {
 		this.code = 200;
 	}
 	
+	public ResponseModel(int code) {
+		this.code = code;
+	}
+	
 	public ResponseModel(Object data) {
 		this.code = 200;
 		this.data = data;

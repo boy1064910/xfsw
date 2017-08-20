@@ -38,6 +38,9 @@ public class ErrorConstant {
 	public final static int ACCOUNT_PWD_ERROR = 1003;
 	/** 账号尚未绑定手机号-1004 */
 	public final static int ACCOUNT_FORBIDDEN = 1004;
+	/** 微信登录失败 */
+	public final static int ACCOUNT_WX_LOGIN_FAIL = 1011;
+	
 
 	// ======================================短信验证码======================================
 	/** 一个业务、一个发送媒介、一个账号、一个IP60秒之内 超出发送次数---60秒之内不允许重复发送 */

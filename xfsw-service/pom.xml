@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.xfsw</groupId>
 	<artifactId>xfsw-service</artifactId>
@@ -8,14 +7,16 @@
 	<modules>
 		<module>xfsw-service-session</module>
 		<module>xfsw-service-account</module>
+		<module>xfsw-service-auth-cache</module>
 	</modules>
 
 	<dependencyManagement>
 		<dependencies>
+
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-redis</artifactId>
-				<version>1.7.10.RELEASE</version>
+				<version>1.8.6.RELEASE</version>
 			</dependency>
 			<dependency>
 				<groupId>redis.clients</groupId>

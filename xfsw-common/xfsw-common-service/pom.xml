@@ -15,10 +15,10 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
-		<!-- c3p0 -->
+		<!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
 		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>druid</artifactId>
 		</dependency>
 		<!-- mybatis -->
 		<dependency>
@@ -67,6 +67,11 @@
 		<dependency>
 			<groupId>com.xfsw</groupId>
 			<artifactId>xfsw-common-util</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.xfsw</groupId>
+			<artifactId>xfsw-common-classes</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
