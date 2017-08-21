@@ -12,7 +12,6 @@
 	<typeAliases>
 		<!-- entity -->
 		<typeAlias type="com.xfsw.account.entity.User" alias="User" />
-		<typeAlias type="com.xfsw.account.entity.MessageCode" alias="MessageCode" />
 		<typeAlias type="com.xfsw.account.entity.CategoryAuthority" alias="CategoryAuthority" />
 		<typeAlias type="com.xfsw.account.entity.CommonAuthority" alias="CommonAuthority" />
 		<typeAlias type="com.xfsw.account.entity.LinkAuthority" alias="LinkAuthority" />

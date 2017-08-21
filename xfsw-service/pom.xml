@@ -8,6 +8,7 @@
 		<module>xfsw-service-session</module>
 		<module>xfsw-service-account</module>
 		<module>xfsw-service-auth-cache</module>
+		<module>xfsw-service-business</module>
 	</modules>
 
 	<dependencyManagement>

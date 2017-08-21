@@ -9,6 +9,7 @@
 		<module>xfsw-interface-session</module>
 		<module>xfsw-interface-account</module>
 		<module>xfsw-interface-auth-cache</module>
+		<module>xfsw-interface-business</module>
 	</modules>
 
 	<properties>
