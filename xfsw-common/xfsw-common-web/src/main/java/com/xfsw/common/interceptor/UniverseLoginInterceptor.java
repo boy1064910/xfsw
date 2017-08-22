@@ -5,8 +5,6 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,14 +25,14 @@ import com.xfsw.session.service.UserSessionService;
  */
 public class UniverseLoginInterceptor implements HandlerInterceptor {
 
-	private static Logger logger = LoggerFactory.getLogger(UniverseLoginInterceptor.class);
+//	private static Logger logger = LoggerFactory.getLogger(UniverseLoginInterceptor.class);
 	
 	UserSessionService userSessionService;
 	
+	String urlPrefix;
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		logger.debug("登录拦截器，请求路径："+request.getRequestURL().toString());
-		logger.debug(request.getHeader("COMPLETE-DOMAIN"));
 		String sessionId = "";
 		if(HttpServletRequestUtil.isAjaxRequest(request)){//ajax请求
 			sessionId = request.getHeader(SessionConstant.XFSW_SESSION_ID);
@@ -54,7 +52,7 @@ public class UniverseLoginInterceptor implements HandlerInterceptor {
 		}
 		if(!HttpServletRequestUtil.isAjaxRequest(request)){
 			//刷新cookie过期时间
-			CookieUtil.refreshCookie(request, response, SessionConstant.XFSW_SESSION_ID, SessionConstant.XFSW_SESSION_EXPIRE, request.getHeader("MAIN-DOMAIN"), "/");
+			CookieUtil.refreshCookie(request, response, SessionConstant.XFSW_SESSION_ID, SessionConstant.XFSW_SESSION_EXPIRE, HttpServletRequestUtil.getDomain(request), "/");
 		}
 		//为当前线程保存用户信息
 		ThreadUserInfoManager.setUserInfo(userSessionModel);
@@ -76,14 +74,15 @@ public class UniverseLoginInterceptor implements HandlerInterceptor {
 			pw.close();
 		}
 		else{
-			String httpDomain = "http://" + request.getHeader("COMPLETE-DOMAIN");
+			String url = request.getRequestURL().toString();
+			int protocolIndex = url.indexOf(request.getHeader("Host"));
+			String protocol = url.substring(0, protocolIndex);
 			String loginUrl = "/login.html";
+			String returnUrl = protocol + request.getHeader("Host") + loginUrl + "?returnUrl=" + protocol + request.getHeader("Host") + urlPrefix + request.getRequestURI();
 			// 带上returnUrl，登录页登录成功之后重新跳转进入原来的请求页面
 			if (!StringUtil.isEmpty(request.getQueryString()))// 携带参数的请求链接
-				response.sendRedirect(httpDomain + loginUrl + "?returnUrl=" + httpDomain + request.getRequestURI() + "?" + request.getQueryString());
-			else {// 没有携带参数的请求链接
-				response.sendRedirect(httpDomain + loginUrl + "?returnUrl=" + httpDomain + request.getRequestURI());
-			}
+				returnUrl += request.getQueryString();
+			response.sendRedirect(returnUrl);
 		}
 	}
 	
@@ -109,6 +108,14 @@ public class UniverseLoginInterceptor implements HandlerInterceptor {
 
 	public void setUserSessionService(UserSessionService userSessionService) {
 		this.userSessionService = userSessionService;
+	}
+
+	public String getUrlPrefix() {
+		return urlPrefix;
+	}
+
+	public void setUrlPrefix(String urlPrefix) {
+		this.urlPrefix = urlPrefix;
 	}
 
 }

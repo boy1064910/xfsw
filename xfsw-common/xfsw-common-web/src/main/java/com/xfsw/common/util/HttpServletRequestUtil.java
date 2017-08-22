@@ -51,7 +51,7 @@ public class HttpServletRequestUtil {
 		String domain = request.getServerName();
 		String[] domainArray = domain.split("\\.");
 		String primaryDomain = "";
-		if(domainArray.length>1){
+		if(domainArray.length>2){
 			int length = domainArray.length;
 			primaryDomain = domainArray[length-2]+"."+domainArray[length-1];
 		}

@@ -35,7 +35,7 @@ public interface UserSessionService {
 	 * 清除用户登录信息
 	 * @param sessionId
 	 */
-//	void deleteUserSession(String sessionIdValue);
+	void deleteUserSession(String sessionIdValue);
 	
 //	void refreshUserSessionAuthorityInfo();
 //	

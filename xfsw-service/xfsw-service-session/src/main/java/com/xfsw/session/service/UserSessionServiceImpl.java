@@ -59,9 +59,9 @@ public class UserSessionServiceImpl implements UserSessionService {
 //		redisTemplate.opsForValue().set(key, JsonUtil.entity2Json(user),CommonConstant.XFSW_PLATFORM_SESSION_EXPIRE, TimeUnit.MILLISECONDS);
 //	}
 //
-//	public void deleteUserSession(String sessionIdValue){
-//		redisTemplate.delete(CommonConstant.XFSW_PLATFORM_USER_SESSION_REDIS_PREFIX + sessionIdValue);
-//	}
+	public void deleteUserSession(String sessionIdValue){
+		redisTemplate.delete(SessionConstant.XFSW_SESSION_REDIS_PREFIX + sessionIdValue);
+	}
 	
 //	public void refreshUserSessionAuthorityInfo(){
 //		//遍历循环redis中的所有系统用户，判断roleId，若一致则直接修改缓存中的用户信息

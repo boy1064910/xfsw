@@ -28,6 +28,7 @@
 			<mvc:mapping path="/**" />
 			<bean class="com.xfsw.common.interceptor.UniverseLoginInterceptor">
 				<property name="userSessionService" ref="userSessionService"></property>
+				<property name="urlPrefix" value="/acadamic-web-manager"></property>
 			</bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
