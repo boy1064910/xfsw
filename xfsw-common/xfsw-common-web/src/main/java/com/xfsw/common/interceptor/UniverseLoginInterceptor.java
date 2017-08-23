@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,7 +27,7 @@ import com.xfsw.session.service.UserSessionService;
  */
 public class UniverseLoginInterceptor implements HandlerInterceptor {
 
-//	private static Logger logger = LoggerFactory.getLogger(UniverseLoginInterceptor.class);
+	private static Logger logger = LoggerFactory.getLogger(UniverseLoginInterceptor.class);
 	
 	UserSessionService userSessionService;
 	
@@ -33,6 +35,7 @@ public class UniverseLoginInterceptor implements HandlerInterceptor {
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		logger.info("请求的url:"+request.getRequestURI());
 		String sessionId = "";
 		if(HttpServletRequestUtil.isAjaxRequest(request)){//ajax请求
 			sessionId = request.getHeader(SessionConstant.XFSW_SESSION_ID);

@@ -14,14 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
  */
 public class WebSiteMeshFilter extends ConfigurableSiteMeshFilter {
 
-	/** 需要装饰的访问路径 */
-	@Value("${sitemesh.contentPath}")
-	private String contentPath;
-
-	/** 装饰器页面路径 */
-	@Value("${sitemesh.decoratorPath}")
-	private String decoratorPath;
-
 	/** 不需要装饰的访问路径,多个之间用英文逗号分隔 */
 	@Value("${sitemesh.excludedPaths}")
 	private String excludedPaths;
@@ -29,7 +21,7 @@ public class WebSiteMeshFilter extends ConfigurableSiteMeshFilter {
 	@Override
 	protected void applyCustomConfiguration(SiteMeshFilterBuilder builder) {
 		// 通过配置文件
-		builder.addDecoratorPath(contentPath, decoratorPath);
+		builder.addDecoratorPath("/**.shtml", "/decorators/decorator.jsp");
 		if (excludedPaths == null) {
 			return;
 		}

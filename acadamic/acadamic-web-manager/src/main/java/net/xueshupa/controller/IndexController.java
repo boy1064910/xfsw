@@ -1,15 +1,15 @@
 package net.xueshupa.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class IndexController {
 
-	
 	@RequestMapping("/index")
-	public void index(Model model){
-		
+	public ModelAndView index(){
+		ModelAndView model = new ModelAndView ();
+		return model;
 	}
 }
