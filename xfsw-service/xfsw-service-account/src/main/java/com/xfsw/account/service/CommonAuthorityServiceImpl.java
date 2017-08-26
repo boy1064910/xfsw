@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xfsw.account.entity.CommonAuthority;
+import com.xfsw.account.service.CommonAuthorityService;
 import com.xfsw.common.mapper.ICommonMapper;
 
 @Service("commonAuthorityService")

@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.xfsw.account.entity.SystemErrorLog;
+import com.xfsw.account.service.SystemErrorLogService;
 import com.xfsw.common.mapper.ICommonMapper;
 
 @Service("systemErrorLogService")

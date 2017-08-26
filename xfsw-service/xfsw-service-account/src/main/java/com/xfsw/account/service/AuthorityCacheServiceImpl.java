@@ -1,4 +1,4 @@
-package com.xfsw.auth.cache.service;
+package com.xfsw.account.service;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 
 import com.xfsw.account.entity.CategoryAuthority;
 import com.xfsw.account.model.AuthorityModel;
-import com.xfsw.account.service.AuthorityService;
-import com.xfsw.account.service.CategoryAuthorityService;
 import com.xfsw.common.consts.CommonConstant;
 import com.xfsw.common.util.ArrayUtil;
 import com.xfsw.common.util.JsonUtil;
@@ -28,8 +26,8 @@ public class AuthorityCacheServiceImpl implements AuthorityCacheService {
 
 //	private static Logger logger = LoggerFactory.getLogger(SystemAuthorityServiceImpl.class);
 	
-	@Resource
-	private RedisTemplate<String, String> redisTemplate;
+	@Resource(name="authCacheRedisTemplate")
+	private RedisTemplate<String, String> authCacheRedisTemplate;
 	
 	@Resource
 	CategoryAuthorityService categoryAuthorityService;
@@ -48,7 +46,7 @@ public class AuthorityCacheServiceImpl implements AuthorityCacheService {
 				map.put(authority.getId().toString(), JsonUtil.entity2Json(authority));
 			}
 		}
-		redisTemplate.opsForValue().set(CommonConstant.XFSW_ALL_CATEGORY_AUTHORITY, JsonUtil.entity2Json(map), CommonConstant.XFSW_ALL_CATEGORY_AUTHORITY_CACHE_EXPIRED_TIME, TimeUnit.MILLISECONDS);
+		authCacheRedisTemplate.opsForValue().set(CommonConstant.XFSW_ALL_CATEGORY_AUTHORITY, JsonUtil.entity2Json(map), CommonConstant.XFSW_ALL_CATEGORY_AUTHORITY_CACHE_EXPIRED_TIME, TimeUnit.MILLISECONDS);
 		
 		//获取所有的权限（菜单不包括一级菜单和功能权限）
 		List<AuthorityModel> authorityModelList = authorityService.selectAll();
@@ -59,7 +57,7 @@ public class AuthorityCacheServiceImpl implements AuthorityCacheService {
 				authorityTreeMap.put(authorityModel.getId().toString(), JsonUtil.entity2Json(authorityModel));
 			}
 		}
-		redisTemplate.opsForValue().set(CommonConstant.XFSW_ALL_AUTHORITY, JsonUtil.entity2Json(authorityTreeMap), CommonConstant.XFSW_ALL_CATEGORY_AUTHORITY_CACHE_EXPIRED_TIME, TimeUnit.MILLISECONDS);
+		authCacheRedisTemplate.opsForValue().set(CommonConstant.XFSW_ALL_AUTHORITY, JsonUtil.entity2Json(authorityTreeMap), CommonConstant.XFSW_ALL_CATEGORY_AUTHORITY_CACHE_EXPIRED_TIME, TimeUnit.MILLISECONDS);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -68,7 +66,7 @@ public class AuthorityCacheServiceImpl implements AuthorityCacheService {
 		
 		this.checkAndReload();
 		
-		String info = redisTemplate.opsForValue().get(CommonConstant.XFSW_ALL_CATEGORY_AUTHORITY);
+		String info = authCacheRedisTemplate.opsForValue().get(CommonConstant.XFSW_ALL_CATEGORY_AUTHORITY);
 		Map<String,String> map = (Map<String, String>) JsonUtil.json2Map(info);
 		List<CategoryAuthority> categoryAuthorityList = new ArrayList<CategoryAuthority>();
 		for(Integer id : categoryAuthorityIds){
@@ -83,7 +81,7 @@ public class AuthorityCacheServiceImpl implements AuthorityCacheService {
 	public AuthorityModel getAuthorityModelById(Integer id){
 		if(id==null) return null;
 		this.checkAndReload();
-		String info = redisTemplate.opsForValue().get(CommonConstant.XFSW_ALL_AUTHORITY);
+		String info = authCacheRedisTemplate.opsForValue().get(CommonConstant.XFSW_ALL_AUTHORITY);
 		Map<String,String> map = (Map<String, String>) JsonUtil.json2Map(info);
 		if(map.containsKey(id.toString())){
 			AuthorityModel am = (AuthorityModel) JsonUtil.json2Entity(map.get(id.toString()),AuthorityModel.class);
@@ -105,7 +103,7 @@ public class AuthorityCacheServiceImpl implements AuthorityCacheService {
 		RedisCallback<Boolean> callback = (RedisConnection connection) -> {
 			return connection.exists(CommonConstant.XFSW_ALL_CATEGORY_AUTHORITY.getBytes());
 		};
-		boolean isExsit = redisTemplate.execute(callback);
+		boolean isExsit = authCacheRedisTemplate.execute(callback);
 		if(!isExsit){
 			this.init();
 		}

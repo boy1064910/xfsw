@@ -22,20 +22,20 @@ public class UserSessionServiceImpl implements UserSessionService {
 //	private static Logger logger = LoggerFactory.getLogger(UserSessionServiceImpl.class);
 	
 	@Resource(name="sessionRedisTemplate")
-	RedisTemplate<String, String> redisTemplate;
+	RedisTemplate<String, String> sessionRedisTemplate;
 	
 //	@Resource(name="roleAuthorityService")
 //	RoleAuthorityService roleAuthorityService;
 	
 	public void addUserSession(String sessionIdValue,UserSessionModel userSessionModel){
-		redisTemplate.opsForValue().set(SessionConstant.XFSW_SESSION_REDIS_PREFIX + sessionIdValue, JsonUtil.entity2Json(userSessionModel),SessionConstant.XFSW_SESSION_EXPIRE, TimeUnit.MILLISECONDS);
+		sessionRedisTemplate.opsForValue().set(SessionConstant.XFSW_SESSION_REDIS_PREFIX + sessionIdValue, JsonUtil.entity2Json(userSessionModel),SessionConstant.XFSW_SESSION_EXPIRE, TimeUnit.MILLISECONDS);
 	}
 	
 	public UserSessionModel getUserSession(String sessionIdValue) throws BusinessException{
-		String userSessionInfo = redisTemplate.opsForValue().get(SessionConstant.XFSW_SESSION_REDIS_PREFIX + sessionIdValue);
+		String userSessionInfo = sessionRedisTemplate.opsForValue().get(SessionConstant.XFSW_SESSION_REDIS_PREFIX + sessionIdValue);
 		if(!StringUtil.isEmpty(userSessionInfo)){
 			//刷新session过期时间
-			redisTemplate.expire(SessionConstant.XFSW_SESSION_REDIS_PREFIX + sessionIdValue, SessionConstant.XFSW_SESSION_EXPIRE, TimeUnit.MILLISECONDS);
+			sessionRedisTemplate.expire(SessionConstant.XFSW_SESSION_REDIS_PREFIX + sessionIdValue, SessionConstant.XFSW_SESSION_EXPIRE, TimeUnit.MILLISECONDS);
 			return (UserSessionModel) JsonUtil.json2Entity(userSessionInfo, UserSessionModel.class);
 		}
 		else{
@@ -44,10 +44,10 @@ public class UserSessionServiceImpl implements UserSessionService {
 	}
 	
 //	public UserSessionModel getUserSessionByKey(String key) throws BusinessException{
-//		String userSessionInfo = redisTemplate.opsForValue().get(key);
+//		String userSessionInfo = sessionRedisTemplate.opsForValue().get(key);
 //		if(!StringUtil.isEmpty(userSessionInfo)){
 //			//刷新session过期时间
-//			redisTemplate.expire(key, CommonConstant.XFSW_PLATFORM_SESSION_EXPIRE, TimeUnit.MILLISECONDS);
+//			sessionRedisTemplate.expire(key, CommonConstant.XFSW_PLATFORM_SESSION_EXPIRE, TimeUnit.MILLISECONDS);
 //			return (UserSessionModel) JsonUtil.json2Entity(userSessionInfo, UserSessionModel.class);
 //		}
 //		else{
@@ -56,11 +56,11 @@ public class UserSessionServiceImpl implements UserSessionService {
 //	}
 	
 //	public void addUserSessionByKey(String key,UserSessionModel user){
-//		redisTemplate.opsForValue().set(key, JsonUtil.entity2Json(user),CommonConstant.XFSW_PLATFORM_SESSION_EXPIRE, TimeUnit.MILLISECONDS);
+//		sessionRedisTemplate.opsForValue().set(key, JsonUtil.entity2Json(user),CommonConstant.XFSW_PLATFORM_SESSION_EXPIRE, TimeUnit.MILLISECONDS);
 //	}
 //
 	public void deleteUserSession(String sessionIdValue){
-		redisTemplate.delete(SessionConstant.XFSW_SESSION_REDIS_PREFIX + sessionIdValue);
+		sessionRedisTemplate.delete(SessionConstant.XFSW_SESSION_REDIS_PREFIX + sessionIdValue);
 	}
 	
 //	public void refreshUserSessionAuthorityInfo(){
@@ -109,7 +109,7 @@ public class UserSessionServiceImpl implements UserSessionService {
 //	}
 //	
 //	private Map<String,User> listUserSession(){
-//		Set<String> keysSets = redisTemplate.keys(CommonConstant.XFSW_PLATFORM_USER_SESSION_REDIS_PREFIX+"*");
+//		Set<String> keysSets = sessionRedisTemplate.keys(CommonConstant.XFSW_PLATFORM_USER_SESSION_REDIS_PREFIX+"*");
 //		if(keysSets!=null&&keysSets.size()>0){
 //			Map<String,User> userSessionMap = new HashMap<String,User>();
 //			for(String key:keysSets){

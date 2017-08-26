@@ -7,13 +7,11 @@
 	<modules>
 		<module>xfsw-service-session</module>
 		<module>xfsw-service-account</module>
-		<module>xfsw-service-auth-cache</module>
 		<module>xfsw-service-business</module>
 	</modules>
 
 	<dependencyManagement>
 		<dependencies>
-
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-redis</artifactId>

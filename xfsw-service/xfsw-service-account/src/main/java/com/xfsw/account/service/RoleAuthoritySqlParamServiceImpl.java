@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.xfsw.account.entity.RoleAuthoritySql;
 import com.xfsw.account.entity.RoleAuthoritySqlParam;
+import com.xfsw.account.service.RoleAuthoritySqlParamService;
 import com.xfsw.common.mapper.ICommonMapper;
 import com.xfsw.common.util.ArrayUtil;
 

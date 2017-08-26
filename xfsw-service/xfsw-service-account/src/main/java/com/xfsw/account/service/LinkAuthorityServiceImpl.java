@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xfsw.account.entity.LinkAuthority;
+import com.xfsw.account.service.LinkAuthorityService;
+import com.xfsw.account.service.RoleAuthoritySqlService;
+import com.xfsw.account.service.RoleLinkAuthorityService;
 import com.xfsw.common.mapper.ICommonMapper;
 import com.xfsw.common.util.ListUtil;
 

@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.xfsw.account.entity.CategoryAuthority;
 import com.xfsw.account.model.AuthorityModel;
+import com.xfsw.account.service.CategoryAuthorityService;
+import com.xfsw.account.service.LinkAuthorityService;
+import com.xfsw.account.service.RoleCategoryAuthorityService;
 import com.xfsw.common.mapper.ICommonMapper;
 
 @Service("categoryAuthorityService")

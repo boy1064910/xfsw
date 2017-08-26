@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.xfsw.account.model.AuthorityModel;
 import com.xfsw.account.model.UserAuthorityIdsModel;
+import com.xfsw.account.service.RoleAuthorityService;
 import com.xfsw.common.mapper.ICommonMapper;
 import com.xfsw.common.util.ListUtil;
 

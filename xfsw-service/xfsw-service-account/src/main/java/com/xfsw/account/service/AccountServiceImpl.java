@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.xfsw.account.service.AccountService;
 import com.xfsw.common.mapper.ICommonMapper;
 import com.xfsw.common.service.CommonService;
 

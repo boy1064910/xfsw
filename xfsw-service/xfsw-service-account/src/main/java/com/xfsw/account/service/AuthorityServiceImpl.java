@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.xfsw.account.model.AuthorityModel;
+import com.xfsw.account.service.AuthorityService;
 import com.xfsw.common.mapper.ICommonMapper;
 
 @Service("authorityService")

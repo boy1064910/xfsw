@@ -19,6 +19,8 @@
 		<module>xfsw-web-fe-gateway</module>
 		<module>xfsw-web-fe-order</module>
 		<module>xfsw-web-config-server</module>
+		
+		<module>xfsw-web-be-auth</module>
 	</modules>
 	
 	<!--依赖管理，用于管理spring-cloud的依赖 -->

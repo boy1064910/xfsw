@@ -20,6 +20,8 @@ public class UserSessionModel implements Serializable {
 	private String unionId;//微信开放平台unionId
 	private String serviceOpenId;//微信服务号openId,暂时没用上
 	private String miniOpenId;//微信小程序openId,暂时没用上
+	
+	private Integer[] categoryAuthorityIds;//菜单权限ID数组
 	private Integer[] authorityIds;//所有权限ID数组（公共权限、菜单权限和请求权限）
 	
 	public UserSessionModel(){}
@@ -32,7 +34,6 @@ public class UserSessionModel implements Serializable {
 		this.nickName = nickName;
 		this.email = email;
 	}
-	private Integer[] categoryAuthorityIds;//菜单权限ID数组
 	
 	public Integer getId() {
 		return id;

@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.xfsw.account.entity.UserLoginRecord;
+import com.xfsw.account.service.UserLoginRecordService;
 import com.xfsw.common.mapper.ICommonMapper;
 
 @Service("userLoginRecordService")

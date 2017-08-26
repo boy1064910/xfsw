@@ -1,4 +1,4 @@
-package com.xfsw.auth.cache.service;
+package com.xfsw.account.service;
 
 import java.util.List;
 

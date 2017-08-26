@@ -1,0 +1,10 @@
+8001	xfsw-web-eureka
+8011	xfsw-web-gateway
+8021	xfsw-web-config-server	
+
+8101	xfsw-web-fe-entry
+8111	xfsw-web-fe-order
+
+8201	xfsw-web-be-auth
+
+8301	acadamic-web-manager
