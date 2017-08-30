@@ -26,6 +26,7 @@ public class ReflectUtil {
 		try {
 			return clazz.newInstance();
 		} catch (InstantiationException e) {
+			e.printStackTrace();
 			logger.error("反射类 " + clazz.getName() + "实例化失败", e);
 			throw new RuntimeException("反射类 " + clazz.getName() + "实例化失败", e);
 		} catch (IllegalAccessException e) {

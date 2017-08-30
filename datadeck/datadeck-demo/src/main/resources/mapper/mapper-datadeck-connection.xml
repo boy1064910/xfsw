@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Connection">
+
+	<insert id="initConnection" parameterType="Connection">
+		INSERT INTO Connection(id,tenantId,ownerId,code,clientId,clientKey)
+		VALUES(#{id},#{tenantId},#{ownerId},#{code},#{clientId},#{clientKey})
+		ON DUPLICATE KEY UPDATE updateTime = NOW()
+	</insert>
+	
+	<select id="readById" parameterType="java.lang.String" resultType="Connection">
+		SELECT * FROM Connection WHERE id = #{id}
+	</select>
+	
+	<select id="readByClientId" parameterType="java.lang.String" resultType="Connection">
+		SELECT * FROM Connection WHERE clientId = #{clientId}
+	</select>
+	
+	<update id="saveConnectionAccountInfo" parameterType="java.util.Map">
+		UPDATE Connection SET accountInfo = #{accountInfo},updateTime = NOW() WHERE clientId = #{clientId}
+	</update>
+	
+	<select id="readAccountInfosByCode" parameterType="java.util.Map" resultType="ConnectionAccountInfo">
+		SELECT id,accountInfo AS name FROM Connection WHERE ownerId = #{ownerId} AND tenantId = #{tenantId} AND code = #{code}
+	</select>
+</mapper>

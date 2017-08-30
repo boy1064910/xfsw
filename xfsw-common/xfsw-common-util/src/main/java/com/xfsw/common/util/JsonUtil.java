@@ -10,21 +10,11 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.JavaType;
 
 public class JsonUtil {
-	private static ObjectMapper mapper;
-
-	public static synchronized ObjectMapper getMapperInstance(boolean createNew) {
-		if (createNew) {
-			return new ObjectMapper();
-		} else if (mapper == null) {
-			mapper = new ObjectMapper();
-		}
-		return mapper;
-	}
 
 	public static String entity2Json(Object entity) {
 		try {
-			ObjectMapper objectMapper = getMapperInstance(false);
-			String json = objectMapper.writeValueAsString(entity);
+			ObjectMapper mapper = new ObjectMapper();
+			String json = mapper.writeValueAsString(entity);
 			return json;
 		} catch (Exception e) {
 			throw new RuntimeException("实体类转换json字符串失败!", e);
@@ -45,22 +35,21 @@ public class JsonUtil {
 		try {
 			return mapper.readValue(json, clazz);
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new RuntimeException("json转entity出错!", e);
 		}
 	}
 
 	public static List<?> json2List(String json, Class<?> clazz) {
+		ObjectMapper mapper = new ObjectMapper();
 		JavaType javaType = mapper.getTypeFactory().constructParametricType(List.class, clazz);
 		try {
 			return mapper.readValue(json, javaType);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			throw new RuntimeException("json转entity出错!", e);
 		}
-		
 	}
-
+	
 	private static List<Map<String, Object>> recurrentParseJsonList(String json) {
 		List<Map<String, Object>> jsonMapList = new ArrayList<Map<String, Object>>();
 		if (json != null && !json.trim().equals("")) {
@@ -117,3 +106,34 @@ public class JsonUtil {
 		}
 	}
 }
+
+class ResultNode{
+	String id;
+	String name;
+	List<ResultNode> children = new ArrayList<ResultNode>();
+	
+	public ResultNode(String id,String name) {
+		this.id = id;
+		this.name = name;
+	}
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public List<ResultNode> getChildren() {
+		return children;
+	}
+	public void setChildren(List<ResultNode> children) {
+		this.children = children;
+	}
+}
+
