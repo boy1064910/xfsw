@@ -1,4 +1,4 @@
-package com.ptmind.datadeck.entity.datasource.auth;
+package com.ptmind.datadeck.entity.datasource.auth.request;
 
 /**
  * 授权相关请求参数结构体

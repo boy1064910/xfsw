@@ -6,6 +6,7 @@ import com.ptmind.datadeck.entity.datasource.AuthConfigDataSource;
 import com.ptmind.datadeck.entity.datasource.ConfigDataSource;
 import com.ptmind.datadeck.entity.datasource.ConfigRequestInfoDataSource;
 import com.ptmind.datadeck.entity.datasource.EditorDataSource;
+import com.ptmind.datadeck.entity.datasource.field.FieldParseConfig;
 
 /**
  * Created by Garry on 2017/8/23.
@@ -45,6 +46,15 @@ public interface DataSourceService {
      * @version
      */
     ConfigRequestInfoDataSource readConfigRequestInfoByCode(String code);
+    
+    /**
+     * 获取数据源字段解析配置
+     * @param code
+     * @return
+     * @author xiaopeng.liu
+     * @version
+     */
+    FieldParseConfig getFieldParseConfigByCode(String code);
     
     /**
      * 获取数据源的编辑器配置信息

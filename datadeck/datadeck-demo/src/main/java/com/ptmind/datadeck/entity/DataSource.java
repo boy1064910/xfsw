@@ -9,8 +9,9 @@ public class DataSource {
 	private String description;// 数据源描述
 	private String authType;// 授权步骤代码\类型,目前只有oauth2和rest请求两种方式
 
-	private String config;
-	private String stepConfig;
+	private String config;//数据源授权信息配置
+	private String stepConfig;//步骤解析配置
+	private String fieldConfig;//字段解析配置
 	
 	private Long creatorId;
 	private Long createTime;// 创建时间
@@ -88,5 +89,11 @@ public class DataSource {
 	}
 	public void setUpdateTime(Long updateTime) {
 		this.updateTime = updateTime;
+	}
+	public String getFieldConfig() {
+		return fieldConfig;
+	}
+	public void setFieldConfig(String fieldConfig) {
+		this.fieldConfig = fieldConfig;
 	}
 }

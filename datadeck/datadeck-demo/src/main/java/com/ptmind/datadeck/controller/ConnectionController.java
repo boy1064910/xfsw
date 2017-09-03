@@ -18,8 +18,8 @@ import com.ptmind.datadeck.entity.datasource.ConfigRequestInfoDataSource;
 import com.ptmind.datadeck.entity.datasource.config.ConfigStepRequestInfo;
 import com.ptmind.datadeck.entity.datasource.config.request.RequestParam;
 import com.ptmind.datadeck.entity.datasource.config.request.RequestSetting;
-import com.ptmind.datadeck.entity.datasource.config.response.ResponseNode;
 import com.ptmind.datadeck.model.connection.ConnectionAccountInfo;
+import com.ptmind.datadeck.model.connection.ResponseNode;
 import com.ptmind.datadeck.service.ConnectionService;
 import com.ptmind.datadeck.service.ConnectionTokenService;
 import com.ptmind.datadeck.service.DataSourceService;
@@ -127,5 +127,10 @@ public class ConnectionController {
 			}
 		}
 		return responseNodeList;
+	}
+	
+	@GetMapping("/readDataValue")
+	public void readDataValue() {
+		
 	}
 }

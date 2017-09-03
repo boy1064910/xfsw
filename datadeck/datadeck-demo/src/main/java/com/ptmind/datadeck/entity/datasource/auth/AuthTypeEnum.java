@@ -3,7 +3,7 @@ package com.ptmind.datadeck.entity.datasource.auth;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.ptmind.datadeck.util.JsonUtil;
+import com.xfsw.common.util.JsonUtil;
 
 
 

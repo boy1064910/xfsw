@@ -1,4 +1,4 @@
-package com.ptmind.datadeck.service;
+package com.ptmind.datadeck.service.impl;
 
 import java.util.concurrent.TimeUnit;
 
@@ -6,6 +6,8 @@ import javax.annotation.Resource;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import com.ptmind.datadeck.service.ConnectionTokenService;
 
 @Service("connectionTokenService")
 public class ConnectionTokenServiceImpl implements ConnectionTokenService {

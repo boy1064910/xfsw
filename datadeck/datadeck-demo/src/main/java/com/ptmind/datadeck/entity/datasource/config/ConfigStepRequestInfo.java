@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.ptmind.datadeck.entity.datasource.config.request.RequestSetting;
-import com.ptmind.datadeck.entity.datasource.config.response.ResponseNode;
 import com.ptmind.datadeck.entity.datasource.config.response.ResponseSetting;
+import com.ptmind.datadeck.model.connection.ResponseNode;
 import com.xfsw.common.util.JsonUtil;
 import com.xfsw.common.util.ListUtil;
 
@@ -37,6 +37,7 @@ public class ConfigStepRequestInfo extends ConfigStep {
 
 	@SuppressWarnings("unchecked")
 	public List<ResponseNode> resolveResponse(String json) {
+		//TODO 后期加入缓存,代码位置变动到ConfigStepService中
 		Map<?, ?> map = JsonUtil.json2Map(json);
 		int levelIndex = 0;
 		ResponseSetting responseSetting = this.responseSettings.get(levelIndex);

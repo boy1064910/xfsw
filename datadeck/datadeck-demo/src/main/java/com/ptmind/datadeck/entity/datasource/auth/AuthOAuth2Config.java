@@ -1,5 +1,7 @@
 package com.ptmind.datadeck.entity.datasource.auth;
 
+import com.ptmind.datadeck.entity.datasource.auth.request.AuthRequestParam;
+
 /**
  * oauth2授权方式
  * @author lxp

@@ -1,4 +1,4 @@
-package com.ptmind.datadeck.entity.datasource.config.response;
+package com.ptmind.datadeck.model.connection;
 
 import java.util.ArrayList;
 import java.util.List;

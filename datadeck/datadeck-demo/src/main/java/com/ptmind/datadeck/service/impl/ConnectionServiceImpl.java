@@ -1,4 +1,4 @@
-package com.ptmind.datadeck.service;
+package com.ptmind.datadeck.service.impl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.ptmind.datadeck.entity.Connection;
 import com.ptmind.datadeck.model.connection.ConnectionAccountInfo;
+import com.ptmind.datadeck.service.ConnectionService;
 import com.xfsw.common.mapper.ICommonMapper;
 
 @Service("connectionService")

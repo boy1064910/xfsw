@@ -1,4 +1,4 @@
-package com.ptmind.datadeck.service;
+package com.ptmind.datadeck.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,10 @@ import com.ptmind.datadeck.entity.datasource.AuthConfigDataSource;
 import com.ptmind.datadeck.entity.datasource.ConfigDataSource;
 import com.ptmind.datadeck.entity.datasource.ConfigRequestInfoDataSource;
 import com.ptmind.datadeck.entity.datasource.EditorDataSource;
+import com.ptmind.datadeck.entity.datasource.field.FieldParseConfig;
+import com.ptmind.datadeck.service.DataSourceService;
 import com.xfsw.common.mapper.ICommonMapper;
+import com.xfsw.common.util.JsonUtil;
 import com.xfsw.common.util.ListUtil;
 
 /**
@@ -41,7 +44,7 @@ public class DataSourceServiceImpl implements DataSourceService{
 
 	@Override
 	public AuthConfigDataSource readAuthConfigInfo(String code) {
-		DataSource dataSource = (DataSource) ddCommonMapper.get("DataSource.readByCode",code);
+		DataSource dataSource = this.getByCode(code);
 		return new AuthConfigDataSource(dataSource);
 	}
 	
@@ -56,8 +59,26 @@ public class DataSourceServiceImpl implements DataSourceService{
 	}
 	
 	public ConfigRequestInfoDataSource readConfigRequestInfoByCode(String code) {
-		DataSource dataSource = (DataSource) ddCommonMapper.get("DataSource.readByCode",code);
+		DataSource dataSource = this.getByCode(code);
 		return new ConfigRequestInfoDataSource(dataSource);
+	}
+	
+	public FieldParseConfig getFieldParseConfigByCode(String code) {
+		DataSource dataSource = this.getByCode(code);
+		FieldParseConfig fieldParseConfig = (FieldParseConfig) JsonUtil.json2Entity(dataSource.getFieldConfig(), FieldParseConfig.class);
+		return fieldParseConfig;
+	}
+	
+	/**
+	 * 通过code获取数据源信息
+	 * @param code
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version
+	 */
+	private DataSource getByCode(String code) {
+		//TODO 后期优化加上数据源信息缓存
+		return (DataSource) ddCommonMapper.get("DataSource.readByCode",code);
 	}
 
 	@Override

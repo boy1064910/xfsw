@@ -7,7 +7,7 @@ import com.ptmind.datadeck.entity.datasource.auth.AbstractAuthConfig;
  * @author xiaopeng.liu
  * @version 3.0.0
  */
-public class DataSourceAuthConfigModel {
+public class DataSourceAuthConfig {
 
 	String code;
 	String name;

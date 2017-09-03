@@ -18,15 +18,17 @@ import com.ptmind.datadeck.entity.Connection;
 import com.ptmind.datadeck.entity.datasource.AuthConfigDataSource;
 import com.ptmind.datadeck.entity.datasource.ConfigDataSource;
 import com.ptmind.datadeck.entity.datasource.auth.AuthOAuth2Config;
-import com.ptmind.datadeck.entity.datasource.auth.AuthRequestParam;
-import com.ptmind.datadeck.model.datasource.DataSourceAuthConfigModel;
+import com.ptmind.datadeck.entity.datasource.auth.request.AuthRequestParam;
+import com.ptmind.datadeck.entity.datasource.field.FieldParseConfig;
+import com.ptmind.datadeck.model.datasource.DataSourceAuthConfig;
 import com.ptmind.datadeck.service.ConnectionService;
 import com.ptmind.datadeck.service.ConnectionTokenService;
 import com.ptmind.datadeck.service.DataSourceService;
-import com.ptmind.datadeck.util.JsonUtil;
+import com.ptmind.datadeck.service.FieldService;
 import com.xfsw.common.classes.ResponseModel;
 import com.xfsw.common.util.ArrayUtil;
 import com.xfsw.common.util.HttpRequestUtil;
+import com.xfsw.common.util.JsonUtil;
 import com.xfsw.common.util.ListUtil;
 import com.xfsw.common.util.ReflectUtil;
 
@@ -47,6 +49,9 @@ public class DataSourceController {
 
 	@Resource(name = "connectionTokenService")
 	ConnectionTokenService connectionTokenService;
+	
+	@Resource(name="fieldService")
+	FieldService fieldService;
 
 	/**
 	 * 读取数据源配置信息,供数据源管理界面调用
@@ -59,10 +64,11 @@ public class DataSourceController {
 	@ResponseBody
 	public ResponseModel readAllDefinitions() {
 		List<AuthConfigDataSource> dataSourceList = dataSourceService.readAllDefinitions();
-		List<DataSourceAuthConfigModel> modelList = new ArrayList<DataSourceAuthConfigModel>();
+		List<DataSourceAuthConfig> modelList = new ArrayList<DataSourceAuthConfig>();
 		if(!ListUtil.isEmpty(dataSourceList)) {
 			for(AuthConfigDataSource dataSource:dataSourceList) {
-				DataSourceAuthConfigModel model = new DataSourceAuthConfigModel();
+				DataSourceAuthConfig model = new DataSourceAuthConfig();
+				//TODO 此处后期可利用缓存记录类信息优化
 				ReflectUtil.copyValue(dataSource, model, true);
 				modelList.add(model);
 			}
@@ -106,7 +112,7 @@ public class DataSourceController {
 		// TODO 后期需要对httpclient做出连接池
 		String tokenResult = HttpRequestUtil.post(tokenUrl, params, "UTF-8");
 		System.out.println(tokenResult);
-		Map<?, ?> resultMap = JsonUtil.unformat(tokenResult);
+		Map<?, ?> resultMap = JsonUtil.json2Map(tokenResult);
 
 		String token = resultMap.get("access_token").toString();
 		int timeout = (int) resultMap.get("expires_in");
@@ -118,7 +124,7 @@ public class DataSourceController {
 		params.clear();
 		params.add(new BasicNameValuePair(authOAuth2Config.getAccountParamKey(), accountResponseInfo));
 		String accountResult = HttpRequestUtil.post(authOAuth2Config.getAccountUrl(), params, "UTF-8");
-		resultMap = JsonUtil.unformat(accountResult);
+		resultMap = JsonUtil.json2Map(accountResult);
 		String accountInfo = (String) resultMap.get(authOAuth2Config.getAccountParseKey());
 		// TODO 保存到数据库中
 		connectionService.saveConnectionAccountInfo(state, accountInfo);
@@ -135,5 +141,12 @@ public class DataSourceController {
 	@ResponseBody
 	public List<ConfigDataSource> readConfigDataSourceList() {
 		return dataSourceService.readConfigDataSourceList();
+	}
+	
+	@RequestMapping("/readFieldList")
+	@ResponseBody
+	public ResponseModel readFieldList(String type,String code,String connectionId) {
+		FieldParseConfig fieldParseConfig = dataSourceService.getFieldParseConfigByCode(code);
+		return new ResponseModel(fieldService.readFieldList(code, connectionId, type, fieldParseConfig));
 	}
 }
