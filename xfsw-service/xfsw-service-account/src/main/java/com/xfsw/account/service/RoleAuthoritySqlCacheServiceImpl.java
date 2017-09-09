@@ -33,8 +33,8 @@ public class RoleAuthoritySqlCacheServiceImpl implements RoleAuthoritySqlCacheSe
 	@Resource(name="roleAuthoritySqlParamService")
 	RoleAuthoritySqlParamService roleAuthoritySqlParamService;
 	
-	@Resource(name="authCacheRedisTemplate")
-	private RedisTemplate<String, String> authCacheRedisTemplate;
+	@Resource(name="redisTemplate")
+	private RedisTemplate<String, String> redisTemplate;
 	
 	@PostConstruct
 	private void init(){
@@ -47,13 +47,13 @@ public class RoleAuthoritySqlCacheServiceImpl implements RoleAuthoritySqlCacheSe
 				List<RoleAuthoritySqlParam> roleAuthoritySqlParamList = roleAuthoritySqlParamService.selectList(params);
 				roleAuthoritySql.setRoleAuthoritySqlParamList(roleAuthoritySqlParamList);
 				//redis缓存的key是role_authority_sql_（角色ID）_（权限HashId）
-				authCacheRedisTemplate.opsForValue().set(XFSW_ROLE_AUTHORITY_SQL+roleAuthoritySql.getRoleId()+"_"+roleAuthoritySql.getAuthorityHashId(), JsonUtil.entity2Json(roleAuthoritySql),XFSW_ROLE_AUTHORITY_SQL_EXPIRED_TIME, TimeUnit.MILLISECONDS);
+				redisTemplate.opsForValue().set(XFSW_ROLE_AUTHORITY_SQL+roleAuthoritySql.getRoleId()+"_"+roleAuthoritySql.getAuthorityHashId(), JsonUtil.entity2Json(roleAuthoritySql),XFSW_ROLE_AUTHORITY_SQL_EXPIRED_TIME, TimeUnit.MILLISECONDS);
 			}
 		}
 	}
 	
 	public RoleAuthoritySql get(Integer roleId,Integer authorityHashId){
-		String info = authCacheRedisTemplate.opsForValue().get(XFSW_ROLE_AUTHORITY_SQL+roleId+"_"+authorityHashId);
+		String info = redisTemplate.opsForValue().get(XFSW_ROLE_AUTHORITY_SQL+roleId+"_"+authorityHashId);
 		if(StringUtil.isEmpty(info)){
 			return this.reload(roleId, authorityHashId);
 		}
@@ -74,7 +74,7 @@ public class RoleAuthoritySqlCacheServiceImpl implements RoleAuthoritySqlCacheSe
 		sql.setRoleAuthoritySqlParamList(roleAuthoritySqlParamList);
 		
 		//redis缓存的key是role_authority_sql_（角色ID）_（权限HashId）
-		authCacheRedisTemplate.opsForValue().set(XFSW_ROLE_AUTHORITY_SQL+roleId+"_"+authorityHashId, JsonUtil.entity2Json(sql), XFSW_ROLE_AUTHORITY_SQL_EXPIRED_TIME, TimeUnit.MILLISECONDS);
+		redisTemplate.opsForValue().set(XFSW_ROLE_AUTHORITY_SQL+roleId+"_"+authorityHashId, JsonUtil.entity2Json(sql), XFSW_ROLE_AUTHORITY_SQL_EXPIRED_TIME, TimeUnit.MILLISECONDS);
 		return sql;
 	}
 	
@@ -96,15 +96,15 @@ public class RoleAuthoritySqlCacheServiceImpl implements RoleAuthoritySqlCacheSe
 			List<RoleAuthoritySqlParam> roleAuthoritySqlParamList = roleAuthoritySqlParamService.selectList(roleAuthoritySqlParam);
 			sql.setRoleAuthoritySqlParamList(roleAuthoritySqlParamList);
 			//redis缓存的key是role_authority_sql_（角色ID）_（权限HashId）
-			authCacheRedisTemplate.opsForValue().set(XFSW_ROLE_AUTHORITY_SQL+tempSql.getRoleId()+"_"+tempSql.getAuthorityHashId(), JsonUtil.entity2Json(tempSql),XFSW_ROLE_AUTHORITY_SQL_EXPIRED_TIME, TimeUnit.MILLISECONDS);
+			redisTemplate.opsForValue().set(XFSW_ROLE_AUTHORITY_SQL+tempSql.getRoleId()+"_"+tempSql.getAuthorityHashId(), JsonUtil.entity2Json(tempSql),XFSW_ROLE_AUTHORITY_SQL_EXPIRED_TIME, TimeUnit.MILLISECONDS);
 		}
 	}
 	
 	public void authorityHashIdDeleteEvent(Integer authorityHashId){
-		Set<String> keysSets = authCacheRedisTemplate.keys(XFSW_ROLE_AUTHORITY_SQL+"*_"+authorityHashId);
+		Set<String> keysSets = redisTemplate.keys(XFSW_ROLE_AUTHORITY_SQL+"*_"+authorityHashId);
 		if(keysSets!=null&&keysSets.size()>0){
 			for(String key:keysSets){
-				authCacheRedisTemplate.delete(key);
+				redisTemplate.delete(key);
 			}
 		}
 	}
@@ -121,15 +121,15 @@ public class RoleAuthoritySqlCacheServiceImpl implements RoleAuthoritySqlCacheSe
 			List<RoleAuthoritySqlParam> roleAuthoritySqlParamList = roleAuthoritySqlParamService.selectList(roleAuthoritySqlParam);
 			roleAuthoritySql.setRoleAuthoritySqlParamList(roleAuthoritySqlParamList);
 			//redis缓存的key是role_authority_sql_（角色ID）_（权限HashId）
-			authCacheRedisTemplate.opsForValue().set(XFSW_ROLE_AUTHORITY_SQL+roleAuthoritySql.getRoleId()+"_"+roleAuthoritySql.getAuthorityHashId(), JsonUtil.entity2Json(roleAuthoritySql),XFSW_ROLE_AUTHORITY_SQL_EXPIRED_TIME, TimeUnit.MILLISECONDS);
+			redisTemplate.opsForValue().set(XFSW_ROLE_AUTHORITY_SQL+roleAuthoritySql.getRoleId()+"_"+roleAuthoritySql.getAuthorityHashId(), JsonUtil.entity2Json(roleAuthoritySql),XFSW_ROLE_AUTHORITY_SQL_EXPIRED_TIME, TimeUnit.MILLISECONDS);
 		}
 	}
 	
 	public void deleteByRoleId(Integer roleId){
-		Set<String> keysSets = authCacheRedisTemplate.keys(XFSW_ROLE_AUTHORITY_SQL+roleId+"_*");
+		Set<String> keysSets = redisTemplate.keys(XFSW_ROLE_AUTHORITY_SQL+roleId+"_*");
 		if(keysSets!=null&&keysSets.size()>0){
 			for(String key:keysSets){
-				authCacheRedisTemplate.delete(key);
+				redisTemplate.delete(key);
 			}
 		}
 	}

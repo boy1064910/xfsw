@@ -17,7 +17,7 @@ import org.springframework.context.annotation.ImportResource;
  */
 @EnableDiscoveryClient
 @SpringBootApplication
-@ImportResource(locations={"classpath:spring-web.xml","classpath*:spring/spring-service-*.xml"})
+@ImportResource(locations={"classpath:spring-web.xml"})
 @EnableAutoConfiguration(exclude={RedisAutoConfiguration.class})
 public class AuthorityApplication {
 	

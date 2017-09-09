@@ -33,4 +33,7 @@
 			</bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
+	
+	<!-- 导入服务spring配置文件 -->
+	<import resource="classpath*:spring/spring-service-*.xml" />
 </beans>
