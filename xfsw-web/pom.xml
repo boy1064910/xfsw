@@ -15,12 +15,15 @@
 	
 	<modules>
 		<module>xfsw-web-eureka</module>
+		<module>xfsw-web-gateway</module>
+		
 		<module>xfsw-web-fe-entry</module>
-		<module>xfsw-web-fe-gateway</module>
 		<module>xfsw-web-fe-order</module>
-		<module>xfsw-web-config-server</module>
 		
 		<module>xfsw-web-be-auth</module>
+		
+		<!-- 暂时作废 -->
+		<module>xfsw-web-config-server</module>
 	</modules>
 	
 	<!--依赖管理，用于管理spring-cloud的依赖 -->

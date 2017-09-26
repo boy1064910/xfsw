@@ -1,6 +1,7 @@
 package com.ptmind.datadeck.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -23,6 +24,7 @@ import com.ptmind.datadeck.model.connection.ResponseNode;
 import com.ptmind.datadeck.service.ConnectionService;
 import com.ptmind.datadeck.service.ConnectionTokenService;
 import com.ptmind.datadeck.service.DataSourceService;
+import com.xfsw.common.util.DateUtil;
 import com.xfsw.common.util.HttpRequestUtil;
 import com.xfsw.common.util.ListUtil;
 import com.xfsw.common.util.StringUtil;
@@ -132,5 +134,11 @@ public class ConnectionController {
 	@GetMapping("/readDataValue")
 	public void readDataValue() {
 		
+	}
+	
+	public static void main(String[] args) {
+		long time = new Date().getTime();
+		Date date = new Date(time + 3600*1000 );
+		System.out.println(DateUtil.date2Str(date, "yyyy-MM-dd HH:mm:ss"));
 	}
 }
