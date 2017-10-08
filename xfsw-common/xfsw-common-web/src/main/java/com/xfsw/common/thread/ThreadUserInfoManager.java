@@ -22,10 +22,6 @@ public class ThreadUserInfoManager {
 		return threadUserInfoLocal.get().getId();
 	}
 	
-	public static Integer getRoleId(){
-		return threadUserInfoLocal.get().getRoleId();
-	}
-	
 	public static void removeRequest(){
 		threadUserInfoLocal.remove();
 	}

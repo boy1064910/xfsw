@@ -27,9 +27,8 @@ public class RoleCategoryAuthorityServiceImpl implements RoleCategoryAuthoritySe
 		commonMapper.deleteAndBak(RoleCategoryAuthority.class, roleAuthority, operator);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<Integer> selectAuthorityIdsByRoleId(Integer roleId){
-		return (List<Integer>) commonMapper.selectList("RoleCategoryAuthority.selectAuthorityIdsByRoleId",roleId);
+		return commonMapper.selectList("RoleCategoryAuthority.selectAuthorityIdsByRoleId",roleId);
 	}
 	
 	public void insertRoleCategoryAuthorityList(Integer roleId,List<Integer> addAuthorityIds,String operator){

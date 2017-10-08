@@ -1,21 +1,18 @@
 package com.xfsw.account.service;
 
-import java.util.List;
-
-import com.xfsw.account.entity.CategoryAuthority;
 import com.xfsw.account.model.AuthorityModel;
+import com.xfsw.common.classes.BusinessException;
 
 public interface AuthorityCacheService {
 
 	/**
-	 * 通过菜单权限ID数组获取菜单数据
-	 * @param categoryAuthorityIds
+	 * 获取权限信息
+	 * @param id
 	 * @return
-	 * @author liuxifan
+	 * @throws BusinessException
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
 	 */
-	List<CategoryAuthority> getCategoryAuthorityList(Integer[] categoryAuthorityIds);
+	AuthorityModel getAuthorityModelById(Integer id) throws BusinessException;
 	
-	AuthorityModel getAuthorityModelById(Integer id);
-	
-	void refresh();
 }

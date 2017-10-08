@@ -33,7 +33,7 @@ public class RoleAuthoritySqlCacheServiceImpl implements RoleAuthoritySqlCacheSe
 	@Resource(name="roleAuthoritySqlParamService")
 	RoleAuthoritySqlParamService roleAuthoritySqlParamService;
 	
-	@Resource(name="redisTemplate")
+	@Resource(name="authRedisTemplate")
 	private RedisTemplate<String, String> redisTemplate;
 	
 	@PostConstruct

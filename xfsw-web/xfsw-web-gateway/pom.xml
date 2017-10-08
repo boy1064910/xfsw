@@ -22,4 +22,43 @@
 		</dependency>
 	</dependencies>
 	<description>网关只用于负责集群、分布式转发处理，负责接收nginx打过来的请求，通过在注册中心注册的服务转发到对应的工程上，不做业务上的任何处理，比如登录拦截、权限校验等，具体的公共处理业务，注入需要的filter（分common和工程特殊性）即可；需要转发的服务，单独在网关的配置文件中配置；</description>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+							<mainClass>com.xfsw.Application</mainClass>
+						</manifest>
+					</archive>
+					<outputDirectory>/server/service/${project.artifactId}</outputDirectory>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>install</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>
+								/server/service/${project.artifactId}/lib
+							</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

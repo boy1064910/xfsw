@@ -1,48 +1,57 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.xfsw</groupId>
 	<artifactId>xfsw-web</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	
+
 	<properties>
 		<!--设置字符编码及java版本 -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 	</properties>
-	
+
 	<modules>
 		<module>xfsw-web-eureka</module>
 		<module>xfsw-web-gateway</module>
-		
-		<module>xfsw-web-fe-entry</module>
+		<module>xfsw-web-entry</module>
+		<module>xfsw-web-auth</module>
+
 		<module>xfsw-web-fe-order</module>
-		
-		<module>xfsw-web-be-auth</module>
-		
+
+
 		<!-- 暂时作废 -->
-		<module>xfsw-web-config-server</module>
+<!-- 		<module>xfsw-web-config-server</module> -->
+		<module>xfsw-web-manager</module>
 	</modules>
 	
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
 	<!--依赖管理，用于管理spring-cloud的依赖 -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-                <groupId>org.springframework.boot</groupId>
-    			<artifactId>spring-boot-dependencies</artifactId>
-                <version>1.5.6.RELEASE</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Dalston.SR2</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>1.5.6.RELEASE</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Dalston.SR2</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-parent</artifactId>
@@ -122,4 +131,5 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+	<name>公共登录接口模块</name>
 </project>

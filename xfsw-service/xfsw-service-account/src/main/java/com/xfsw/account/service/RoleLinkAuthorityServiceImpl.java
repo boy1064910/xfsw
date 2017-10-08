@@ -28,9 +28,8 @@ public class RoleLinkAuthorityServiceImpl implements RoleLinkAuthorityService {
 		commonMapper.deleteAndBak(RoleLinkAuthority.class, roleLinkAuthority, operator);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<Integer> selectAuthorityIdsByRoleId(Integer roleId){
-		return (List<Integer>) commonMapper.selectList("RoleLinkAuthority.selectAuthorityIdsByRoleId",roleId);
+		return commonMapper.selectList("RoleLinkAuthority.selectAuthorityIdsByRoleId",roleId);
 	}
 	
 	public void insertRoleLinkAuthorityList(Integer roleId,List<Integer> addAuthorityIds,String operator){

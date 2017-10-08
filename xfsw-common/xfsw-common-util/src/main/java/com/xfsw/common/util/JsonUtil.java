@@ -21,7 +21,8 @@ public class JsonUtil {
 		}
 	}
 
-	public static Map<?, ?> json2Map(String json) {
+	@SuppressWarnings("unchecked")
+	public static Map<String, Object> json2Map(String json) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			return mapper.readValue(json, Map.class);
@@ -30,7 +31,7 @@ public class JsonUtil {
 		}
 	}
 
-	public static Object json2Entity(String json, Class<?> clazz) {
+	public static <T> T json2Entity(String json, Class<T> clazz) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			return mapper.readValue(json, clazz);
@@ -40,7 +41,7 @@ public class JsonUtil {
 		}
 	}
 
-	public static List<?> json2List(String json, Class<?> clazz) {
+	public static <T> List<T> json2List(String json, Class<T> clazz) {
 		ObjectMapper mapper = new ObjectMapper();
 		JavaType javaType = mapper.getTypeFactory().constructParametricType(List.class, clazz);
 		try {

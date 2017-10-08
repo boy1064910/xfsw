@@ -1,14 +1,14 @@
 package com.xfsw.account.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.xfsw.account.model.AuthorityModel;
 import com.xfsw.account.model.UserAuthorityIdsModel;
-import com.xfsw.account.service.RoleAuthorityService;
 import com.xfsw.common.mapper.ICommonMapper;
 import com.xfsw.common.util.ListUtil;
 
@@ -18,9 +18,12 @@ public class RoleAuthorityServiceImpl implements RoleAuthorityService {
 	@Resource(name="accountCommonMapper")
 	private ICommonMapper commonMapper;
 	
-	public UserAuthorityIdsModel selectAllAuthorityHashIdsByRoleId(Integer roleId){
+	public UserAuthorityIdsModel selectAllAuthorityHashIdsByRoleId(Integer userId,Integer tenantId){
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("userId", userId);
+		params.put("tenantId", tenantId);
 		//读取该角色下所有权限（公共、菜单、请求）
-		List<?> authorityIdList = commonMapper.selectList("RoleAuthority.selectAllAuthorityHashIdsByRoleId", roleId);
+		List<?> authorityIdList = commonMapper.selectList("RoleAuthority.selectAllAuthorityHashIdsByRoleId", params);
 		Integer[] authorityIds = null;
 		if(!ListUtil.isEmpty(authorityIdList)){
 			authorityIds = new Integer[authorityIdList.size()];
@@ -28,7 +31,7 @@ public class RoleAuthorityServiceImpl implements RoleAuthorityService {
 		}
 		
 		//读取该角色所有菜单权限
-		List<?> categoryAuthorityList = commonMapper.selectList("RoleAuthority.selectCategoryAuthorityByRoleId",roleId);
+		List<?> categoryAuthorityList = commonMapper.selectList("RoleAuthority.selectCategoryAuthorityByRoleId",params);
 		Integer[] categoryAuthorityIds = null;
 		if(!ListUtil.isEmpty(categoryAuthorityList)){
 			categoryAuthorityIds = new Integer[categoryAuthorityList.size()];
@@ -37,13 +40,11 @@ public class RoleAuthorityServiceImpl implements RoleAuthorityService {
 		return new UserAuthorityIdsModel(authorityIds,categoryAuthorityIds);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Integer> selectUnionAuthorityIdListByRoleId(Integer roleId){
-		return (List<Integer>) commonMapper.selectList("RoleAuthority.selectUnionAuthorityIdListByRoleId",roleId);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<AuthorityModel> selectAuthorityModelListByPid(Integer pid){
-		return (List<AuthorityModel>) commonMapper.selectList("RoleAuthority.selectAuthorityModelListByPid",pid);
-	}
+//	public List<Integer> selectUnionAuthorityIdListByRoleId(Integer roleId){
+//		return commonMapper.selectList("RoleAuthority.selectUnionAuthorityIdListByRoleId",roleId);
+//	}
+//	
+//	public List<AuthorityModel> selectAuthorityModelListByPid(Integer pid){
+//		return commonMapper.selectList("RoleAuthority.selectAuthorityModelListByPid",pid);
+//	}
 }

@@ -3,9 +3,6 @@
  */
 package com.xfsw.account.service;
 
-import java.util.List;
-
-import com.xfsw.account.model.AuthorityModel;
 import com.xfsw.account.model.UserAuthorityIdsModel;
 
 /**
@@ -14,15 +11,17 @@ import com.xfsw.account.model.UserAuthorityIdsModel;
 public interface RoleAuthorityService {
 
 	/**
-	 * 查询菜单权限和链接权限的hash id集合，按照hash id正序排序
-	 * @param roleId
-	 * @return
-	 * @author xiaopeng.liu@decked.com.cn 2016年8月16日下午12:43:54
+	 * 查询用户拥有的所有权限ID和菜单权限ID
+	 * @param userId
+	 * @param tenantId
+	 * @return			菜单权限ID按照权限排序规则排列（pid,orderIndex）
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
 	 */
-	public UserAuthorityIdsModel selectAllAuthorityHashIdsByRoleId(Integer roleId);
+	public UserAuthorityIdsModel selectAllAuthorityHashIdsByRoleId(Integer userId,Integer tenantId);
 	
-	List<Integer> selectUnionAuthorityIdListByRoleId(Integer roleId);
+//	List<Integer> selectUnionAuthorityIdListByRoleId(Integer roleId);
 	
-	List<AuthorityModel> selectAuthorityModelListByPid(Integer pid);
+//	List<AuthorityModel> selectAuthorityModelListByPid(Integer pid);
 
 }

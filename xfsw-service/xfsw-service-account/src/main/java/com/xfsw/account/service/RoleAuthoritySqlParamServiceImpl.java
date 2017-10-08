@@ -22,14 +22,12 @@ public class RoleAuthoritySqlParamServiceImpl implements RoleAuthoritySqlParamSe
 	@Resource(name="accountCommonMapper")
 	ICommonMapper commonMapper;
 	
-	@SuppressWarnings("unchecked")
 	public List<RoleAuthoritySqlParam> selectList(Map<String,Object> params){
-		return (List<RoleAuthoritySqlParam>) commonMapper.selectList(RoleAuthoritySqlParam.class, params);
+		return commonMapper.selectList(RoleAuthoritySqlParam.class, params);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<RoleAuthoritySqlParam> selectList(RoleAuthoritySqlParam roleAuthoritySqlParam){
-		return (List<RoleAuthoritySqlParam>) commonMapper.selectList(RoleAuthoritySqlParam.class, roleAuthoritySqlParam);
+		return commonMapper.selectList(RoleAuthoritySqlParam.class, roleAuthoritySqlParam);
 	}
 	
 	@Transactional

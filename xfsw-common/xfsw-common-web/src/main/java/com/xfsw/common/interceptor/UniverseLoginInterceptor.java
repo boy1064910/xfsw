@@ -36,13 +36,7 @@ public class UniverseLoginInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		logger.info("请求的url:"+request.getRequestURI());
-		String sessionId = "";
-		if(HttpServletRequestUtil.isAjaxRequest(request)){//ajax请求
-			sessionId = request.getHeader(SessionConstant.XFSW_SESSION_ID);
-		}
-		else{
-			sessionId = CookieUtil.getCookie(SessionConstant.XFSW_SESSION_ID, request);
-		}
+		String sessionId = CookieUtil.getCookie(SessionConstant.XFSW_SESSION_ID, request);
 		if(StringUtil.isEmpty(sessionId)){
 			loginTimeout(request,response,sessionId);
 			return false;
@@ -93,10 +87,7 @@ public class UniverseLoginInterceptor implements HandlerInterceptor {
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 		if (!HttpServletRequestUtil.isAjaxRequest(request)) {
 			UserSessionModel userSessionModel = ThreadUserInfoManager.getUserInfo();
-			modelAndView.addObject("userNickName", userSessionModel.getNickName());
-			modelAndView.addObject("userHead",userSessionModel.getHead());
-			modelAndView.addObject("userId",userSessionModel.getId());
-			modelAndView.addObject("userAccount",userSessionModel.getAccount());
+			modelAndView.addObject("userSessionModel",userSessionModel);
 		}
 	}
 

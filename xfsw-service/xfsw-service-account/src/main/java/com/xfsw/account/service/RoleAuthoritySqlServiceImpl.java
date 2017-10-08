@@ -30,23 +30,20 @@ public class RoleAuthoritySqlServiceImpl implements RoleAuthoritySqlService {
 		return (RoleAuthoritySql) commonMapper.get(RoleAuthoritySql.class, roleAuthoritySql);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<RoleAuthoritySql> selectAll(){
-		return (List<RoleAuthoritySql>) commonMapper.selectAll(RoleAuthoritySql.class);
+		return commonMapper.selectAll(RoleAuthoritySql.class);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<RoleAuthoritySql> selectList(RoleAuthoritySql roleAuthoritySql){
-		return (List<RoleAuthoritySql>) commonMapper.selectList(RoleAuthoritySql.class, roleAuthoritySql);
+		return commonMapper.selectList(RoleAuthoritySql.class, roleAuthoritySql);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Transactional
 	public void deleteAndBak(Integer authorityHashId,String operator){
 		RoleAuthoritySql roleAuthoritySql = new RoleAuthoritySql();
 		roleAuthoritySql.setAuthorityHashId(authorityHashId);
 		
-		List<RoleAuthoritySql> roleAuthoritySqlList = (List<RoleAuthoritySql>) commonMapper.selectList(RoleAuthoritySql.class, roleAuthoritySql);
+		List<RoleAuthoritySql> roleAuthoritySqlList = commonMapper.selectList(RoleAuthoritySql.class, roleAuthoritySql);
 		if(!ListUtil.isEmpty(roleAuthoritySqlList)){
 			for(RoleAuthoritySql sql:roleAuthoritySqlList){
 				commonMapper.deleteAndBak(RoleAuthoritySql.class, sql, operator);
@@ -67,9 +64,8 @@ public class RoleAuthoritySqlServiceImpl implements RoleAuthoritySqlService {
 		commonMapper.delete("RoleAuthoritySql.deleteByRoleIdAndAuthorityIds", params);//删除
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<RoleAuthoritySqlModel> selectRoleAuthoritySqlModelListByRoleId(Integer roleId){
-		List<RoleAuthoritySqlModel> modelList = (List<RoleAuthoritySqlModel>) commonMapper.selectList("RoleAuthoritySql.selectRoleAuthoritySqlModelListByRoleId",roleId);
+		List<RoleAuthoritySqlModel> modelList = commonMapper.selectList("RoleAuthoritySql.selectRoleAuthoritySqlModelListByRoleId",roleId);
 		for(RoleAuthoritySqlModel model:modelList){
 			if(model.getRoleAuthoritySqlId()!=null)
 				model.setParams(roleAuthoritySqlParamService.selectList(model.getRoleAuthoritySqlId()));

@@ -3,46 +3,58 @@
 <mapper namespace="RoleAuthority">
 
   	<!-- 查询角色所有的权限ID -->
-  	<select id="selectAllAuthorityHashIdsByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	<select id="selectAllAuthorityHashIdsByRoleId" parameterType="java.util.Map" resultType="java.lang.Integer">
 		SELECT a.hashId AS hashId 
 		FROM RoleCategoryAuthority ra,CategoryAuthority a 
-  		WHERE ra.authorityId = a.id AND roleId = #{roleId} AND hashId IS NOT NULL
+  		WHERE 
+  			ra.authorityId = a.id AND a.hashId IS NOT NULL 
+  			AND ra.roleId IN (
+  				SELECT utr.roleId FROM UserTenantRole utr WHERE utr.userId = #{userId} AND utr.tenantId = #{tenantId}
+  			)
   		UNION
   		SELECT la.id AS hashId 
   		FROM RoleLinkAuthority rla,LinkAuthority la
-  		WHERE rla.authorityId = la.id AND rla.roleId = #{roleId}
+  		WHERE 
+  			rla.authorityId = la.id 
+  			AND rla.roleId IN (
+  				SELECT utr.roleId FROM UserTenantRole utr WHERE utr.userId = #{userId} AND utr.tenantId = #{tenantId}
+  			)
   		UNION
   		SELECT id AS hashId
   		FROM CommonAuthority
-  		ORDER BY hashId ASC
   	</select>
   	
   	<!-- 查询角色所有的菜单权限ID -->
-  	<select id="selectCategoryAuthorityByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-  		SELECT a.id
-		FROM RoleCategoryAuthority ra,CategoryAuthority a 
-  		WHERE ra.authorityId = a.id AND roleId = #{roleId}
-  		ORDER BY a.pid,a.orderIndex ASC
+  	<select id="selectCategoryAuthorityByRoleId" parameterType="java.util.Map" resultType="java.lang.Integer">
+  		SELECT ca.id
+		FROM 
+			CategoryAuthority ca,RoleCategoryAuthority rca 
+  		WHERE 
+  			ca.id = rca.authorityId
+  			AND rca.roleId IN (
+  				SELECT utr.roleId FROM UserTenantRole utr WHERE utr.userId = #{userId} AND utr.tenantId = #{tenantId}
+  			)
+  		ORDER BY ca.pid,ca.orderIndex ASC
   	</select>
   	
-  	<select id="selectUnionAuthorityIdListByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-  		SELECT a.id FROM CategoryAuthority a,RoleCategoryAuthority ra WHERE ra.authorityId = a.id AND ra.roleId = #{roleId}
-  		UNION 
-  		SELECT la.id FROM LinkAuthority la,RoleLinkAuthority rla WHERE rla.authorityId = la.id AND rla.roleId = #{roleId}
-  	</select>
+<!--   	<select id="selectUnionAuthorityIdListByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer"> -->
+<!--   		SELECT a.id FROM CategoryAuthority a,RoleCategoryAuthority ra WHERE ra.authorityId = a.id AND ra.roleId = #{roleId} -->
+<!--   		UNION  -->
+<!--   		SELECT la.id FROM LinkAuthority la,RoleLinkAuthority rla WHERE rla.authorityId = la.id AND rla.roleId = #{roleId} -->
+<!--   	</select> -->
   	
-  	<select id="selectAuthorityModelListByPid" parameterType="java.lang.Integer" resultType="AuthorityModel">
-  		SELECT id,pid AS pId,name,1 AS type,0 AS orderIndex FROM CategoryAuthority WHERE id = #{pid}
-		UNION
-		SELECT id,pid AS pId,name,1 AS type,orderIndex FROM CategoryAuthority WHERE pid = #{pid}
-		UNION
-		SELECT id,authorityId AS pId,name,2 AS type,999 as orderIndex FROM LinkAuthority 
-		WHERE authorityId IN
-		(
-			SELECT id FROM CategoryAuthority WHERE pid = #{pid}
-		)
-		UNION
-		SELECT id,authorityId AS pId,name,2 AS type,999 FROM LinkAuthority WHERE authorityId = #{pid}
-		ORDER BY orderIndex ASC
-  	</select> 
+<!--   	<select id="selectAuthorityModelListByPid" parameterType="java.lang.Integer" resultType="AuthorityModel"> -->
+<!--   		SELECT id,pid AS pId,name,1 AS type,0 AS orderIndex FROM CategoryAuthority WHERE id = #{pid} -->
+<!-- 		UNION -->
+<!-- 		SELECT id,pid AS pId,name,1 AS type,orderIndex FROM CategoryAuthority WHERE pid = #{pid} -->
+<!-- 		UNION -->
+<!-- 		SELECT id,authorityId AS pId,name,2 AS type,999 as orderIndex FROM LinkAuthority  -->
+<!-- 		WHERE authorityId IN -->
+<!-- 		( -->
+<!-- 			SELECT id FROM CategoryAuthority WHERE pid = #{pid} -->
+<!-- 		) -->
+<!-- 		UNION -->
+<!-- 		SELECT id,authorityId AS pId,name,2 AS type,999 FROM LinkAuthority WHERE authorityId = #{pid} -->
+<!-- 		ORDER BY orderIndex ASC -->
+<!--   	</select>  -->
 </mapper>

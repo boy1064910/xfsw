@@ -8,20 +8,16 @@ public class LinkAuthority implements Serializable {
 	private static final long serialVersionUID = -736902529228470678L;
 	private Integer id;
 	private String name;
-	private Integer authorityId;
+	private Integer categoryAuthorityId;
 	private String url;
+	private Integer tenantId;
 	private String lastUpdater;
 	private Date lastUpdateTime;
 
+	//辅助字段
 	private Integer oldId;
 
 	public LinkAuthority() {
-	}
-
-	public LinkAuthority(Integer id, Integer authorityId, String url) {
-		this.id = id;
-		this.authorityId = authorityId;
-		this.url = url;
 	}
 
 	public Integer getId() {
@@ -30,14 +26,6 @@ public class LinkAuthority implements Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Integer getAuthorityId() {
-		return authorityId;
-	}
-
-	public void setAuthorityId(Integer authorityId) {
-		this.authorityId = authorityId;
 	}
 
 	public String getUrl() {
@@ -78,6 +66,22 @@ public class LinkAuthority implements Serializable {
 
 	public void setLastUpdateTime(Date lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
+	}
+
+	public Integer getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(Integer tenantId) {
+		this.tenantId = tenantId;
+	}
+
+	public Integer getCategoryAuthorityId() {
+		return categoryAuthorityId;
+	}
+
+	public void setCategoryAuthorityId(Integer categoryAuthorityId) {
+		this.categoryAuthorityId = categoryAuthorityId;
 	}
 
 }

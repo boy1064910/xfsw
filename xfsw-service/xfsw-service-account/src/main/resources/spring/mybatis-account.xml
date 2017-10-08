@@ -12,6 +12,8 @@
 	<typeAliases>
 		<!-- entity -->
 		<typeAlias type="com.xfsw.account.entity.User" alias="User" />
+		<typeAlias type="com.xfsw.account.entity.UserTenant" alias="UserTenant" />
+		<typeAlias type="com.xfsw.account.entity.DefaultAuthority" alias="DefaultAuthority" />
 		<typeAlias type="com.xfsw.account.entity.CategoryAuthority" alias="CategoryAuthority" />
 		<typeAlias type="com.xfsw.account.entity.CommonAuthority" alias="CommonAuthority" />
 		<typeAlias type="com.xfsw.account.entity.LinkAuthority" alias="LinkAuthority" />
@@ -22,9 +24,11 @@
 		<typeAlias type="com.xfsw.account.entity.RoleLinkAuthority" alias="RoleLinkAuthority" />
 		
 		<!-- model -->
+		<typeAlias type="com.xfsw.account.model.UserTenantModel" alias="UserTenantModel" />
+		
 		<typeAlias type="com.xfsw.account.model.AuthorityModel" alias="AuthorityModel" />
 		<typeAlias type="com.xfsw.account.model.RoleAuthoritySqlModel" alias="RoleAuthoritySqlModel" />
-		<typeAlias type="com.xfsw.account.model.UserInfoModel" alias="UserInfoModel" />
+		
 	</typeAliases>
 
 </configuration>

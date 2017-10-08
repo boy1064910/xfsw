@@ -3,7 +3,7 @@
 <mapper namespace="CategoryAuthority">
 
 	<select id="selectAll" resultType="CategoryAuthority">
-		SELECT * FROM CategoryAuthority ORDER BY pid,orderIndex ASC
+		SELECT * FROM CategoryAuthority
 	</select>
 
 	<insert id="insertAuthority" parameterType="CategoryAuthority" useGeneratedKeys="true" keyProperty="id">

@@ -220,8 +220,9 @@
 <!--                     </li> -->
                     <li>
                         <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                            <img src="${requestScope.userHead }" alt="" />
-                            ${requestScope.userNickName }
+                            <img src="${requestScope.userSessionModel.head }" alt="" />
+                            ${requestScope.userSessionModel.tenantName }-
+                            ${requestScope.userSessionModel.nickName }
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
@@ -346,6 +347,10 @@
 		
 		<!--common scripts for all pages-->
 		<script src="/js/scripts.js"></script>
+		
+		<!-- common xfsw service -->
+		<script src="/xfsw-web-auth/js/decorator/auth.js"></script>
+		
 		<!-- decorate menu -->
 		<script src="/js/decorator.js"></script>
 		<!-- loading -->

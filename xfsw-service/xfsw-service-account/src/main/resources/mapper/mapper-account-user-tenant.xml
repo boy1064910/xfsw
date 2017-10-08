@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserTenant">
+
+	<select id="selectListByUserId" parameterType="java.lang.Integer" resultType="UserTenantModel">
+		SELECT 
+			ut.id AS userTenantId,ut.userId AS userId,t.id AS tenantId,t.name AS tenantName,t.code AS tenantCode 
+		FROM 
+			Tenant t,UserTenant ut 
+		WHERE 
+			t.id = ut.tenantId AND ut.userId = #{userId}
+	</select>
+
+	<update id="switchTenant" parameterType="java.lang.Integer">
+		UPDATE UserTenant SET lastLoginTime = NOW() WHERE id = #{id}
+	</update>
+
+</mapper>

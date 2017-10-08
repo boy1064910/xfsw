@@ -1,106 +1,223 @@
 package com.xfsw.session.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.xfsw.account.model.UserModel;
+import com.xfsw.account.model.UserTenantModel;
 
 /**
- * 用户登录session信息数据结构 
+ * 
  * @author xiaopeng.liu
- * @version 0.0.1
+ * @version
  */
 public class UserSessionModel implements Serializable {
 
-	private static final long serialVersionUID = -6695597901616113945L;
+	private static final long serialVersionUID = -1799586730012460617L;
+
+	private Integer id;
+	private String account;
+	private String nickName;
+	private String head;
+	private String email;
+	private List<UserTenantSessionModel> userTenantList;
 	
-	private Integer id; //用户ID
-	private String account; //用户账号
-	private String head;//用户头像链接
-	private String nickName;//用户昵称
-	private String email;//用户邮箱
-	private Integer roleId;//用户角色ID
-	private String unionId;//微信开放平台unionId
-	private String serviceOpenId;//微信服务号openId,暂时没用上
-	private String miniOpenId;//微信小程序openId,暂时没用上
-	
-	private Integer[] categoryAuthorityIds;//菜单权限ID数组
-	private Integer[] authorityIds;//所有权限ID数组（公共权限、菜单权限和请求权限）
-	
-	public UserSessionModel(){}
-	
-	public UserSessionModel(Integer id, String account, String head, String nickName, String email) {
-		super();
-		this.id = id;
-		this.account = account;
-		this.head = head;
-		this.nickName = nickName;
-		this.email = email;
+	//当前空间下的相关数据信息
+	private Integer tenantId;
+	private String tenantName;
+	private String tenantCode;
+	private List<Integer> roleIdList;
+	private Integer[] categoryAuthorityIds;// 菜单权限ID数组
+	private Integer[] authorityIds;// 所有权限ID数组（公共权限、菜单权限和请求权限）
+
+	public UserSessionModel() {
 	}
-	
+
+	public UserSessionModel(UserModel userModel) {
+		this.id = userModel.getId();
+		this.account = userModel.getAccount();
+		this.nickName = userModel.getNickName();
+		this.head = userModel.getHead();
+		this.email = userModel.getEmail();
+		
+		this.userTenantList = new ArrayList<UserTenantSessionModel>(userModel.getUserTenantRoleList().size());
+		userModel.getUserTenantRoleList().forEach((u)->{
+			this.userTenantList.add(new UserTenantSessionModel(u));
+		});
+		
+		this.tenantId = this.userTenantList.get(0).getTenantId();
+		this.tenantName = this.userTenantList.get(0).getTenantName();
+		this.tenantCode = this.userTenantList.get(0).getTenantCode();
+		this.roleIdList = this.userTenantList.get(0).getRoleIdList();
+		this.categoryAuthorityIds = this.userTenantList.get(0).getCategoryAuthorityIds();
+		this.authorityIds = this.userTenantList.get(0).getAuthorityIds();
+	}
+
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public String getAccount() {
 		return account;
 	}
+
 	public void setAccount(String account) {
 		this.account = account;
 	}
-	public String getHead() {
-		return head;
-	}
-	public void setHead(String head) {
-		this.head = head;
-	}
+
 	public String getNickName() {
 		return nickName;
 	}
+
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
+
+	public String getHead() {
+		return head;
+	}
+
+	public void setHead(String head) {
+		this.head = head;
+	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public Integer getRoleId() {
-		return roleId;
-	}
-	public void setRoleId(Integer roleId) {
-		this.roleId = roleId;
-	}
-	public String getUnionId() {
-		return unionId;
-	}
-	public void setUnionId(String unionId) {
-		this.unionId = unionId;
-	}
-	public String getServiceOpenId() {
-		return serviceOpenId;
-	}
-	public void setServiceOpenId(String serviceOpenId) {
-		this.serviceOpenId = serviceOpenId;
-	}
-	public String getMiniOpenId() {
-		return miniOpenId;
-	}
-	public void setMiniOpenId(String miniOpenId) {
-		this.miniOpenId = miniOpenId;
-	}
-	public Integer[] getAuthorityIds() {
-		return authorityIds;
-	}
-	public void setAuthorityIds(Integer[] authorityIds) {
-		this.authorityIds = authorityIds;
-	}
+
 	public Integer[] getCategoryAuthorityIds() {
 		return categoryAuthorityIds;
 	}
+
 	public void setCategoryAuthorityIds(Integer[] categoryAuthorityIds) {
 		this.categoryAuthorityIds = categoryAuthorityIds;
 	}
-	
-	
+
+	public Integer[] getAuthorityIds() {
+		return authorityIds;
+	}
+
+	public void setAuthorityIds(Integer[] authorityIds) {
+		this.authorityIds = authorityIds;
+	}
+
+	public Integer getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(Integer tenantId) {
+		this.tenantId = tenantId;
+	}
+
+	public String getTenantName() {
+		return tenantName;
+	}
+
+	public void setTenantName(String tenantName) {
+		this.tenantName = tenantName;
+	}
+
+	public String getTenantCode() {
+		return tenantCode;
+	}
+
+	public void setTenantCode(String tenantCode) {
+		this.tenantCode = tenantCode;
+	}
+
+	public List<Integer> getRoleIdList() {
+		return roleIdList;
+	}
+
+	public void setRoleIdList(List<Integer> roleIdList) {
+		this.roleIdList = roleIdList;
+	}
+
+}
+
+class UserTenantSessionModel {
+
+	private Integer userTenantId;
+	private Integer tenantId;
+	private String tenantName;
+	private String tenantCode;
+	private List<Integer> roleIdList;
+	private Integer[] categoryAuthorityIds;// 菜单权限ID数组
+	private Integer[] authorityIds;// 所有权限ID数组（公共权限、菜单权限和请求权限）
+
+	public UserTenantSessionModel(UserTenantModel userTenantModel) {
+		super();
+		this.userTenantId = userTenantModel.getUserTenantId();
+		this.tenantId = userTenantModel.getTenantId();
+		this.tenantName = userTenantModel.getTenantName();
+		this.tenantCode = userTenantModel.getTenantCode();
+		this.roleIdList = userTenantModel.getRoleIdList();
+		this.categoryAuthorityIds = userTenantModel.getCategoryAuthorityIds();
+		this.authorityIds = userTenantModel.getAuthorityIds();
+	}
+
+	public Integer getTenantId() {
+		return tenantId;
+	}
+
+	public void setTenantId(Integer tenantId) {
+		this.tenantId = tenantId;
+	}
+
+	public String getTenantName() {
+		return tenantName;
+	}
+
+	public void setTenantName(String tenantName) {
+		this.tenantName = tenantName;
+	}
+
+	public String getTenantCode() {
+		return tenantCode;
+	}
+
+	public void setTenantCode(String tenantCode) {
+		this.tenantCode = tenantCode;
+	}
+
+	public List<Integer> getRoleIdList() {
+		return roleIdList;
+	}
+
+	public void setRoleIdList(List<Integer> roleIdList) {
+		this.roleIdList = roleIdList;
+	}
+
+	public Integer getUserTenantId() {
+		return userTenantId;
+	}
+
+	public void setUserTenantId(Integer userTenantId) {
+		this.userTenantId = userTenantId;
+	}
+
+	public Integer[] getCategoryAuthorityIds() {
+		return categoryAuthorityIds;
+	}
+
+	public void setCategoryAuthorityIds(Integer[] categoryAuthorityIds) {
+		this.categoryAuthorityIds = categoryAuthorityIds;
+	}
+
+	public Integer[] getAuthorityIds() {
+		return authorityIds;
+	}
+
+	public void setAuthorityIds(Integer[] authorityIds) {
+		this.authorityIds = authorityIds;
+	}
 }

@@ -1,6 +1,5 @@
 package com.xfsw.common.service;
 
-import java.util.List;
 import java.util.Map;
 
 import com.xfsw.common.classes.DataTablePageInfo;
@@ -12,7 +11,7 @@ public abstract class CommonService implements ICommonService {
 		return this.getCommonMapper().selectPageBySql(countSql, dataSql, pageInfo, params);
 	}
 	
-	public List<?> selectListBySql(String sql,Map<String,Object> params){
-		return this.getCommonMapper().selectListBySql(sql, params);
-	}
+//	public List<?> selectListBySql(String sql,Map<String,Object> params){
+//		return this.getCommonMapper().selectListBySql(sql, params);
+//	}
 }

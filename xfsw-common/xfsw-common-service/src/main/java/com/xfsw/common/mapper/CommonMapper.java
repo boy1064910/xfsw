@@ -2,17 +2,16 @@ package com.xfsw.common.mapper;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.util.CollectionUtils;
 
 import com.xfsw.common.classes.DataTablePageInfo;
 import com.xfsw.common.classes.DataTableResponseModel;
 import com.xfsw.common.util.ArrayUtil;
-import com.xfsw.common.util.ListUtil;
 import com.xfsw.common.util.MapUtil;
 import com.xfsw.common.util.ReflectUtil;
 import com.xfsw.common.util.StringUtil;
@@ -49,11 +48,11 @@ public class CommonMapper implements ICommonMapper {
 		return false;
 	}
 	
-	public Object get(String sqlId){
+	public <T> T get(String sqlId){
 		return this.sqlSessionTemplate.selectOne(sqlId);
 	}
 	
-	public Object get(String sqlId,Object entity){
+	public <T> T get(String sqlId,Object entity){
 		return this.sqlSessionTemplate.selectOne(sqlId,entity);
 	}
 	
@@ -86,7 +85,7 @@ public class CommonMapper implements ICommonMapper {
 	}
 	
 	public Object get(Class<? extends Object> clazz,Map<String,Object> params){
-		if(MapUtil.isEmpty(params)){
+		if(CollectionUtils.isEmpty(params)) {
 			throw new RuntimeException("查询参数为空！");
 		}
 		String clazzName = clazz.getSimpleName();
@@ -134,35 +133,37 @@ public class CommonMapper implements ICommonMapper {
 		return MapUtil.map2Pojo(result, targetClazz);
 	}
 
-	public List<?> selectList(String sqlId) {
+	public <T> List<T> selectList(String sqlId) {
 		return this.sqlSessionTemplate.selectList(sqlId);
 	}
 
-	public List<?> selectList(String sqlId, Object object) {
+	public <T> List<T> selectList(String sqlId, Object object) {
 		return this.sqlSessionTemplate.selectList(sqlId, object);
 	}
 	
-	public List<?> selectList(String sqlId, Map<String,Object> params) {
-		List<?> result = this.sqlSessionTemplate.selectList(sqlId, params);
-		return result;
+	public <T> List<T> selectList(String sqlId, Map<String,Object> params) {
+		return this.sqlSessionTemplate.selectList(sqlId, params);
 	}
 	
-	public List<?> selectList(Class<? extends Object> clazz){
-		Map<String,Object> queryParams = new HashMap<String,Object>();
-		String clazzName = clazz.getSimpleName();
-		String sql = "select * from " + clazzName;
-		queryParams.put("sql", sql);
-		List<Map<String,Object>> list = sqlSessionTemplate.selectList("Common.queryOperation",queryParams);
-		return this.dealResultList(list, clazz);
+	public <T> List<T> selectListInPage(String sqlId,DataTablePageInfo pageInfo, Map<String, Object> params){
+		Map<String, Object> queryParams = new HashMap<String, Object>();
+		if (params != null) {
+			for (Map.Entry<String, Object> entry : params.entrySet()) {
+				queryParams.put(entry.getKey(), entry.getValue());
+			}
+		}
+		queryParams.put("startIndex", pageInfo.getCurrentIndex()-1);
+		queryParams.put("pageSize", pageInfo.getPageSize());
+		return sqlSessionTemplate.selectList(sqlId,queryParams);
 	}
 	
-	public List<?> selectList(Class<? extends Object> clazz,Map<String,Object> params){
+	public <T> List<T> selectList(Class<T> clazz,Map<String,Object> params){
 		if(MapUtil.isEmpty(params)){
 			throw new RuntimeException("查询参数为空！");
 		}
 		Map<String,Object> queryParams = new HashMap<String,Object>();
 		String clazzName = clazz.getSimpleName();
-		String sql = "select * from " + clazzName + " where 1=1 ";
+		String sql = "SELECT * FROM " + clazzName + " WHERE 1=1 ";
 		if(params!=null){
 			for(Map.Entry<String, Object> entry:params.entrySet()){
 				sql+=" AND "+entry.getKey()+"=#{"+entry.getKey()+"}";
@@ -170,11 +171,11 @@ public class CommonMapper implements ICommonMapper {
 			}
 		}
 		queryParams.put("sql", sql);
-		List<Map<String,Object>> list = sqlSessionTemplate.selectList("Common.queryOperation",queryParams);
+		List<Map<?,?>> list = sqlSessionTemplate.selectList("Common.queryOperation",queryParams);
 		return this.dealResultList(list, clazz);
 	}
 	
-	public List<?> selectList(Class<? extends Object> clazz,Object entity){
+	public <T> List<T> selectList(Class<T> clazz,Object entity){
 		if(entity==null){
 			throw new RuntimeException("更新对象实例参数为空！");
 		}
@@ -182,33 +183,26 @@ public class CommonMapper implements ICommonMapper {
 		return this.selectList(clazz, params);
 	}
 	
-	public List<?> selectAll(Class<? extends Object> clazz){
+	public <T> List<T> selectAll(Class<T> clazz){
 		String clazzName = clazz.getSimpleName();
-		String sql = "select * from " + clazzName;
+		String sql = "SELECT * FROM " + clazzName;
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("sql", sql);
-		List<Map<String,Object>> list = this.sqlSessionTemplate.selectList("Common.queryOperation",params);
-		if(ListUtil.isEmpty(list)){
+		List<Map<?,?>> list = this.sqlSessionTemplate.selectList("Common.queryOperation",params);
+		if(CollectionUtils.isEmpty(list)){
 			return null;
 		}
-		List<Object> resultList = new ArrayList<Object>();
-		for(int i=0;i<list.size();i++){
-			Map<String,Object> result = (Map<String,Object>) list.get(i);
-			this.dealDataResultMap(result);
-			Object o = MapUtil.map2Pojo(result, clazz);
-			resultList.add(o);
-		}
-		return resultList;
+		return this.dealResultList(list, clazz);
 	}
 
-	public List<?> selectListBySql(String sql) {
+	public <T> List<T> selectListBySql(String sql,Class<T> clazz) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("sql", sql);
-		List<Map<String, Object>> list = this.sqlSessionTemplate.selectList("Common.queryOperation", params); 
-		return this.dealSqlQuery(list);
+		List<Map<?, ?>> list = this.sqlSessionTemplate.selectList("Common.queryOperation", params); 
+		return this.dealResultList(list,clazz);
 	}
 
-	public List<?> selectListBySql(String sql, Map<String, Object> params) {
+	public <T> List<T> selectListBySql(String sql,Map<String,Object> params,Class<T> clazz) {
 		Map<String, Object> queryParams = new HashMap<String, Object>();
 		if (params != null) {
 			for (Map.Entry<String, Object> entry : params.entrySet()) {
@@ -216,16 +210,8 @@ public class CommonMapper implements ICommonMapper {
 			}
 		}
 		queryParams.put("sql", sql);
-		List<Map<String, Object>> list = this.sqlSessionTemplate.selectList("Common.queryOperation", queryParams);
-		return this.dealSqlQuery(list);
-	}
-	
-	public List<?> selectListInPageBySql(String dataSqlId,DataTablePageInfo pageInfo, Map<String, Object> params){
-		if(params==null) 
-			params = new HashMap<String,Object>();
-		params.put("startIndex", pageInfo.getCurrentIndex()-1);
-		params.put("pageSize", pageInfo.getPageSize());
-		return sqlSessionTemplate.selectList(dataSqlId,params);
+		List<Map<?, ?>> list = this.sqlSessionTemplate.selectList("Common.queryOperation", queryParams);
+		return this.dealResultList(list,clazz);
 	}
 	
 	public DataTableResponseModel selectPageBySql(String countSql,String dataSql,DataTablePageInfo pageInfo, Map<String, Object> params){
@@ -458,32 +444,6 @@ public class CommonMapper implements ICommonMapper {
 		del(sql, bakSql, updateBakSql, excuteParams);
 	}
 	
-	private List<?> dealSqlQuery(List<Map<String, Object>> list) {
-		if (ListUtil.isEmpty(list))
-			return null;
-
-		if (list.get(0).size() > 1) {
-			return list;
-		} else {
-			List<Object> resultList = new ArrayList<Object>();
-			for (int i = 0; i < list.size(); i++) {
-				Map<String, Object> result = (Map<String, Object>) list.get(i);
-				Object obj = null;
-				// 处理BigDecimal数据，统一转换成Double数据
-				for (Map.Entry<String, Object> entry : result.entrySet()) {
-					if (entry.getValue() instanceof BigDecimal) {
-						BigDecimal value = (BigDecimal) entry.getValue();
-						obj = value.doubleValue();
-					} else {
-						obj = entry.getValue();
-					}
-				}
-				resultList.add(obj);
-			}
-			return resultList;
-		}
-	}
-	
 	private void dealDataResultMap(Map<String,Object> result){
 		for(Map.Entry<String,Object> entry:result.entrySet()){
 			if(entry.getValue() instanceof BigDecimal){
@@ -544,21 +504,21 @@ public class CommonMapper implements ICommonMapper {
 		return "UPDATE "+clazzName+"_copy set lastUpdater = #{lastUpdater},lastUpdateTime = NOW() WHERE 1=1 AND "+paramSql;
 	}
 	
-	private String generateBakSqlByDelSql(String delSql){
-		int fromIndex = delSql.trim().toUpperCase().indexOf("FROM");
-		int whereIndex = delSql.trim().toUpperCase().indexOf("WHERE");
-		String clazzName = delSql.substring(fromIndex+4, whereIndex);
-		return "INSERT INTO "+clazzName.trim()+"_copy (SELECT * "+delSql.trim().substring(fromIndex)+") "
-				+ "ON DUPLICATE KEY UPDATE lastUpdater = #{lastUpdater},lastUpdateTime = NOW()";
-	}
+//	private String generateBakSqlByDelSql(String delSql){
+//		int fromIndex = delSql.trim().toUpperCase().indexOf("FROM");
+//		int whereIndex = delSql.trim().toUpperCase().indexOf("WHERE");
+//		String clazzName = delSql.substring(fromIndex+4, whereIndex);
+//		return "INSERT INTO "+clazzName.trim()+"_copy (SELECT * "+delSql.trim().substring(fromIndex)+") "
+//				+ "ON DUPLICATE KEY UPDATE lastUpdater = #{lastUpdater},lastUpdateTime = NOW()";
+//	}
 	
-	private String generateUpdateBakSqlByDelSql(String delSql){
-		int fromIndex = delSql.trim().toUpperCase().indexOf("FROM");
-		int whereIndex = delSql.trim().toUpperCase().indexOf("WHERE");
-		String clazzName = delSql.substring(fromIndex+4, whereIndex);
-		String paramSql = delSql.trim().substring(whereIndex);
-		return "UPDATE "+clazzName.trim()+"_copy set lastUpdater = #{lastUpdater},lastUpdateTime = NOW() "+paramSql;
-	}
+//	private String generateUpdateBakSqlByDelSql(String delSql){
+//		int fromIndex = delSql.trim().toUpperCase().indexOf("FROM");
+//		int whereIndex = delSql.trim().toUpperCase().indexOf("WHERE");
+//		String clazzName = delSql.substring(fromIndex+4, whereIndex);
+//		String paramSql = delSql.trim().substring(whereIndex);
+//		return "UPDATE "+clazzName.trim()+"_copy set lastUpdater = #{lastUpdater},lastUpdateTime = NOW() "+paramSql;
+//	}
 	
 	private void del(String delSQL,String delBakSQL,String updateBakSql,Map<String,Object> params){
 		if(!StringUtil.isEmpty(delBakSQL)){
@@ -573,44 +533,14 @@ public class CommonMapper implements ICommonMapper {
 		this.sqlSessionTemplate.delete("Common.delOperation",params);
 	}
 
-	private List<?> dealResultList(List<Map<String,Object>> list,Class<?> clazz){
-		if(ListUtil.isEmpty(list)){
+	private <T> List<T> dealResultList(List<Map<?,?>> list,Class<T> clazz){
+		if(CollectionUtils.isEmpty(list)) {
 			return null;
 		}
-		List<Object> resultList = new ArrayList<Object>();
+		List<T> resultList = new ArrayList<T>();
 		for(int i=0;i<list.size();i++){
-			Map<String,Object> result = (Map<String,Object>) list.get(i);
-			//处理BigDecimal数据，统一转换成Double数据
-			for(Map.Entry<String,Object> entry:result.entrySet()){
-				if(entry.getValue() instanceof BigDecimal){
-					BigDecimal value = (BigDecimal) entry.getValue();
-					result.put(entry.getKey(), value.doubleValue());
-				}
-			}
-			Object o = MapUtil.map2Pojo(result, clazz);
-			resultList.add(o);
+			resultList.add(MapUtil.map2Entity(list.get(i), clazz));
 		}
 		return resultList;
-	}
-	
-	private boolean isCommonJavaType(Object entity) {
-		if (entity instanceof Integer) {
-			return true;
-		} else if (entity instanceof String) {
-			return true;
-		} else if (entity instanceof Double) {
-			return true;
-		} else if (entity instanceof Float) {
-			return true;
-		} else if (entity instanceof Long) {
-			return true;
-		} else if (entity instanceof Boolean) {
-			return true;
-		} else if (entity instanceof Date) {
-			return true;
-		}
-		else{
-			return false;
-		}
 	}
 }

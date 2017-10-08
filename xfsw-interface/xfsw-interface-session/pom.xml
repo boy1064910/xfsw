@@ -13,7 +13,11 @@
 			<artifactId>xfsw-common-classes</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.xfsw</groupId>
+			<artifactId>xfsw-interface-account</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		<!-- provided -->
 		<dependency>
 			<groupId>javax.servlet</groupId>

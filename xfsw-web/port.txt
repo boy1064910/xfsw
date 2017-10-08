@@ -1,10 +1,13 @@
 8001		xfsw-web-eureka
 8011		xfsw-web-gateway
-8021		xfsw-web-config-server	
+8021		xfsw-web-config-server	#暂时废弃
 
-8101	xfsw-web-fe-entry
-8111	xfsw-web-fe-order
+8101		xfsw-web-entry
 
-8201	xfsw-web-be-auth
+8201		xfsw-web-auth
+8301		xfsw-web-manager
+8111		xfsw-web-fe-order
 
-8301	acadamic-web-manager
+
+
+9101		acadamic-web-manager

@@ -26,8 +26,8 @@ public class ErrorConstant {
 	public final static int ERROR_BUSINESS_KNOWN = 101;
 	/** 系统业务异常，此时msg不会携带具体错误业务逻辑信息 */
 	public final static int ERROR_BUSINESS_UNKNOWN = 102;
-	/**系统异常，msg如果携带信息，则为代码中手动抛出的可预见性异常信息*/
-	public final static int ERROR_SYSTEM_KNOWN = 103;//系统服务异常，请稍候重试，如需帮助，请打开公众号【学术葩教育资源平台】在线联系客服或者拨打客服电话
+	/**系统异常，前端提示统一错误信息，异常拦截器记录msg（如果携带信息）*/
+	public final static int ERROR_SYSTEM_KNOWN = 103;
 	
 	// ======================================登录业务-错误代码（用于具体的业务逻辑处理）======================================
 	/** 平台用户未登录-1001 */
@@ -38,6 +38,12 @@ public class ErrorConstant {
 	public final static int ACCOUNT_PWD_ERROR = 1003;
 	/** 账号尚未绑定手机号-1004 */
 	public final static int ACCOUNT_FORBIDDEN = 1004;
+	/** 账号存在异常-1005 */
+	public final static int ACCOUNT_EXCEPTION = 1005;
+	/** 账号尚未开通空间-1006 */
+	public final static int ACCOUNT_NOT_BIND_TENANT = 1006;
+	/** 账号尚未分配角色-1007 */
+	public final static int ACCOUNT_NOT_BIND_ROLE = 1007;
 	/** 微信登录失败 */
 	public final static int ACCOUNT_WX_LOGIN_FAIL = 1011;
 	

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.xfsw.account.service;
 
 import javax.annotation.Resource;

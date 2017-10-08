@@ -21,6 +21,7 @@ public class CategoryAuthority implements Serializable {
 	private String remark;
 	private Integer orderIndex;
 	private String ico;
+	private Integer tenantId;
 	private String lastUpdater;
 	private Date lastUpdateTime;
 	public Integer getOrderIndex() {
@@ -82,5 +83,11 @@ public class CategoryAuthority implements Serializable {
 	}
 	public void setLastUpdateTime(Date lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
+	}
+	public Integer getTenantId() {
+		return tenantId;
+	}
+	public void setTenantId(Integer tenantId) {
+		this.tenantId = tenantId;
 	}
 }

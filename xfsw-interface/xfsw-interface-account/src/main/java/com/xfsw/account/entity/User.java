@@ -22,14 +22,11 @@ public class User implements Serializable {
 	private String head;
 	private Date registeTime;
 	private String email;
-	private Integer roleId;
 	private String unionId;
 	private String serviceOpenId;
 	private String miniOpenId;
 	
-	//辅助字段
-	private Integer[] authorityIds;//所有权限ID数组（公共权限、菜单权限和请求权限）
-	private Integer[] categoryAuthorityIds;//菜单权限ID数组
+	public User() {}
 	
 	public Integer getId() {
 		return id;
@@ -78,24 +75,6 @@ public class User implements Serializable {
 	}
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	public Integer[] getAuthorityIds() {
-		return authorityIds;
-	}
-	public void setAuthorityIds(Integer[] authorityIds) {
-		this.authorityIds = authorityIds;
-	}
-	public Integer[] getCategoryAuthorityIds() {
-		return categoryAuthorityIds;
-	}
-	public void setCategoryAuthorityIds(Integer[] categoryAuthorityIds) {
-		this.categoryAuthorityIds = categoryAuthorityIds;
-	}
-	public Integer getRoleId() {
-		return roleId;
-	}
-	public void setRoleId(Integer roleId) {
-		this.roleId = roleId;
 	}
 	public String getUnionId() {
 		return unionId;
