@@ -9,13 +9,13 @@
 <!-- Latest compiled and minified Locales -->
 <script src="/widgets/bootstrap/bootstrap-table/bootstrap-table-zh-CN.js"></script>
 
-<script type="text/javascript" src="/js/manager/account/category/authority/initConfigLinkAuthority.js"></script>
+<script type="text/javascript" src="/xfsw-web-manager/js/root/category/authority/initConfigLinkAuthority.js"></script>
 </head>
 <body>
 	<div class="panel">
 		<header class="panel-heading">
-			<h4>功能权限：${authority.name }</h4>
-			<input type="hidden" id="categoryAuthorityId" value="${authority.id }" />
+			<h4>功能权限：${categoryAuthority.name }</h4>
+			<input type="hidden" id="categoryAuthorityId" value="${categoryAuthority.id }" />
 			<button class="btn btn-info " type="button" onclick="initAdd()"><i class="fa fa-plus"></i> 添加权限</button>
         </header>
 		<div class="panel-body">

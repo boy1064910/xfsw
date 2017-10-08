@@ -92,10 +92,9 @@ Ding.ready(function(){
 
 function loadData(){
     Ding.ajax({
-        'url' : projectName+"/manager/data/list.shtml",
+        'url' : "/xfsw-web-manager/root/category/authority/linkAuthoritylist.shtml",
         'params' : {
-            'authorityId' : $("#categoryAuthorityId").val(),
-            'aRandomCode' : aRandomCode
+            'authorityId' : $("#categoryAuthorityId").val()
         },
         'successCallback' : function(result){
             var data = {};

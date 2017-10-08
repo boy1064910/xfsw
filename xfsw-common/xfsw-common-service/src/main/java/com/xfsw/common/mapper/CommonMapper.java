@@ -56,7 +56,7 @@ public class CommonMapper implements ICommonMapper {
 		return this.sqlSessionTemplate.selectOne(sqlId,entity);
 	}
 	
-	public Object get(Class<? extends Object> clazz,Integer id){
+	public <T> T get(Class<T> clazz,Integer id){
 		Map<String,Object> params = new HashMap<String,Object>();
 		String clazzName = clazz.getSimpleName();
 		String sql = "select * from " + clazzName + " where id = #{id}";
@@ -67,7 +67,7 @@ public class CommonMapper implements ICommonMapper {
 			return null;
 		}
 		this.dealDataResultMap(result);
-		return MapUtil.map2Pojo(result, clazz);
+		return MapUtil.map2Entity(result, clazz);
 	}
 	
 	public Object get(Class<? extends Object> clazz,Class<? extends Object> targetClazz,Integer id){
