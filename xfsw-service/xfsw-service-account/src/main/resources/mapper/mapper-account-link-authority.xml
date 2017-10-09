@@ -8,7 +8,7 @@
   	</insert>
 
 	<update id="updateLinkAuthority" parameterType="LinkAuthority">
-  		UPDATE LinkAuthority SET name = #{name},url = #{url},id = #{id} WHERE id = #{oldId}
+  		UPDATE LinkAuthority SET name = #{name},url = #{url},id = #{id},lastUpdater = #{lastUpdater},lastUpdateTime = NOW() WHERE id = #{oldId}
   	</update>
   	
   	<select id="selectIdListByCategoryAuthorityId" parameterType="java.lang.Integer" resultType="java.lang.Integer">

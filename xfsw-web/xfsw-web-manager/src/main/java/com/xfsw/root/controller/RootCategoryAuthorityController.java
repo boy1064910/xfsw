@@ -8,9 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xfsw.account.entity.CategoryAuthority;
+import com.xfsw.account.entity.LinkAuthority;
+import com.xfsw.account.service.AuthorityCacheService;
 import com.xfsw.account.service.CategoryAuthorityCacheService;
 import com.xfsw.account.service.LinkAuthorityService;
 import com.xfsw.common.classes.ResponseModel;
+import com.xfsw.common.thread.ThreadUserInfoManager;
+import com.xfsw.common.util.DJBHashUtil;
 import com.xfsw.session.service.UserSessionService;
 
 /**
@@ -29,6 +33,9 @@ public class RootCategoryAuthorityController {
 	
 	@Resource(name="userSessionService")
 	UserSessionService userSessionService;
+	
+	@Resource(name="authorityCacheService")
+	AuthorityCacheService authorityCacheService;
 	
 	@RequestMapping(value="/index")
 	public void index(){
@@ -52,6 +59,42 @@ public class RootCategoryAuthorityController {
 	@ResponseBody
 	public ResponseModel linkAuthoritylist(Integer categoryAuthorityId){
 		return new ResponseModel(linkAuthorityService.selectListByCategoryAuthorityId(categoryAuthorityId));
+	}
+	
+	@RequestMapping(value="/initEditLinkAuthority")
+	@ResponseBody
+	public ResponseModel initEditLinkAuthority(Integer id){
+		return new ResponseModel(linkAuthorityService.getById(id));
+	}
+	
+	@RequestMapping(value="/updateLinkAuthority")
+	@ResponseBody
+	public ResponseModel updateLinkAuthority(LinkAuthority linkAuthority){
+		linkAuthority.setLastUpdater(ThreadUserInfoManager.getAccount());
+		linkAuthority.setOldId(linkAuthority.getId());
+		linkAuthority.setId(DJBHashUtil.DJBHashId(linkAuthority.getUrl()));
+		linkAuthorityService.updateLinkAuthority(linkAuthority);
+		
+		//刷新权限缓存信息
+		authorityCacheService.reload();
+		//TODO 刷新用户session中权限缓存信息
+		
+		return new ResponseModel(linkAuthority);
+	}
+	
+	@RequestMapping(value="/insertLinkAuthority")
+	@ResponseBody
+	public ResponseModel insertLinkAuthority(LinkAuthority linkAuthority){
+		
+		CategoryAuthority categoryAuthority = categoryAuthorityCacheService.getById(linkAuthority.getCategoryAuthorityId());
+		
+		linkAuthority.setId(DJBHashUtil.DJBHashId(linkAuthority.getUrl()));
+		linkAuthority.setLastUpdater(ThreadUserInfoManager.getAccount());
+		linkAuthority.setTenantId(categoryAuthority.getTenantId());
+		linkAuthorityService.insertLinkAuthority(linkAuthority);
+		//刷新权限缓存信息
+		authorityCacheService.reload();
+		return new ResponseModel();
 	}
 	
 //	@RequestMapping("/insertAuthority")

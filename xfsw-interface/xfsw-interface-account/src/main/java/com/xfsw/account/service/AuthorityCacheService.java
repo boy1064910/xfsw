@@ -15,4 +15,11 @@ public interface AuthorityCacheService {
 	 */
 	AuthorityModel getAuthorityModelById(Integer id) throws BusinessException;
 	
+	/**
+	 * 刷新权限缓存信息
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	void reload();
+	
 }

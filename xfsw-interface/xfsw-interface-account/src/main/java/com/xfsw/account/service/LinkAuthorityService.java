@@ -21,6 +21,31 @@ public interface LinkAuthorityService {
 	 */
 	List<LinkAuthority> selectListByCategoryAuthorityId(Integer categoryAuthorityId);
 	
+	/**
+	 * 通过ID查询单个功能权限数据
+	 * @param id
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	LinkAuthority getById(Integer id);
+	
+	/**
+	 * 更新功能权限信息
+	 * @param linkAuthority
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	void updateLinkAuthority(LinkAuthority linkAuthority);
+	
+	/**
+	 * 新增功能权限信息
+	 * @param linkAuthority
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	void insertLinkAuthority(LinkAuthority linkAuthority);
+	
 //	void insertLinkAuthority(LinkAuthority linkAuthority);
 //	
 //	void updateLinkAuthority(LinkAuthority linkAuthority);

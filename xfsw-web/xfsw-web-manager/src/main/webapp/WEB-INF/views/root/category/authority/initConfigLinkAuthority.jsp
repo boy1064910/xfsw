@@ -22,7 +22,7 @@
 			<table id="dataTable"></table>
 		</div>
 	</div>
-	<form class="Ding-Form modal-form form-horizontal" id="addLinkAuthorityForm" action="<%=request.getContextPath() %>/manager/account/category/authority/insertLinkAuthority.shtml" successCallback="insertSuccess">
+	<form class="Ding-Form modal-form form-horizontal" id="addLinkAuthorityForm" action="/xfsw-web-manager/root/category/authority/insertLinkAuthority.shtml" successCallback="insertSuccess">
 		<div class="form-group">
             <label class="col-lg-2 col-sm-2 control-label">权限名称</label>
             <div class="col-lg-10">
@@ -36,10 +36,10 @@
             </div>
         </div>
 		<div>
-			<input type="hidden" name="authorityId" value="${authority.id }" />
+			<input type="hidden" name="categoryAuthorityId" value="${categoryAuthority.id }" />
 		</div>
 	</form>
-	<form class="Ding-Form modal-form form-horizontal" id="editLinkAuthorityForm" action="<%=request.getContextPath() %>/manager/account/category/authority/updateLinkAuthority.shtml" successCallback="updateSuccess">
+	<form class="Ding-Form modal-form form-horizontal" id="editLinkAuthorityForm" action="/xfsw-web-manager/root/category/authority/updateLinkAuthority.shtml" successCallback="updateSuccess">
 		<div class="form-group">
             <label class="col-lg-2 col-sm-2 control-label">权限名称</label>
             <div class="col-lg-10">

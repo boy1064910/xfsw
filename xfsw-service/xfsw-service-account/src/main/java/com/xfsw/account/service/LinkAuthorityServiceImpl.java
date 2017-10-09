@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.xfsw.account.entity.LinkAuthority;
 import com.xfsw.common.mapper.ICommonMapper;
@@ -30,6 +31,27 @@ public class LinkAuthorityServiceImpl implements LinkAuthorityService {
 		return commonMapper.selectList(LinkAuthority.class, params);
 	}
 	
+	@Override
+	public LinkAuthority getById(Integer id){
+		return commonMapper.get(LinkAuthority.class, id);
+	}
+	
+	@Override
+	@Transactional
+	public void updateLinkAuthority(LinkAuthority linkAuthority){
+		//更新权限信息
+		commonMapper.update("LinkAuthority.updateLinkAuthority", linkAuthority);
+		//更新该权限对应的角色权限表信息
+		commonMapper.update("RoleLinkAuthority.updateRoleLinkAuthority",linkAuthority);
+		//更新该角色权限对应的SQL配置表信息
+		commonMapper.update("RoleAuthoritySql.updateRoleAuthoritySqlByAuthorityId",linkAuthority);
+	}
+	
+	@Override
+	public void insertLinkAuthority(LinkAuthority linkAuthority){
+		commonMapper.insert(LinkAuthority.class, linkAuthority);
+//		commonMapper.insert("LinkAuthority.insertLinkAuthority", linkAuthority);
+	}
 	
 //	@Resource(name="authorityCacheService")
 //	AuthorityCacheService authorityCacheService;

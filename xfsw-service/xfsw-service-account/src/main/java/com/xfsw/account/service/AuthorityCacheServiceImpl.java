@@ -36,17 +36,22 @@ public class AuthorityCacheServiceImpl implements AuthorityCacheService {
 	@Resource(name="accountCommonMapper")
 	ICommonMapper commonMapper;
 	
+	@Override
 	public AuthorityModel getAuthorityModelById(Integer id){
 		if(id ==null)
 			return null;
 		
-		Map<String,AuthorityModel> authorityModelMap = loadAuthorityCache(false, true);
+		Map<String,AuthorityModel> authorityModelMap = this.loadAuthorityCache(false, true);
 		if(authorityModelMap.containsKey(id.toString())) {
 			return authorityModelMap.get(id.toString());
 		}
 		return null;
 	}
 	
+	@Override
+	public void reload(){
+		this.loadAuthorityCache(true, false);
+	}
 	
 	/**
 	 * 加载权限进入缓存（菜单权限不包括一级菜单）
