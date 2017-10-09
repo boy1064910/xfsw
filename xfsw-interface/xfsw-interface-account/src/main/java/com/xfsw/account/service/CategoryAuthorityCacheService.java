@@ -32,6 +32,15 @@ public interface CategoryAuthorityCacheService {
 	 */
 	List<CategoryAuthority> selectListByTenantId(Integer tenantId);
 	
+	/**
+	 * 通过ID获取菜单权限信息
+	 * @param id
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	CategoryAuthority getById(Integer id);
+	
 //	void insertAuthority(CategoryAuthority authority);
 //	
 //	CategoryAuthority get(Integer id);

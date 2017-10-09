@@ -346,6 +346,8 @@
 		
 		<!--common scripts for all pages-->
 		<script src="/js/scripts.js"></script>
+		<!-- common xfsw service -->
+		<script src="/xfsw-web-auth/js/decorator/auth.js"></script>
 		<!-- decorate menu -->
 		<script src="/js/decorator.js"></script>
 		<!-- loading -->

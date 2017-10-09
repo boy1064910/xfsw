@@ -68,6 +68,11 @@ public class CategoryAuthorityCacheServiceImpl implements CategoryAuthorityCache
 		return commonMapper.selectList(CategoryAuthority.class, params);
 	}
 	
+	@Override
+	public CategoryAuthority getById(Integer id) {
+		return commonMapper.get(CategoryAuthority.class, id);
+	}
+	
 //	public void insertAuthority(CategoryAuthority authority){
 //		commonMapper.insert("CategoryAuthority.insertAuthority", authority);
 //	}
@@ -154,4 +159,6 @@ public class CategoryAuthorityCacheServiceImpl implements CategoryAuthorityCache
 		}
 		return resultMap;
 	}
+
+	
 }

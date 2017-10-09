@@ -3,10 +3,13 @@ package com.xfsw.root.controller;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xfsw.account.entity.CategoryAuthority;
 import com.xfsw.account.service.CategoryAuthorityCacheService;
+import com.xfsw.account.service.LinkAuthorityService;
 import com.xfsw.common.classes.ResponseModel;
 import com.xfsw.session.service.UserSessionService;
 
@@ -21,6 +24,9 @@ public class RootCategoryAuthorityController {
 	@Resource(name="categoryAuthorityCacheService")
 	CategoryAuthorityCacheService categoryAuthorityCacheService;
 	
+	@Resource(name="linkAuthorityService")
+	LinkAuthorityService linkAuthorityService;
+	
 	@Resource(name="userSessionService")
 	UserSessionService userSessionService;
 	
@@ -33,6 +39,19 @@ public class RootCategoryAuthorityController {
 	@ResponseBody
 	public ResponseModel list(Integer tenantId){
 		return new ResponseModel(categoryAuthorityCacheService.selectListByTenantId(tenantId));
+	}
+	
+	@RequestMapping(value="/initConfigLinkAuthority")
+	public void initConfigLinkAuthority(Integer id,Model model){
+		CategoryAuthority categoryAuthority = categoryAuthorityCacheService.getById(id);
+		model.addAttribute("id", id);
+		model.addAttribute("categoryAuthority",categoryAuthority);
+	}
+	
+	@RequestMapping(value="/linkAuthoritylist")
+	@ResponseBody
+	public ResponseModel linkAuthoritylist(Integer categoryAuthorityId){
+		return new ResponseModel(linkAuthorityService.selectListByCategoryAuthorityId(categoryAuthorityId));
 	}
 	
 //	@RequestMapping("/insertAuthority")

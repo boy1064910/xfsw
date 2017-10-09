@@ -34,7 +34,7 @@ public interface ICommonMapper {
 	 */
 	<T> T get(String sqlId,Object entity);
 	
-	Object get(Class<? extends Object> clazz,Integer id);
+	<T> T get(Class<T> clazz,Integer id);
 	
 	Object get(Class<? extends Object> clazz,Class<? extends Object> targetClazz,Integer id);
 	

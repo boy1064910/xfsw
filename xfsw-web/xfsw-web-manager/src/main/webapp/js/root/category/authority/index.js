@@ -150,7 +150,7 @@ function insertSuccess(result){
 
 //配置权限
 function initConfig(id){
-    this.location = "/xfsw-web-manager/root/link/authority/initConfigLinkAuthority.shtml?id="+id;
+    this.location = "/xfsw-web-manager/root/category/authority/initConfigLinkAuthority.shtml?id="+id;
 }
 
 
