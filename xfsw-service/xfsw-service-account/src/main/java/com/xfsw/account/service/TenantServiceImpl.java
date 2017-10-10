@@ -31,4 +31,19 @@ public class TenantServiceImpl implements TenantService {
 	public DataTableResponseModel selectPageInfo(DataTablePageInfo pageInfo) {
 		return commonMapper.selectPage("Tenant.selectCount", "Tenant.selectPageInfo", pageInfo, null);
 	}
+
+	@Override
+	public void insertTenant(Tenant tenant) {
+		commonMapper.insert(Tenant.class, tenant);
+	}
+
+	@Override
+	public void updateTenant(Tenant tenant) {
+		commonMapper.update("Tenant.updateTenant", tenant);
+	}
+
+	@Override
+	public Tenant getById(Integer id) {
+		return commonMapper.get(Tenant.class, id);
+	}
 }

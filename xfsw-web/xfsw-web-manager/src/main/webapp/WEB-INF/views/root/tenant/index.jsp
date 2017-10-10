@@ -14,7 +14,7 @@
 <body>
 	<div class="panel">
 		<header class="panel-heading">
-			<button class="btn btn-info " type="button" onclick="initAddCategoryAuthority()"><i class="fa fa-plus"></i> 添加空间</button>
+			<button class="btn btn-info " type="button" onclick="initAdd()"><i class="fa fa-plus"></i> 添加空间</button>
         </header>
 		<div class="panel-body">
 			<table id="dataTable"></table>
@@ -47,7 +47,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-2 col-sm-2 control-label">上级菜单ID</label>
+            <label class="col-lg-2 col-sm-2 control-label">空间code</label>
             <div class="col-lg-10">
             	<input class="form-control" type="text" id="editcode" name="code" validations="required&&vComplexMaxLength=20" validationTips="code不能为空&&code不能超过20个字符" /> 
             </div>

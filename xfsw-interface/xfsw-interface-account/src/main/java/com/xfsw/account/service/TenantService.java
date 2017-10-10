@@ -29,4 +29,29 @@ public interface TenantService {
 	 * @version 0.0.1
 	 */
 	DataTableResponseModel selectPageInfo(DataTablePageInfo pageInfo);
+	
+	/**
+	 * 新增空间信息
+	 * @param tenant
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	void insertTenant(Tenant tenant);
+	
+	/**
+	 * 更新空间信息
+	 * @param tenant
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	void updateTenant(Tenant tenant);
+	
+	/**
+	 * 根据ID获取空间信息
+	 * @param id
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	Tenant getById(Integer id);
 }

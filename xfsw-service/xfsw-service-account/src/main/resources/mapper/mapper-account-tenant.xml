@@ -10,6 +10,10 @@
   		SELECT * FROM Tenant LIMIT #{startIndex},#{pageSize}
   	</select>
   	
+  	<update id="updateTenant" parameterType="Tenant">
+  		UPDATE Tenant SET name = #{name},code = #{code},lastUpdater = #{lastUpdater},lastUpdateTime = NOW() WHERE id = #{id}
+  	</update>
+  	
   	
 <!--   	<insert id="wxBindAccount" parameterType="User" useGeneratedKeys="true" keyProperty="id"> -->
 <!--   		INSERT INTO User(account,pwd,nickName,head,registeTime,unionId,miniOpenId) -->

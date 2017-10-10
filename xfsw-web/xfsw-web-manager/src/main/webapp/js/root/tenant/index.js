@@ -33,7 +33,6 @@ columns.push({
     align: 'center',
     formatter:function(value,row,index){
         var result = '<a href="javascript:void(0)" onclick="initEdit('+row.id+','+index+')" title="编辑">编辑</a>';
-        result+='<a href="javascript:void(0)" onclick="initDelete('+row.id+')" title="删除">删除</a>';
         return result;
     }
 });
@@ -97,73 +96,23 @@ Ding.ready(function(){
     });
 });
 
-function initAddCategoryAuthority(){
-	if(Ding.isEmpty($("#tenantId").val())){
-		$.alert({
-            content: '请先选择空间信息',
-            confirmButton:'确定'
-        });
-		return false;
-	}
-    $("#name").val('');
-    $("#pid").val('');
-    $("#url").val('');
-    $("#remark").val('');
-    $("#orderIndex").val('');
-    $("#ico").val('');
+function initAdd(){
     openModal({
-        'title':'添加菜单权限',
-        'targetId':'addCategoryAuthorityForm',
+        'title':'添加空间信息',
+        'targetId':'addForm',
         'sureBtnText':'保存'
     });
-}
-
-function insertSubmitValidation(){
-	if(Ding.isEmpty($("#tenantId").val())){
-		$.alert({
-            content: '空间信息不能为空',
-            confirmButton:'确定'
-        });
-		return false;
-	}
-	D("#addCategoryAuthorityForm").submitParams['tenantId'] = $("#tenantId").val();
-	return true;
 }
 
 //添加权限成功回调事件
 function insertSuccess(result){
     Ding.tips("添加成功");
-    loadData();
-}
-
-//配置权限
-function initConfig(id){
-    this.location = "/xfsw-web-manager/root/category/authority/initConfigLinkAuthority.shtml?id="+id;
-}
-
-
-function initDelete(id){
-    $.confirm({
-        backgroundDismiss: true,
-        title:'删除菜单权限',
-        content: '删除菜单权限将会同时清除角色权限关系，是否删除 !',
-        confirmButton:'删除',
-        cancelButton:'取消',
-        confirmButtonClass:'btn-success',
-        confirm:function(){
-            Ding.ajax({
-                'url':projectName+'/manager/account/category/authority/deleteAuthority.shtml?id='+id,
-                'successCallback':function(result){
-                    $("#dataTable").bootstrapTable('removeByUniqueId',id);
-                }
-            });
-        }
-    });
+    $("#dataTable").bootstrapTable('refresh');
 }
 
 function initEdit(id,index){
     Ding.ajax({
-        'url' : '/xfsw-web-manager/root/category/authority/initEditCategoryAuthority.shtml',
+        'url' : '/xfsw-web-manager/root/tenant/initEditTenant.shtml',
         'params' : {
             'id' : id
         },
@@ -171,15 +120,10 @@ function initEdit(id,index){
             var data = result.data;
             $("#editid").val(data.id);
             $("#editname").val(data.name);
-            $("#editpid").val(data.pid);
-            $("#editurl").val(data.url);
-            $("#editremark").val(data.remark);
-            $("#editorderIndex").val(data.orderIndex);
-            $("#editico").val(data.ico);
-            $("#editindex").val(index);
+            $("#editcode").val(data.code);
             openModal({
-                'title':'编辑菜单权限',
-                'targetId':'editCategoryAuthorityForm',
+                'title':'编辑空间',
+                'targetId':'editForm',
                 'sureBtnText':'保存'
             });
         }
@@ -192,15 +136,5 @@ function updateSuccess(result){
     $("#dataTable").bootstrapTable('updateRow',{
         'index' : index,
         'row' : data
-    });
-}
-
-
-function refreshAuthorityCache(){
-    Ding.ajax({
-        'url':projectName+'/manager/account/category/authority/refreshAuthorityCache.shtml',
-        successCallback:function(result){
-            Ding.tips("刷新成功");
-        }
     });
 }
