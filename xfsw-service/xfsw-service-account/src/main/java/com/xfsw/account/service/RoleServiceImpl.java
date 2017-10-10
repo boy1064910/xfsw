@@ -1,32 +1,28 @@
 package com.xfsw.account.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.xfsw.account.entity.Role;
-import com.xfsw.account.service.RoleAuthoritySqlParamService;
-import com.xfsw.account.service.RoleAuthoritySqlService;
-import com.xfsw.account.service.RoleCategoryAuthorityService;
-import com.xfsw.account.service.RoleLinkAuthorityService;
-import com.xfsw.account.service.RoleService;
-import com.xfsw.account.service.UserService;
 import com.xfsw.common.mapper.ICommonMapper;
-import com.xfsw.common.util.ArrayUtil;
-import com.xfsw.common.util.ListUtil;
-import com.xfsw.common.util.MapUtil;
 
 @Service("roleService")
 public class RoleServiceImpl implements RoleService {
 
-//	@Resource(name="accountCommonMapper")
-//	ICommonMapper commonMapper;
+	@Resource(name="accountCommonMapper")
+	ICommonMapper commonMapper;
+	
+	@Override
+	public List<Role> selectListByTenantId(Integer tenantId) {
+		Role role = new Role();
+		role.setTenantId(tenantId);
+		return commonMapper.selectList(Role.class, role);
+	}
+
+	
 //	
 //	@Resource(name="userService")
 //	UserService userService;

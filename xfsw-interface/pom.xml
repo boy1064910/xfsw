@@ -8,7 +8,6 @@
 	<modules>
 		<module>xfsw-interface-session</module>
 		<module>xfsw-interface-account</module>
-		
 		<module>xfsw-interface-business</module>
 	</modules>
 

@@ -4,7 +4,21 @@ import java.util.List;
 
 import com.xfsw.account.entity.Role;
 
+/**
+ * 空间角色服务
+ * @author xiaopeng.liu
+ * @version 0.0.1
+ */
 public interface RoleService {
+	
+	/**
+	 * 查询空间下角色信息
+	 * @param tenantId
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	List<Role> selectListByTenantId(Integer tenantId);
 
 //	Role get(Integer id);
 //	

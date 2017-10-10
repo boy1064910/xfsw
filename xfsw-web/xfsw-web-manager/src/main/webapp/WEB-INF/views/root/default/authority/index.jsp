@@ -9,11 +9,15 @@
 <!-- Latest compiled and minified Locales -->
 <script src="/widgets/bootstrap/bootstrap-table/bootstrap-table-zh-CN.js"></script>
 
-<script type="text/javascript" src="/js/manager/account/category/authority/index.js"></script>
+<script type="text/javascript" src="/xfsw-web-manager/js/root/category/authority/index.js"></script>
 </head>
 <body>
 	<div class="panel">
 		<header class="panel-heading">
+			<select id="tenantId" class="Ding-Selector" defaultOptionHtml="请选择"
+				url="/xfsw-web-manager/root/tenant/list.shtml" valueProperty="id" htmlProperty="name"
+				onchange="queryTenantCategoryAuthoirty(this)">
+			</select>
 			<button class="btn btn-info " type="button" onclick="initAddCategoryAuthority()"><i class="fa fa-plus"></i> 添加权限</button>
 			<button class="btn btn-info " type="button" onclick="refreshAuthorityCache()"><i class="fa fa-refresh"></i> 刷新权限缓存</button>
         </header>

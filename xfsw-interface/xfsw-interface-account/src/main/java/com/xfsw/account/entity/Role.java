@@ -14,6 +14,7 @@ public class Role implements Serializable {
 
 	private static final long serialVersionUID = -7530848292232090555L;
 	private Integer id;
+	private Integer tenantId;
 	private String name;
 	private String remark;
 	private String dataSql;
@@ -55,5 +56,11 @@ public class Role implements Serializable {
 	}
 	public void setLastUpdateTime(Date lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
+	}
+	public Integer getTenantId() {
+		return tenantId;
+	}
+	public void setTenantId(Integer tenantId) {
+		this.tenantId = tenantId;
 	}
 }
