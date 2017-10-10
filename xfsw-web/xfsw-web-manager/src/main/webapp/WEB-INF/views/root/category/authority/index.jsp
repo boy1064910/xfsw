@@ -14,7 +14,7 @@
 <body>
 	<div class="panel">
 		<header class="panel-heading">
-			<select id="tenantId" class="Ding-Selector" defaultOptionHtml="请选择"
+			<select id="tenantId" class="Ding-Selector" defaultOptionHtml="请选择空间信息"
 				url="/xfsw-web-manager/root/tenant/list.shtml" valueProperty="id" htmlProperty="name"
 				onchange="queryTenantCategoryAuthoirty(this)">
 			</select>
@@ -25,7 +25,10 @@
 			<table id="dataTable"></table>
 		</div>
 	</div>
-	<form class="Ding-Form modal-form form-horizontal" id="addCategoryAuthorityForm" action="<%=request.getContextPath() %>/manager/account/category/authority/insertAuthority.shtml" successCallback="insertSuccess">
+	<form class="Ding-Form modal-form form-horizontal" id="addCategoryAuthorityForm" 
+		action="/xfsw-web-manager/root/category/authority/insertCategoryAuthority.shtml" 
+		submitValidation="insertSubmitValidation"
+		successCallback="insertSuccess">
 		<div class="form-group">
             <label class="col-lg-2 col-sm-2 control-label">权限名称</label>
             <div class="col-lg-10">
@@ -64,7 +67,9 @@
         </div>
 	</form>
 	
-	<form class="Ding-Form modal-form form-horizontal" id="editCategoryAuthorityForm" action="<%=request.getContextPath() %>/manager/account/category/authority/updateCategoryAuthority.shtml" successCallback="updateSuccess">
+	<form class="Ding-Form modal-form form-horizontal" id="editCategoryAuthorityForm" 
+		action="/xfsw-web-manager/root/category/authority/updateCategoryAuthority.shtml" 
+		successCallback="updateSuccess">
 		<div class="form-group">
             <label class="col-lg-2 col-sm-2 control-label">权限名称</label>
             <div class="col-lg-10">

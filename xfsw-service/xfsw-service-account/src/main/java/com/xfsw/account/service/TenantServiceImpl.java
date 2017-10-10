@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.xfsw.account.entity.Tenant;
+import com.xfsw.common.classes.DataTablePageInfo;
+import com.xfsw.common.classes.DataTableResponseModel;
 import com.xfsw.common.mapper.ICommonMapper;
 
 /**
@@ -23,5 +25,10 @@ public class TenantServiceImpl implements TenantService {
 	@Override
 	public List<Tenant> selectAll() {
 		return commonMapper.selectAll(Tenant.class);
+	}
+
+	@Override
+	public DataTableResponseModel selectPageInfo(DataTablePageInfo pageInfo) {
+		return commonMapper.selectPage("Tenant.selectCount", "Tenant.selectPageInfo", pageInfo, null);
 	}
 }

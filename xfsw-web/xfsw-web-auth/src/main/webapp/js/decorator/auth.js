@@ -18,7 +18,7 @@ Ding.ready(function(){
 					secondMenuList[data[index].pid].push(data[index]);
 				}
 				if(!Ding.isEmpty(data[index].url)){
-					var menuCatalog = window.location.pathname.substring(window.location.pathname.indexOf("/",2));//从链接当中截取第二个"/"分隔符，获取菜单目录
+					var menuCatalog = window.location.pathname;//获取菜单目录
 					var centerMenuCatalog = menuCatalog.substring(0,menuCatalog.lastIndexOf("/"));//倒数截取第一个分隔符前面的字段，获取菜单目录
 					var dataUrl = data[index].url.substring(0,data[index].url.lastIndexOf("/"));//倒数截取最后一个分隔符之前的字段，获取配置的菜单目录
 					// 正斜线个数大于1并且路径前缀一致
@@ -58,6 +58,7 @@ Ding.ready(function(){
 				li.append(ul);
 			}
 			
+			console.log(selectedMenu);
 			if(Ding.isEmpty(selectedMenu)){
 				$($("#mNavMenu").children()[0]).addClass("active");
 				$("#mMenuText").html("HOME");

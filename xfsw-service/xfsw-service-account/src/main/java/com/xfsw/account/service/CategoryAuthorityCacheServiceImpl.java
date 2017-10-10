@@ -44,6 +44,9 @@ public class CategoryAuthorityCacheServiceImpl implements CategoryAuthorityCache
 	@Resource(name="linkAuthorityService")
 	LinkAuthorityService linkAuthorityService;
 	
+	@Resource(name="authorityCacheService")
+	AuthorityCacheService authorityCacheService;
+	
 	@Override
 	public List<CategoryAuthority> selectListByIds(Integer[] categoryAuthorityIds){
 		if(ArrayUtil.isEmpty(categoryAuthorityIds)) 
@@ -73,14 +76,21 @@ public class CategoryAuthorityCacheServiceImpl implements CategoryAuthorityCache
 		return commonMapper.get(CategoryAuthority.class, id);
 	}
 	
-//	public void insertAuthority(CategoryAuthority authority){
-//		commonMapper.insert("CategoryAuthority.insertAuthority", authority);
-//	}
-//	
-//	public CategoryAuthority get(Integer id){
-//		return (CategoryAuthority) commonMapper.get(CategoryAuthority.class, id);
-//	}
-//	
+	@Override
+	public void insertCategoryAuthority(CategoryAuthority categoryAuthority) {
+		commonMapper.insert(CategoryAuthority.class, categoryAuthority);
+		this.loadCategoryAuthorityCache();
+		authorityCacheService.reloadCategoryAuthorityCache(categoryAuthority.getHashId());
+	}
+	
+	@Override
+	public void updateCategoryAuthority(CategoryAuthority categoryAuthority){
+		commonMapper.insert("CategoryAuthority.updateCategoryAuthority", categoryAuthority);
+		this.loadCategoryAuthorityCache();
+		if(categoryAuthority.getHashId()!=null)
+			authorityCacheService.reloadCategoryAuthorityCache(categoryAuthority.getHashId());
+	}
+	
 //	@Transactional
 //	public void deleteAuthority(Integer id,String operator){
 //		//删除相关功能权限数据
@@ -103,6 +113,24 @@ public class CategoryAuthorityCacheServiceImpl implements CategoryAuthorityCache
 //	public List<AuthorityModel> selectFirstAuthorityModelList(){
 //		return commonMapper.selectList("CategoryAuthority.selectFirstAuthorityModelList");
 //	}
+	
+	/**
+	 * 重新加载菜单权限数据到缓存中
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	private void loadCategoryAuthorityCache(){
+		List<CategoryAuthority> authorityList = commonMapper.selectList("CategoryAuthority.selectAll");
+		Map<String,CategoryAuthority> resultMap = new HashMap<String,CategoryAuthority>();
+		if(!ListUtil.isEmpty(authorityList)){
+			for(int i=0;i<authorityList.size();i++){
+				CategoryAuthority authority = (CategoryAuthority) authorityList.get(i);
+				resultMap.put(authority.getId().toString(), authority);
+			}
+		}
+		redisTemplate.opsForValue().set(RedisCacheDefineConstants.XFSW_ALL_CATEGORY_AUTHORITY, JsonUtil.entity2Json(resultMap), RedisCacheDefineConstants.XFSW_ALL_CATEGORY_AUTHORITY_CACHE_EXPIRED_TIME, TimeUnit.MILLISECONDS);
+		logger.debug("Category authority has loaded!");
+	}
 	
 	/**
 	 * 加载所有菜单权限进入缓存

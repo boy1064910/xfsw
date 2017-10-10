@@ -22,6 +22,10 @@ public class ThreadUserInfoManager {
 		return threadUserInfoLocal.get().getId();
 	}
 	
+	public static Integer getTenantId(){
+		return threadUserInfoLocal.get().getTenantId();
+	}
+	
 	public static void removeRequest(){
 		threadUserInfoLocal.remove();
 	}

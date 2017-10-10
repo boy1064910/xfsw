@@ -23,6 +23,9 @@ public class LinkAuthorityServiceImpl implements LinkAuthorityService {
 
 	@Resource(name="roleAuthoritySqlService")
 	RoleAuthoritySqlService roleAuthoritySqlService;
+	
+	@Resource(name="authorityCacheService")
+	AuthorityCacheService authorityCacheService;
 
 	@Override
 	public List<LinkAuthority> selectListByCategoryAuthorityId(Integer categoryAuthorityId) {
@@ -45,12 +48,15 @@ public class LinkAuthorityServiceImpl implements LinkAuthorityService {
 		commonMapper.update("RoleLinkAuthority.updateRoleLinkAuthority",linkAuthority);
 		//更新该角色权限对应的SQL配置表信息
 		commonMapper.update("RoleAuthoritySql.updateRoleAuthoritySqlByAuthorityId",linkAuthority);
+		//刷新缓存
+		authorityCacheService.reloadLinkAuthorityCache(linkAuthority.getId(), linkAuthority.getOldId());
 	}
 	
 	@Override
 	public void insertLinkAuthority(LinkAuthority linkAuthority){
 		commonMapper.insert(LinkAuthority.class, linkAuthority);
-//		commonMapper.insert("LinkAuthority.insertLinkAuthority", linkAuthority);
+		//刷新缓存
+		authorityCacheService.reloadLinkAuthorityCache(linkAuthority.getId());
 	}
 	
 //	@Resource(name="authorityCacheService")

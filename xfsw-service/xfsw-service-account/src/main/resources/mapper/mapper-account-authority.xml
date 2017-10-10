@@ -3,8 +3,16 @@
 <mapper namespace="Authority">
 
 	<select id="selectAllAuthorityModel" parameterType="java.lang.Integer" resultType="AuthorityModel">
-		SELECT hashId AS id,name,1 AS type FROM CategoryAuthority WHERE pid != 0
+		SELECT hashId AS id,name,1 AS type FROM CategoryAuthority WHERE hashId IS NOT NULL
 		UNION
 		SELECT id,name,2 AS type FROM LinkAuthority
+	</select>
+	
+	<select id="getCategoryAuthorityModelById" parameterType="java.lang.Integer" resultType="AuthorityModel">
+		SELECT hashId AS id,name,1 AS type FROM CategoryAuthority WHERE id = #{id} AND hashId IS NOT NULL
+	</select>
+	
+	<select id="getLinkAuthorityModelById" parameterType="java.lang.Integer" resultType="AuthorityModel">
+		SELECT id,name,2 AS type FROM LinkAuthority WHERE id = #{id}
 	</select>
 </mapper>

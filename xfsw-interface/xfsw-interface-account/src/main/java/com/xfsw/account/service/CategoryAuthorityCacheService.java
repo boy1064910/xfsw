@@ -41,13 +41,28 @@ public interface CategoryAuthorityCacheService {
 	 */
 	CategoryAuthority getById(Integer id);
 	
+	/**
+	 * 新增空间菜单权限
+	 * @param categoryAuthority
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	void insertCategoryAuthority(CategoryAuthority categoryAuthority);
+	
+	/**
+	 * 更新空间菜单权限
+	 * @param categoryAuthority
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	void updateCategoryAuthority(CategoryAuthority categoryAuthority);
+	
 //	void insertAuthority(CategoryAuthority authority);
 //	
 //	CategoryAuthority get(Integer id);
 //	
 //	void deleteAuthority(Integer id,String operator);
 //	
-//	void updateCategoryAuthority(CategoryAuthority authority);
 //	
 //	List<AuthorityModel> selectFirstAuthorityModelList();
 }

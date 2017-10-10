@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xfsw.account.service.TenantService;
+import com.xfsw.common.classes.DataTablePageInfo;
 import com.xfsw.common.classes.ResponseModel;
 
 /**
@@ -30,6 +31,12 @@ public class RootTenantController {
 	@ResponseBody
 	public ResponseModel list(){
 		return new ResponseModel(tenantService.selectAll());
+	}
+	
+	@RequestMapping(value="/pageInfo")
+	@ResponseBody
+	public ResponseModel pageInfo(DataTablePageInfo pageInfo){
+		return new ResponseModel(tenantService.selectPageInfo(pageInfo));
 	}
 	
 }

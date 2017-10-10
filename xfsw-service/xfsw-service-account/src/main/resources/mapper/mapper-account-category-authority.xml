@@ -6,11 +6,6 @@
 		SELECT * FROM CategoryAuthority
 	</select>
 
-	<insert id="insertAuthority" parameterType="CategoryAuthority" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO CategoryAuthority(name,pid,hashId,url,remark,orderIndex,ico,lastUpdater,lastUpdateTime) 
-		VALUES(#{name},#{pid},#{hashId},#{url},#{remark},#{orderIndex},#{ico},#{lastUpdater},NOW())
-	</insert>
-	
 	<update id="updateCategoryAuthority" parameterType="CategoryAuthority">
 		UPDATE CategoryAuthority SET 
 			hashId = #{hashId},name = #{name},pid = #{pid},url = #{url},

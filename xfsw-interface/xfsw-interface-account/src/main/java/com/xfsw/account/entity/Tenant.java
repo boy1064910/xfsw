@@ -1,6 +1,7 @@
 package com.xfsw.account.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 租户空间类结构
@@ -14,6 +15,8 @@ public class Tenant implements Serializable{
 	private Integer id;
 	private String name;
 	private String code;
+	private String lastUpdater;
+	private Date lastUpdateTime;
 	
 	public Tenant() {}
 	
@@ -34,5 +37,21 @@ public class Tenant implements Serializable{
 	}
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public String getLastUpdater() {
+		return lastUpdater;
+	}
+
+	public void setLastUpdater(String lastUpdater) {
+		this.lastUpdater = lastUpdater;
+	}
+
+	public Date getLastUpdateTime() {
+		return lastUpdateTime;
+	}
+
+	public void setLastUpdateTime(Date lastUpdateTime) {
+		this.lastUpdateTime = lastUpdateTime;
 	}
 }

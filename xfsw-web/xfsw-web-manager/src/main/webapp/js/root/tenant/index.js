@@ -5,41 +5,26 @@ columns.push({
     align: 'center'
 });
 columns.push({
-    field: 'pid',
-    title: 'pid',
-    align: 'center'
-});
-columns.push({
-    field: 'hashId',
-    title: 'HashId',
+    field: 'code',
+    title: 'code',
     align: 'center'
 });
 columns.push({
     field: 'name',
-    title: '权限名称',
+    title: '名称',
     align: 'center'
 });
 columns.push({
-    field: 'url',
-    title: '链接',
+    field: 'lastUpdater',
+    title: '最后操作者',
     align: 'center'
 });
 columns.push({
-    field: 'remark',
-    title: '备注',
-    align: 'center'
-});
-columns.push({
-    field: 'orderIndex',
-    title: '顺序',
-    align: 'center'
-});
-columns.push({
-    field: 'ico',
-    title: '图标',
+    field: 'lastUpdateTime',
+    title: '最后操作时间',
     align: 'center',
-    formatter:function(value,row,index){
-        return '<i class="fa fa-'+value+'"></i>';
+    formatter: function(value,row,index){
+        return Ding.formatDate(new Date(value),'%Y-%M-%d %H:%m');
     }
 });
 columns.push({
@@ -49,7 +34,6 @@ columns.push({
     formatter:function(value,row,index){
         var result = '<a href="javascript:void(0)" onclick="initEdit('+row.id+','+index+')" title="编辑">编辑</a>';
         result+='<a href="javascript:void(0)" onclick="initDelete('+row.id+')" title="删除">删除</a>';
-        result+='<a href="javascript:void(0)" onclick="initConfig('+row.id+')" title="权限配置">权限配置</a>';
         return result;
     }
 });
@@ -70,16 +54,16 @@ Ding.ready(function(){
         //排序方式 
         sortOrder: "asc",    
         //初始化加载第一页，默认第一页
-        // pageNumber:1,   
+         pageNumber:1,   
         // //每页的记录行数（*）   
-        // pageSize: 50,  
+         pageSize: 50,  
         // //可供选择的每页的行数（*）    
-        // pageList: [20, 50, 150, 300],
+         pageList: [20, 50, 150, 300],
         showRefresh:false,
         // showToggle:true,
         singleSelect: false,
         //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据  
-        // url: projectName+"/manager/data/pageInfo.shtml?aRandomCode="+aRandomCode,
+         url: "/xfsw-web-manager/root/tenant/pageInfo.shtml",
         //查询参数,每次调用是会带上这个参数，可自定义
         // queryParams : function(params) {
         //     return {
@@ -101,7 +85,6 @@ Ding.ready(function(){
         searchOnEnterKey:false,
         idField : "id",
         uniqueId: "id",
-        url: '',
         columns: columns
         // detailFormatter:function(index, row){
         //     console.log(row);
@@ -113,20 +96,6 @@ Ding.ready(function(){
         // }
     });
 });
-
-function queryTenantCategoryAuthoirty(selector){
-	Ding.ajax({
-        'url' : "/xfsw-web-manager/root/category/authority/list.shtml",
-        'params' : {
-        		'tenantId' : $(selector).val()
-        },
-        'successCallback' : function(result){
-            var data = {};
-            data.rows = result.data;
-            $("#dataTable").bootstrapTable('load',data);
-        }
-    })
-}
 
 function initAddCategoryAuthority(){
 	if(Ding.isEmpty($("#tenantId").val())){
