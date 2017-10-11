@@ -54,4 +54,12 @@ public interface TenantService {
 	 * @version 0.0.1
 	 */
 	Tenant getById(Integer id);
+	
+	/**
+	 * 初始化空间权限数据(复制所有默认权限-->菜单权限和默认功能权限-->功能权限)
+	 * @param tenantId
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	void configDefaultAuthority(Integer tenantId);
 }

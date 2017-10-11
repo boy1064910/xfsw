@@ -9,21 +9,21 @@
 <!-- Latest compiled and minified Locales -->
 <script src="/widgets/bootstrap/bootstrap-table/bootstrap-table-zh-CN.js"></script>
 
-<script type="text/javascript" src="/xfsw-web-manager/js/root/category/authority/initConfigLinkAuthority.js"></script>
+<script type="text/javascript" src="/xfsw-web-manager/js/root/default/authority/initConfigDefaultLinkAuthority.js"></script>
 </head>
 <body>
 	<div class="panel">
 		<header class="panel-heading">
-			<h4>功能权限：${categoryAuthority.name }</h4>
-			<input type="hidden" id="categoryAuthorityId" value="${categoryAuthority.id }" />
-			<button class="btn btn-info " type="button" onclick="initAdd()"><i class="fa fa-plus"></i> 添加权限</button>
+			<h4>菜单权限：${defaultAuthority.name }</h4>
+			<input type="hidden" id="defaultAuthorityId" value="${defaultAuthority.id }" />
+			<button class="btn btn-info " type="button" onclick="initAdd()"><i class="fa fa-plus"></i> 添加功能权限</button>
         </header>
 		<div class="panel-body">
 			<table id="dataTable"></table>
 		</div>
 	</div>
 	<form class="Ding-Form modal-form form-horizontal" id="addForm" 
-		action="/xfsw-web-manager/root/default/authority/insertLinkAuthority.shtml" successCallback="insertSuccess">
+		action="/xfsw-web-manager/root/default/authority/insertDefaultLinkAuthority.shtml" successCallback="insertSuccess">
 		<div class="form-group">
             <label class="col-lg-2 col-sm-2 control-label">权限名称</label>
             <div class="col-lg-10">
@@ -37,7 +37,7 @@
             </div>
         </div>
 		<div>
-			<input type="hidden" name="categoryAuthorityId" value="${categoryAuthority.id }" />
+			<input type="hidden" name="defaultAuthorityId" value="${defaultAuthority.id }" />
 		</div>
 	</form>
 	<form class="Ding-Form modal-form form-horizontal" id="editLinkAuthorityForm" action="/xfsw-web-manager/root/category/authority/updateLinkAuthority.shtml" successCallback="updateSuccess">

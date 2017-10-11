@@ -22,7 +22,6 @@
 	</div>
 	<form class="Ding-Form modal-form form-horizontal" id="addForm" 
 		action="/xfsw-web-manager/root/default/authority/insertDefaultAuthority.shtml" 
-		submitValidation="insertSubmitValidation"
 		successCallback="insertSuccess">
 		<div class="form-group">
             <label class="col-lg-2 col-sm-2 control-label">权限名称</label>

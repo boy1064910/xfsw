@@ -6,6 +6,10 @@ package com.xfsw.account.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.xfsw.common.util.DJBHashUtil;
+
 /**
  * @author liuxiaopeng
  *
@@ -22,8 +26,31 @@ public class CategoryAuthority implements Serializable {
 	private Integer orderIndex;
 	private String ico;
 	private Integer tenantId;
+	private Integer defaultAuthorityId;
 	private String lastUpdater;
 	private Date lastUpdateTime;
+	
+	public CategoryAuthority(){}
+	
+	public CategoryAuthority(Integer pid, String name, String url, String remark, String ico, Integer tenantId, Integer defaultAuthorityId, String lastUpdater, Date lastUpdateTime) {
+		super();
+		this.pid = pid;
+		this.name = name;
+		this.url = url;
+		this.remark = remark;
+		this.ico = ico;
+		this.tenantId = tenantId;
+		this.defaultAuthorityId = defaultAuthorityId;
+		this.lastUpdater = lastUpdater;
+		this.lastUpdateTime = lastUpdateTime;
+		
+		if(!StringUtils.isEmpty(this.url)){
+			String splitStr = this.url.contains("?") ? 
+			this.url = 
+		}
+			//DJBHashUtil.DJBHashId(defaultLinkAuthority.getUrl())
+	}
+
 	public Integer getOrderIndex() {
 		return orderIndex;
 	}
@@ -89,5 +116,11 @@ public class CategoryAuthority implements Serializable {
 	}
 	public void setTenantId(Integer tenantId) {
 		this.tenantId = tenantId;
+	}
+	public Integer getDefaultAuthorityId() {
+		return defaultAuthorityId;
+	}
+	public void setDefaultAuthorityId(Integer defaultAuthorityId) {
+		this.defaultAuthorityId = defaultAuthorityId;
 	}
 }

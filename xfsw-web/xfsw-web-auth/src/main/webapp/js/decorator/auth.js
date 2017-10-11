@@ -58,7 +58,6 @@ Ding.ready(function(){
 				li.append(ul);
 			}
 			
-			console.log(selectedMenu);
 			if(Ding.isEmpty(selectedMenu)){
 				$($("#mNavMenu").children()[0]).addClass("active");
 				$("#mMenuText").html("HOME");

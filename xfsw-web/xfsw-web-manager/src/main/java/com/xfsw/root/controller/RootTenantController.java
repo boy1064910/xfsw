@@ -1,15 +1,24 @@
 package com.xfsw.root.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xfsw.account.entity.CategoryAuthority;
+import com.xfsw.account.entity.DefaultAuthority;
+import com.xfsw.account.entity.DefaultLinkAuthority;
+import com.xfsw.account.entity.LinkAuthority;
 import com.xfsw.account.entity.Tenant;
+import com.xfsw.account.service.DefaultAuthorityService;
+import com.xfsw.account.service.DefaultLinkAuthorityService;
 import com.xfsw.account.service.TenantService;
 import com.xfsw.common.classes.DataTablePageInfo;
 import com.xfsw.common.classes.DataTableResponseModel;
@@ -27,6 +36,12 @@ public class RootTenantController {
 
 	@Resource(name="tenantService")
 	TenantService tenantService;
+	
+	@Resource(name="defaultAuthorityService")
+	DefaultAuthorityService defaultAuthorityService;
+	
+	@Resource(name="defaultLinkAuthorityService")
+	DefaultLinkAuthorityService defaultLinkAuthorityService;
 	
 	@RequestMapping(value="/index")
 	public void index(){
@@ -67,6 +82,31 @@ public class RootTenantController {
 		tenant.setLastUpdateTime(new Date());
 		tenantService.updateTenant(tenant);
 		return new ResponseModel(tenant);
+	}
+	
+	@RequestMapping(value = "/configDefaultAuthority", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseModel configDefaultAuthority(Integer tenantId) {
+		List<DefaultAuthority> defaultAuthorityList = defaultAuthorityService.selectAll();
+		List<DefaultLinkAuthority> defaultLinkAuthorityList = defaultLinkAuthorityService.selectAll();
+		
+		List<CategoryAuthority> parentCategoryAuthorityList = new ArrayList<CategoryAuthority>();
+		List<CategoryAuthority> categoryAuthorityList = new ArrayList<CategoryAuthority>();
+		List<LinkAuthority> linkAuthorityList = new ArrayList<LinkAuthority>();
+		StringUtils.isEmpty(str)
+		String operator = ThreadUserInfoManager.getAccount();
+		Date currentTime = new Date();
+		for(DefaultAuthority defaultAuthority:defaultAuthorityList){
+			CategoryAuthority categoryAuthority = new CategoryAuthority(defaultAuthority.getPid(), defaultAuthority.getName(), defaultAuthority.getUrl(), defaultAuthority.getRemark(), defaultAuthority.getIco(), tenantId, defaultAuthority.getId(), operator, currentTime);
+			if(defaultAuthority.getPid().intValue()==0){
+				
+			}
+			else{
+				
+			}
+		}
+		//		tenantService.configDefaultAuthority(tenantId);
+		return new ResponseModel();
 	}
 	
 }

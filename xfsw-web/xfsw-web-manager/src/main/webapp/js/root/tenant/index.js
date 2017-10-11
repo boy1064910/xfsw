@@ -33,6 +33,7 @@ columns.push({
     align: 'center',
     formatter:function(value,row,index){
         var result = '<a href="javascript:void(0)" onclick="initEdit('+row.id+','+index+')" title="编辑">编辑</a>';
+        result += '<a href="javascript:void(0)" onclick="initConfigDefaultAuthority('+row.id+','+index+')" title="初始化空间权限">初始化空间权限</a>';
         return result;
     }
 });
@@ -110,6 +111,18 @@ function insertSuccess(result){
     $("#dataTable").bootstrapTable('refresh');
 }
 
+function initConfigDefaultAuthority(id,index){
+	Ding.ajax({
+        'url' : '/xfsw-web-manager/root/tenant/configDefaultAuthority.shtml',
+        'params' : {
+            'tenantId' : id
+        },
+        'successCallback' : function(result){
+        	Ding.tips("操作成功");
+        }
+    })
+}
+
 function initEdit(id,index){
     Ding.ajax({
         'url' : '/xfsw-web-manager/root/tenant/initEditTenant.shtml',
@@ -121,6 +134,7 @@ function initEdit(id,index){
             $("#editid").val(data.id);
             $("#editname").val(data.name);
             $("#editcode").val(data.code);
+            $("#editindex").val(index);
             openModal({
                 'title':'编辑空间',
                 'targetId':'editForm',

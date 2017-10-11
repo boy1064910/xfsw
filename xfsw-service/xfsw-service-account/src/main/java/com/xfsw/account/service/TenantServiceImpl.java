@@ -46,4 +46,9 @@ public class TenantServiceImpl implements TenantService {
 	public Tenant getById(Integer id) {
 		return commonMapper.get(Tenant.class, id);
 	}
+	
+	@Override
+	public void configDefaultAuthority(Integer tenantId){
+		
+	}
 }

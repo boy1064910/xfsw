@@ -3,23 +3,20 @@ package com.xfsw.account.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class LinkAuthority implements Serializable {
+/**
+ * 默认功能权限类结构
+ * @author xiaopeng.liu
+ * @version 0.0.1
+ */
+public class DefaultLinkAuthority implements Serializable {
 
-	private static final long serialVersionUID = -736902529228470678L;
+	private static final long serialVersionUID = -4361648509697693507L;
 	private Integer id;
 	private String name;
-	private Integer categoryAuthorityId;
-	private String url;
-	private Integer tenantId;
 	private Integer defaultAuthorityId;
+	private String url;
 	private String lastUpdater;
 	private Date lastUpdateTime;
-
-	//辅助字段
-	private Integer oldId;
-
-	public LinkAuthority() {
-	}
 
 	public Integer getId() {
 		return id;
@@ -45,14 +42,6 @@ public class LinkAuthority implements Serializable {
 		this.name = name;
 	}
 
-	public Integer getOldId() {
-		return oldId;
-	}
-
-	public void setOldId(Integer oldId) {
-		this.oldId = oldId;
-	}
-
 	public String getLastUpdater() {
 		return lastUpdater;
 	}
@@ -67,22 +56,6 @@ public class LinkAuthority implements Serializable {
 
 	public void setLastUpdateTime(Date lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
-	}
-
-	public Integer getTenantId() {
-		return tenantId;
-	}
-
-	public void setTenantId(Integer tenantId) {
-		this.tenantId = tenantId;
-	}
-
-	public Integer getCategoryAuthorityId() {
-		return categoryAuthorityId;
-	}
-
-	public void setCategoryAuthorityId(Integer categoryAuthorityId) {
-		this.categoryAuthorityId = categoryAuthorityId;
 	}
 
 	public Integer getDefaultAuthorityId() {
