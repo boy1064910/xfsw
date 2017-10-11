@@ -19,6 +19,21 @@ public class DefaultAuthorityServiceImpl implements DefaultAuthorityService {
 	public List<DefaultAuthority> selectAll() {
 		return commonMapper.selectAll(DefaultAuthority.class);
 	}
+
+	@Override
+	public void insertDefaultAuthority(DefaultAuthority defaultAuthority) {
+		commonMapper.insert(DefaultAuthority.class, defaultAuthority);
+	}
+
+	@Override
+	public void updateDefaultAuthority(DefaultAuthority defaultAuthority) {
+		
+	}
+
+	@Override
+	public DefaultAuthority getById(Integer id) {
+		return commonMapper.get(DefaultAuthority.class, id);
+	}
 	
 
 }

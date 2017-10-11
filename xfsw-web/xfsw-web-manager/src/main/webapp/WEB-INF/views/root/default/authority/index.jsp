@@ -9,23 +9,21 @@
 <!-- Latest compiled and minified Locales -->
 <script src="/widgets/bootstrap/bootstrap-table/bootstrap-table-zh-CN.js"></script>
 
-<script type="text/javascript" src="/xfsw-web-manager/js/root/category/authority/index.js"></script>
+<script type="text/javascript" src="/xfsw-web-manager/js/root/default/authority/index.js"></script>
 </head>
 <body>
 	<div class="panel">
 		<header class="panel-heading">
-			<select id="tenantId" class="Ding-Selector" defaultOptionHtml="请选择"
-				url="/xfsw-web-manager/root/tenant/list.shtml" valueProperty="id" htmlProperty="name"
-				onchange="queryTenantCategoryAuthoirty(this)">
-			</select>
-			<button class="btn btn-info " type="button" onclick="initAddCategoryAuthority()"><i class="fa fa-plus"></i> 添加权限</button>
-			<button class="btn btn-info " type="button" onclick="refreshAuthorityCache()"><i class="fa fa-refresh"></i> 刷新权限缓存</button>
+			<button class="btn btn-info " type="button" onclick="initAdd()"><i class="fa fa-plus"></i> 添加权限</button>
         </header>
 		<div class="panel-body">
 			<table id="dataTable"></table>
 		</div>
 	</div>
-	<form class="Ding-Form modal-form form-horizontal" id="addCategoryAuthorityForm" action="<%=request.getContextPath() %>/manager/account/category/authority/insertAuthority.shtml" successCallback="insertSuccess">
+	<form class="Ding-Form modal-form form-horizontal" id="addForm" 
+		action="/xfsw-web-manager/root/default/authority/insertDefaultAuthority.shtml" 
+		submitValidation="insertSubmitValidation"
+		successCallback="insertSuccess">
 		<div class="form-group">
             <label class="col-lg-2 col-sm-2 control-label">权限名称</label>
             <div class="col-lg-10">
@@ -64,7 +62,9 @@
         </div>
 	</form>
 	
-	<form class="Ding-Form modal-form form-horizontal" id="editCategoryAuthorityForm" action="<%=request.getContextPath() %>/manager/account/category/authority/updateCategoryAuthority.shtml" successCallback="updateSuccess">
+	<form class="Ding-Form modal-form form-horizontal" id="editForm" 
+		action="/xfsw-web-manager/root/default/authority/updateCategoryAuthority.shtml" 
+		successCallback="updateSuccess">
 		<div class="form-group">
             <label class="col-lg-2 col-sm-2 control-label">权限名称</label>
             <div class="col-lg-10">

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Xfsw-Saas管理平台</title>
+	<title>XFSW-SaaS管理中心</title>
 	<meta charset="utf-8">
 	<link rel="shortcut icon" type="image/x-icon" href="/images/login-logo.png">
 	<link href="/css/style.css" rel="stylesheet">
