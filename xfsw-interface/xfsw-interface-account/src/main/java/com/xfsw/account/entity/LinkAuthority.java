@@ -3,6 +3,11 @@ package com.xfsw.account.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.xfsw.common.util.DJBHashUtil;
+import com.xfsw.common.util.StringUtil;
+
 public class LinkAuthority implements Serializable {
 
 	private static final long serialVersionUID = -736902529228470678L;
@@ -15,10 +20,25 @@ public class LinkAuthority implements Serializable {
 	private String lastUpdater;
 	private Date lastUpdateTime;
 
-	//辅助字段
+	// 辅助字段
 	private Integer oldId;
 
-	public LinkAuthority() {
+	public LinkAuthority() {}
+	
+	public LinkAuthority(DefaultLinkAuthority defaultLinkAuthority,Integer tenantId,String tenantCode) {
+		super();
+		this.name = defaultLinkAuthority.getName();
+		this.categoryAuthorityId = defaultLinkAuthority.getDefaultAuthorityId();
+		this.tenantId = tenantId;
+		this.defaultAuthorityId = defaultLinkAuthority.getId();
+		
+		if(!StringUtils.isEmpty(defaultLinkAuthority.getUrl())){
+			String url = defaultLinkAuthority.getUrl();
+			String subfixUrl = "aRandomCode="+tenantCode+"-"+StringUtil.getRandomString(8);
+			url = url.contains("?") ? (url + "&" + subfixUrl) : (url + "?" + subfixUrl);
+			this.url = url;
+			this.id = DJBHashUtil.DJBHashId(this.url);
+		}
 	}
 
 	public Integer getId() {

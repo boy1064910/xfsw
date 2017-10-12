@@ -9,6 +9,7 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 
 import com.xfsw.common.util.DJBHashUtil;
+import com.xfsw.common.util.StringUtil;
 
 /**
  * @author liuxiaopeng
@@ -32,25 +33,26 @@ public class CategoryAuthority implements Serializable {
 	
 	public CategoryAuthority(){}
 	
-	public CategoryAuthority(Integer pid, String name, String url, String remark, String ico, Integer tenantId, Integer defaultAuthorityId, String lastUpdater, Date lastUpdateTime) {
+	public CategoryAuthority(DefaultAuthority defaultAuthority,Integer tenantId,String tenantCode) {
 		super();
-		this.pid = pid;
-		this.name = name;
-		this.url = url;
-		this.remark = remark;
-		this.ico = ico;
+		this.id = defaultAuthority.getId();
+		this.pid = defaultAuthority.getPid();
+		this.name = defaultAuthority.getName();
+		this.url = defaultAuthority.getUrl();
+		this.remark = defaultAuthority.getRemark();
+		this.ico = defaultAuthority.getIco();
 		this.tenantId = tenantId;
-		this.defaultAuthorityId = defaultAuthorityId;
-		this.lastUpdater = lastUpdater;
-		this.lastUpdateTime = lastUpdateTime;
+		this.defaultAuthorityId = defaultAuthority.getId();
 		
-		if(!StringUtils.isEmpty(this.url)){
-			String splitStr = this.url.contains("?") ? 
-			this.url = 
+		if(!StringUtils.isEmpty(defaultAuthority.getUrl())){
+			String url = defaultAuthority.getUrl();
+			String subfixUrl = "aRandomCode="+tenantCode+"-"+StringUtil.getRandomString(8);
+			url = url.contains("?") ? (url + "&" + subfixUrl) : (url + "?" + subfixUrl);
+			this.url = url;
+			this.hashId = DJBHashUtil.DJBHashId(this.url);
 		}
-			//DJBHashUtil.DJBHashId(defaultLinkAuthority.getUrl())
 	}
-
+	
 	public Integer getOrderIndex() {
 		return orderIndex;
 	}

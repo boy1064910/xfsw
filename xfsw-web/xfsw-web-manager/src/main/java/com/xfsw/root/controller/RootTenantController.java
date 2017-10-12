@@ -87,24 +87,34 @@ public class RootTenantController {
 	@RequestMapping(value = "/configDefaultAuthority", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseModel configDefaultAuthority(Integer tenantId) {
-		List<DefaultAuthority> defaultAuthorityList = defaultAuthorityService.selectAll();
-		List<DefaultLinkAuthority> defaultLinkAuthorityList = defaultLinkAuthorityService.selectAll();
-		
-		List<CategoryAuthority> parentCategoryAuthorityList = new ArrayList<CategoryAuthority>();
-		List<CategoryAuthority> categoryAuthorityList = new ArrayList<CategoryAuthority>();
-		List<LinkAuthority> linkAuthorityList = new ArrayList<LinkAuthority>();
-		StringUtils.isEmpty(str)
+		Tenant tenant = tenantService.getById(tenantId);
 		String operator = ThreadUserInfoManager.getAccount();
 		Date currentTime = new Date();
+		
+		List<DefaultAuthority> defaultAuthorityList = defaultAuthorityService.selectAll();
+		List<CategoryAuthority> parentCategoryAuthorityList = new ArrayList<CategoryAuthority>();
+		List<CategoryAuthority> categoryAuthorityList = new ArrayList<CategoryAuthority>();
 		for(DefaultAuthority defaultAuthority:defaultAuthorityList){
-			CategoryAuthority categoryAuthority = new CategoryAuthority(defaultAuthority.getPid(), defaultAuthority.getName(), defaultAuthority.getUrl(), defaultAuthority.getRemark(), defaultAuthority.getIco(), tenantId, defaultAuthority.getId(), operator, currentTime);
+			CategoryAuthority categoryAuthority = new CategoryAuthority(defaultAuthority,tenant.getId(),tenant.getCode());
+			categoryAuthority.setLastUpdater(operator);
+			categoryAuthority.setLastUpdateTime(currentTime);
 			if(defaultAuthority.getPid().intValue()==0){
-				
+				parentCategoryAuthorityList.add(categoryAuthority);
 			}
 			else{
-				
+				categoryAuthorityList.add(categoryAuthority);
 			}
 		}
+		
+		List<DefaultLinkAuthority> defaultLinkAuthorityList = defaultLinkAuthorityService.selectAll();
+		List<LinkAuthority> linkAuthorityList = new ArrayList<LinkAuthority>();
+		for(DefaultLinkAuthority defaultLinkAuthority:defaultLinkAuthorityList) {
+			LinkAuthority linkAuthority = new LinkAuthority(defaultLinkAuthority,tenant.getId(),tenant.getCode());
+			linkAuthority.setLastUpdater(operator);
+			linkAuthority.setLastUpdateTime(currentTime);
+			linkAuthorityList.add(linkAuthority);
+		}
+		
 		//		tenantService.configDefaultAuthority(tenantId);
 		return new ResponseModel();
 	}
