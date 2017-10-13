@@ -59,6 +59,17 @@ public class LinkAuthorityServiceImpl implements LinkAuthorityService {
 		authorityCacheService.reloadLinkAuthorityCache(linkAuthority.getId());
 	}
 	
+	@Override
+	@Transactional
+	public void initLinkAuthority(List<LinkAuthority> linkAuthorityList,Map<Integer,Integer> categoryAuthorityIdMap){
+		for(LinkAuthority linkAuthority:linkAuthorityList){
+			Integer oldId = linkAuthority.getCategoryAuthorityId();
+			linkAuthority.setCategoryAuthorityId(categoryAuthorityIdMap.get(oldId));
+			commonMapper.insert(LinkAuthority.class, linkAuthority);
+		}
+	}
+	
+	
 //	@Resource(name="authorityCacheService")
 //	AuthorityCacheService authorityCacheService;
 //	

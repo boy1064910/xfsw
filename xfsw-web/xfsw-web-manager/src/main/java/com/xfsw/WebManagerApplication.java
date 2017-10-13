@@ -20,7 +20,7 @@ import com.xfsw.common.filter.WebSiteMeshFilter;
 @SpringBootApplication
 @ImportResource(locations={"classpath:spring-web.xml"})
 @EnableAutoConfiguration(exclude={RedisAutoConfiguration.class,RedisRepositoriesAutoConfiguration.class})
-public class Application {
+public class WebManagerApplication {
 	
 	/**
 	 * spirng boot的标准入口
@@ -29,7 +29,7 @@ public class Application {
 	 * @version 0.0.1
 	 */
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(WebManagerApplication.class, args);
 	}
 	
 	@Bean

@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +16,7 @@ import com.xfsw.account.entity.DefaultAuthority;
 import com.xfsw.account.entity.DefaultLinkAuthority;
 import com.xfsw.account.entity.LinkAuthority;
 import com.xfsw.account.entity.Tenant;
+import com.xfsw.account.service.CategoryAuthorityCacheService;
 import com.xfsw.account.service.DefaultAuthorityService;
 import com.xfsw.account.service.DefaultLinkAuthorityService;
 import com.xfsw.account.service.TenantService;
@@ -42,6 +42,9 @@ public class RootTenantController {
 	
 	@Resource(name="defaultLinkAuthorityService")
 	DefaultLinkAuthorityService defaultLinkAuthorityService;
+	
+	@Resource(name="categoryAuthorityCacheService")
+	CategoryAuthorityCacheService categoryAuthorityCacheService;
 	
 	@RequestMapping(value="/index")
 	public void index(){

@@ -1,7 +1,4 @@
-/**
- * 
- */
-package net.xueshupa;
+package com.xfsw;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -15,19 +12,25 @@ import org.springframework.context.annotation.ImportResource;
 import com.xfsw.common.filter.WebSiteMeshFilter;
 
 /**
- * 
+ * 权限web服务系统启动类
  * @author xiaopeng.liu
  * @version 0.0.1
  */
-//@EnableEurekaClient
+//@EnableDiscoveryClient
 @SpringBootApplication
-@ImportResource(locations={"classpath:spring-web.xml","classpath*:spring/spring-service-*.xml"})
+@ImportResource(locations={"classpath:spring-web.xml"})
 @EnableAutoConfiguration(exclude={RedisAutoConfiguration.class,RedisRepositoriesAutoConfiguration.class})
-public class Application {
-
-	public static void main(String[] args) {  	
-        SpringApplication.run(Application.class, args);  
-    }  
+public class WebAuthApplication {
+	
+	/**
+	 * spirng boot的标准入口
+	 * @param args
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	public static void main(String[] args) {
+		SpringApplication.run(WebAuthApplication.class, args);
+	}
 	
 	@Bean
 	public FilterRegistrationBean siteMeshFilter() {

@@ -1,6 +1,7 @@
 package com.xfsw.account.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.xfsw.account.entity.LinkAuthority;
 
@@ -45,6 +46,14 @@ public interface LinkAuthorityService {
 	 * @version 0.0.1
 	 */
 	void insertLinkAuthority(LinkAuthority linkAuthority);
+	
+	/**
+	 * 初始化功能权限
+	 * @param linkAuthorityList
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	void initLinkAuthority(List<LinkAuthority> linkAuthorityList,Map<Integer,Integer> categoryAuthorityIdMap);
 	
 //	void insertLinkAuthority(LinkAuthority linkAuthority);
 //	

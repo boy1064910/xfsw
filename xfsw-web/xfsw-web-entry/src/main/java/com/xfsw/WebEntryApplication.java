@@ -19,9 +19,9 @@ import org.springframework.context.annotation.ImportResource;
 @SpringBootApplication
 @ImportResource(locations={"classpath:spring-web.xml"})
 @EnableAutoConfiguration(exclude={RedisAutoConfiguration.class,RedisRepositoriesAutoConfiguration.class})
-public class Application {
+public class WebEntryApplication {
 
 	public static void main(String[] args) {  
-        SpringApplication.run(Application.class, args);  
+        SpringApplication.run(WebEntryApplication.class, args);  
     }  
 }

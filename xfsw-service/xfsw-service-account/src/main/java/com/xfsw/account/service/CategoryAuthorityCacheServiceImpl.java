@@ -17,9 +17,11 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.xfsw.account.consts.RedisCacheDefineConstants;
 import com.xfsw.account.entity.CategoryAuthority;
+import com.xfsw.account.entity.LinkAuthority;
 import com.xfsw.common.classes.BusinessException;
 import com.xfsw.common.consts.ErrorConstant;
 import com.xfsw.common.mapper.ICommonMapper;
@@ -89,6 +91,24 @@ public class CategoryAuthorityCacheServiceImpl implements CategoryAuthorityCache
 		this.loadCategoryAuthorityCache();
 		if(categoryAuthority.getHashId()!=null)
 			authorityCacheService.reloadCategoryAuthorityCache(categoryAuthority.getHashId());
+	}
+	
+	@Override
+	@Transactional
+	public void initAuthority(List<CategoryAuthority> parentCategoryAuthorityList,List<CategoryAuthority> categoryAuthorityList,List<LinkAuthority> linkAuthorityList){
+		Map<Integer,Integer> categoryAuthorityIdMap = new HashMap<Integer,Integer>();
+		for(CategoryAuthority categoryAuthority:parentCategoryAuthorityList){
+			Integer oldId = categoryAuthority.getId();
+			commonMapper.insert(CategoryAuthority.class, categoryAuthority);
+			categoryAuthorityIdMap.put(oldId, categoryAuthority.getId());
+		}
+		
+		for(CategoryAuthority categoryAuthority:categoryAuthorityList){
+			Integer oldId = categoryAuthority.getId();
+			categoryAuthority.setPid(categoryAuthorityIdMap.get(oldId));
+			commonMapper.insert(CategoryAuthority.class, categoryAuthority);
+			categoryAuthorityIdMap.put(oldId, categoryAuthority.getId());
+		}
 	}
 	
 //	@Transactional

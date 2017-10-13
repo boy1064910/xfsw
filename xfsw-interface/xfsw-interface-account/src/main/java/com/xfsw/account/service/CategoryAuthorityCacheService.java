@@ -6,6 +6,7 @@ package com.xfsw.account.service;
 import java.util.List;
 
 import com.xfsw.account.entity.CategoryAuthority;
+import com.xfsw.account.entity.LinkAuthority;
 import com.xfsw.common.classes.BusinessException;
 
 /**
@@ -56,6 +57,16 @@ public interface CategoryAuthorityCacheService {
 	 * @version 0.0.1
 	 */
 	void updateCategoryAuthority(CategoryAuthority categoryAuthority);
+	
+	/**
+	 * 初始化空间权限信息
+	 * @param parentCategoryAuthorityList
+	 * @param categoryAuthorityList
+	 * @param linkAuthorityList
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	void initAuthority(List<CategoryAuthority> parentCategoryAuthorityList,List<CategoryAuthority> categoryAuthorityList,List<LinkAuthority> linkAuthorityList);
 	
 //	void insertAuthority(CategoryAuthority authority);
 //	
