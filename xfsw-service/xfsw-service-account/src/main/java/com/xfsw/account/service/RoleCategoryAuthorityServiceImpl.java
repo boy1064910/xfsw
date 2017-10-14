@@ -20,6 +20,21 @@ public class RoleCategoryAuthorityServiceImpl implements RoleCategoryAuthoritySe
 	@Resource(name="accountCommonMapper")
 	private ICommonMapper commonMapper;
 	
+	@Resource(name="roleLinkAuthorityService")
+	private RoleLinkAuthorityService roleLinkAuthorityService;
+	
+	@Override
+	@Transactional
+	public void configAuthority(List<Integer> categoryAuthorityIdList,List<Integer> linkAuthorityIdList,Integer roleId,String operator){
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("roleId", roleId);
+		params.put("authorityIds", categoryAuthorityIdList);
+		params.put("lastUpdater", operator);
+		commonMapper.insert("RoleCategoryAuthority.insertRoleCategoryAuthorityList", params);
+		
+		roleLinkAuthorityService.insertRoleLinkAuthorityList(roleId, linkAuthorityIdList, operator);
+	}
+	
 	@Transactional
 	public void delete(Integer authorityId,String operator){
 		RoleCategoryAuthority roleAuthority = new RoleCategoryAuthority();

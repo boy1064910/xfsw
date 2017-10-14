@@ -61,6 +61,13 @@ public class RootDefaultAuthorityController {
 		model.addAttribute("defaultAuthority", defaultAuthority);
 	}
 	
+	@RequestMapping(value="deleteDefaultAuthority",method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseModel deleteDefaultAuthority(Integer defaultAuthorityId,Model model){
+		defaultAuthorityService.deleteDefaultAuthority(defaultAuthorityId, ThreadUserInfoManager.getAccount());
+		return new ResponseModel();
+	}
+	
 	@RequestMapping(value = "/defaultLinkAuthoritylist")
 	@ResponseBody
 	public ResponseModel defaultLinkAuthoritylist(Integer defaultAuthorityId) {
@@ -79,7 +86,7 @@ public class RootDefaultAuthorityController {
 	@RequestMapping(value = "/deleteDefaultLinkAuthority", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseModel deleteDefaultLinkAuthority(Integer id) {
-		defaultLinkAuthorityService.deleteDefaultLinkAuthority(id, ThreadUserInfoManager.getAccount());
+		defaultLinkAuthorityService.deleteById(id, ThreadUserInfoManager.getAccount());
 		return new ResponseModel();
 	}
 	

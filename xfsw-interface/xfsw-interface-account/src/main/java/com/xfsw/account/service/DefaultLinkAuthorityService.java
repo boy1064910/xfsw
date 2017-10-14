@@ -38,7 +38,16 @@ public interface DefaultLinkAuthorityService {
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
-	void deleteDefaultLinkAuthority(Integer id,String operator);
+	void deleteById(Integer id,String operator);
+	
+	/**
+	 * 通过默认菜单权限ID删除菜单功能权限数据
+	 * @param defaultAuthorityId
+	 * @param operator
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	void deleteByDefaultAuthorityId(Integer defaultAuthorityId,String operator);
 	
 	/**
 	 * 查询所有的默认功能权限数据

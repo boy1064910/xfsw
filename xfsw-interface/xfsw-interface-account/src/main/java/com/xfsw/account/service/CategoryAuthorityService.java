@@ -66,7 +66,7 @@ public interface CategoryAuthorityService {
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
-	void initAuthority(List<CategoryAuthority> parentCategoryAuthorityList,List<CategoryAuthority> categoryAuthorityList,List<LinkAuthority> linkAuthorityList);
+	void initAuthority(List<CategoryAuthority> parentCategoryAuthorityList,List<CategoryAuthority> categoryAuthorityList,List<LinkAuthority> linkAuthorityList,Integer roleId,String operator);
 	
 //	void insertAuthority(CategoryAuthority authority);
 //	

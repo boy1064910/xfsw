@@ -33,7 +33,7 @@ columns.push({
     align: 'center',
     formatter:function(value,row,index){
         var result = '<a href="javascript:void(0)" onclick="initEdit('+row.id+','+index+')" title="编辑">编辑</a>';
-        result += '<a href="javascript:void(0)" onclick="initConfigDefaultAuthority('+row.id+','+index+')" title="初始化空间权限">初始化空间权限</a>';
+        result += '<a href="javascript:void(0)" onclick="initConfigRole('+row.id+')" title="角色管理">角色管理</a>';
         return result;
     }
 });
@@ -111,16 +111,8 @@ function insertSuccess(result){
     $("#dataTable").bootstrapTable('refresh');
 }
 
-function initConfigDefaultAuthority(id,index){
-	Ding.ajax({
-        'url' : '/xfsw-web-manager/root/tenant/configDefaultAuthority.shtml',
-        'params' : {
-            'tenantId' : id
-        },
-        'successCallback' : function(result){
-        	Ding.tips("操作成功");
-        }
-    })
+function initConfigRole(id){
+	this.location = "/xfsw-web-manager/root/tenant/initConfigRole.shtml?tenantId="+id;
 }
 
 function initEdit(id,index){

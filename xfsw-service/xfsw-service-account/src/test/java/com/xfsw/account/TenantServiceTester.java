@@ -50,6 +50,7 @@ public class TenantServiceTester {
 	
 	@Test
 	public void test(){
+		Integer roleId = 2;
 		Tenant tenant = tenantService.getById(3);
 		String operator = "tester";
 		Date currentTime = new Date();
@@ -80,6 +81,6 @@ public class TenantServiceTester {
 		System.out.println(JsonUtil.entity2Json(defaultAuthorityList));
 		System.out.println(JsonUtil.entity2Json(defaultLinkAuthorityList));
 		
-		categoryAuthorityService.initAuthority(parentCategoryAuthorityList, categoryAuthorityList, linkAuthorityList);
+		categoryAuthorityService.initAuthority(parentCategoryAuthorityList, categoryAuthorityList, linkAuthorityList,roleId,operator);
 	}
 }

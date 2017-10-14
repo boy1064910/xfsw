@@ -43,4 +43,12 @@ public interface DefaultAuthorityService {
 	 * @version 0.0.1
 	 */
 	DefaultAuthority getById(Integer id);
+	
+	/**
+	 * 删除默认菜单权限
+	 * @param defaultAuthorityId
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	void deleteDefaultAuthority(Integer defaultAuthorityId,String operator);
 }

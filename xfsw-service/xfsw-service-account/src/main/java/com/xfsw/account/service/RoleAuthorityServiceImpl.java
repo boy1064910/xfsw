@@ -39,7 +39,7 @@ public class RoleAuthorityServiceImpl implements RoleAuthorityService {
 		}
 		return new UserAuthorityIdsModel(authorityIds,categoryAuthorityIds);
 	}
-
+	
 //	public List<Integer> selectUnionAuthorityIdListByRoleId(Integer roleId){
 //		return commonMapper.selectList("RoleAuthority.selectUnionAuthorityIdListByRoleId",roleId);
 //	}

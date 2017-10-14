@@ -19,7 +19,15 @@ public interface RoleService {
 	 * @version 0.0.1
 	 */
 	List<Role> selectListByTenantId(Integer tenantId);
-
+	
+	/**
+	 * 保存角色信息
+	 * @param role
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	void insertRole(Role role);
+	
 //	Role get(Integer id);
 //	
 //	void updateRole(Role role,Integer[] ids,Integer[] types);

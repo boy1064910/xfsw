@@ -5,37 +5,14 @@ columns.push({
     align: 'center'
 });
 columns.push({
-    field: 'pid',
-    title: 'pid',
-    align: 'center'
-});
-columns.push({
     field: 'name',
-    title: '权限名称',
-    align: 'center'
-});
-columns.push({
-    field: 'url',
-    title: '链接',
+    title: '角色名称',
     align: 'center'
 });
 columns.push({
     field: 'remark',
-    title: '备注',
+    title: '角色备注信息',
     align: 'center'
-});
-columns.push({
-    field: 'orderIndex',
-    title: '顺序',
-    align: 'center'
-});
-columns.push({
-    field: 'ico',
-    title: '图标',
-    align: 'center',
-    formatter:function(value,row,index){
-        return '<i class="fa fa-'+value+'"></i>';
-    }
 });
 columns.push({
     field: 'id',
@@ -43,15 +20,13 @@ columns.push({
     align: 'center',
     formatter:function(value,row,index){
         var result = '<a href="javascript:void(0)" onclick="initEdit('+row.id+','+index+')" title="编辑">编辑</a>';
-    	result+='<a href="javascript:void(0)" onclick="initDelete('+row.id+')" title="删除">删除</a>';
-        if(row.pid!=0){
-        	result+='<a href="javascript:void(0)" onclick="initConfig('+row.id+')" title="权限配置">权限配置</a>';
-        }
+        result+='<a href="javascript:void(0)" onclick="initDel('+row.id+')" title="删除">删除</a>';
+        result += '<a href="javascript:void(0)" onclick="initConfigDefaultAuthority('+row.id+','+row.tenantId+','+index+')" title="初始化空间权限">初始化空间权限</a>';
         return result;
     }
 });
+
 Ding.ready(function(){
-    //请求商品表格数据
     $("#dataTable").bootstrapTable({
         //请求方法
         method: 'get',
@@ -100,90 +75,62 @@ Ding.ready(function(){
         uniqueId: "id",
         url: '',
         columns: columns
+        // detailFormatter:function(index, row){
+        //     console.log(row);
+        // },
+        // onLoadSuccess:function(result){
+        //     if(result.resultCode!=200){
+        //         Ding.tips(result.msg);
+        //     }
+        // }
     });
-    
+
     loadData();
 });
 
 function loadData(){
-	Ding.ajax({
-        'url' : "/xfsw-web-manager/root/default/authority/list.shtml",
+    Ding.ajax({
+        'url' : "/xfsw-web-manager/root/tenant/roleList.shtml",
+        'params' : {
+            'tenantId' : $("#tenantId").val()
+        },
         'successCallback' : function(result){
             var data = {};
             data.rows = result.data;
             $("#dataTable").bootstrapTable('load',data);
         }
-    });
+    })
 }
 
 function initAdd(){
     $("#name").val('');
-    $("#pid").val('');
-    $("#url").val('');
     $("#remark").val('');
-    $("#orderIndex").val('');
-    $("#ico").val('');
     openModal({
-        'title':'添加默认权限',
+        'title':'添加角色信息',
         'targetId':'addForm',
         'sureBtnText':'保存'
     });
 }
 
-//添加权限成功回调事件
 function insertSuccess(result){
-    Ding.tips("添加成功");
     loadData();
-}
-
-//配置权限
-function initConfig(id){
-    this.location = "/xfsw-web-manager/root/default/authority/initConfigDefaultLinkAuthority.shtml?defaultAuthorityId="+id;
-}
-
-
-function initDelete(id){
-    $.confirm({
-        backgroundDismiss: true,
-        title:'删除菜单权限',
-        content: '删除菜单权限将会同时删除功能权限，是否删除 !',
-        confirmButton:'删除',
-        cancelButton:'取消',
-        confirmButtonClass:'btn-success',
-        confirm:function(){
-            Ding.ajax({
-                'url':'/xfsw-web-manager/root/default/authority/deleteDefaultAuthority.shtml',
-                'method':'post',
-                'params':{
-                	'defaultAuthorityId' : id
-                },
-                'successCallback':function(result){
-                    $("#dataTable").bootstrapTable('removeByUniqueId',id);
-                }
-            });
-        }
-    });
 }
 
 function initEdit(id,index){
     Ding.ajax({
-        'url' : '/xfsw-web-manager/root/category/authority/initEditCategoryAuthority.shtml',
+    	'url' : '/xfsw-web-manager/root/category/authority/initEditLinkAuthority.shtml',
         'params' : {
             'id' : id
         },
         'successCallback' : function(result){
             var data = result.data;
-            $("#editid").val(data.id);
-            $("#editname").val(data.name);
-            $("#editpid").val(data.pid);
-            $("#editurl").val(data.url);
-            $("#editremark").val(data.remark);
-            $("#editorderIndex").val(data.orderIndex);
-            $("#editico").val(data.ico);
-            $("#editindex").val(index);
+            $("#editId").val(data.id);
+            $("#editName").val(data.name);
+            $("#editUrl").val(data.url);
+            $("#editIndex").val(index);
             openModal({
-                'title':'编辑菜单权限',
-                'targetId':'editCategoryAuthorityForm',
+                'title':'编辑功能权限',
+                'targetId':'editLinkAuthorityForm',
                 'sureBtnText':'保存'
             });
         }
@@ -192,19 +139,43 @@ function initEdit(id,index){
 
 function updateSuccess(result){
     var data = result.data;
-    var index = $("#editindex").val();
+    var index = $("#editIndex").val();
     $("#dataTable").bootstrapTable('updateRow',{
         'index' : index,
         'row' : data
     });
 }
 
-
-function refreshAuthorityCache(){
-    Ding.ajax({
-        'url':projectName+'/manager/account/category/authority/refreshAuthorityCache.shtml',
-        successCallback:function(result){
-            Ding.tips("刷新成功");
+function initDel(id){
+    $.confirm({
+        backgroundDismiss: true,
+        title:'删除功能权限',
+        content: '是否删除功能权限 ?',
+        confirmButton:'删除',
+        cancelButton:'取消',
+        confirmButtonClass:'btn-success',
+        confirm:function(){
+            Ding.ajax({
+                'url':'/xfsw-web-manager/root/default/authority/deleteDefaultLinkAuthority.shtml?id='+id,
+                'method':'post',
+                'successCallback':function(result){
+                    $("#dataTable").bootstrapTable('removeByUniqueId',id);
+                }
+            });
         }
     });
+}
+
+function initConfigDefaultAuthority(id,tenantId,index){
+	Ding.ajax({
+        'url' : '/xfsw-web-manager/root/tenant/configDefaultAuthority.shtml',
+        'method':'post',
+        'params' : {
+        	'roleId' : id,
+            'tenantId' : tenantId
+        },
+        'successCallback' : function(result){
+        	Ding.tips("操作成功");
+        }
+    })
 }

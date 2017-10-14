@@ -1,5 +1,9 @@
 package com.xfsw.common.util;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -40,12 +44,22 @@ public class MapUtil {
 		return entity;
 	}
 	
-	public static <T> T map2Entity(Map<String, ? extends Object> mp, Class<T> clazz) {
+	public static <T> T map2Entity(Map<?, ?> mp, Class<T> clazz) {
 		try {
+			BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
+			PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
 			T entity = clazz.newInstance();
-			BeanUtils.populate(entity, mp);
+			for (PropertyDescriptor property : propertyDescriptors) {
+				String key = property.getName();
+				if (mp.containsKey(key)) {
+					Object value = mp.get(key);
+					// Java中提供了用来访问某个属性的getter/setter方法
+					Method setter = property.getWriteMethod();
+					setter.invoke(entity, value);
+				}
+			}
 			return entity;
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException e) {
+		} catch (IntrospectionException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException e) {
 			throw new BusinessException(ErrorConstant.ERROR_SYSTEM_KNOWN,"Map transform to entity failed!",e);
 		}
 	}

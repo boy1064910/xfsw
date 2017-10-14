@@ -53,7 +53,7 @@ public interface LinkAuthorityService {
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
-	void initLinkAuthority(List<LinkAuthority> linkAuthorityList,Map<Integer,Integer> categoryAuthorityIdMap);
+	List<Integer> initLinkAuthority(List<LinkAuthority> linkAuthorityList,Map<Integer,Integer> categoryAuthorityIdMap);
 	
 //	void insertLinkAuthority(LinkAuthority linkAuthority);
 //	

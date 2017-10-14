@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xfsw.account.entity.RoleLinkAuthority;
-import com.xfsw.account.service.RoleLinkAuthorityService;
 import com.xfsw.common.mapper.ICommonMapper;
 import com.xfsw.common.util.ArrayUtil;
 import com.xfsw.common.util.ListUtil;
@@ -22,6 +21,17 @@ public class RoleLinkAuthorityServiceImpl implements RoleLinkAuthorityService {
 	ICommonMapper commonMapper;
 	
 	@Override
+	@Transactional
+	public void insertRoleLinkAuthorityList(Integer roleId,List<Integer> addAuthorityIds,String operator){
+		if(ListUtil.isEmpty(addAuthorityIds)) return;
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("roleId", roleId);
+		params.put("authorityIds", addAuthorityIds);
+		params.put("lastUpdater", operator);
+		commonMapper.insert("RoleLinkAuthority.insertRoleLinkAuthorityList", params);
+	}
+	
+	@Override
 	public void deleteRoleLinkAuthority(Integer authorityId,String operator) {
 		RoleLinkAuthority roleLinkAuthority = new RoleLinkAuthority();
 		roleLinkAuthority.setAuthorityId(authorityId);
@@ -30,15 +40,6 @@ public class RoleLinkAuthorityServiceImpl implements RoleLinkAuthorityService {
 	
 	public List<Integer> selectAuthorityIdsByRoleId(Integer roleId){
 		return commonMapper.selectList("RoleLinkAuthority.selectAuthorityIdsByRoleId",roleId);
-	}
-	
-	public void insertRoleLinkAuthorityList(Integer roleId,List<Integer> addAuthorityIds,String operator){
-		if(ListUtil.isEmpty(addAuthorityIds)) return;
-		Map<String,Object> params = new HashMap<String,Object>();
-		params.put("roleId", roleId);
-		params.put("authorityIds", addAuthorityIds);
-		params.put("lastUpdater", operator);
-		commonMapper.insert("RoleLinkAuthority.insertRoleLinkAuthorityList", params);
 	}
 	
 	@Transactional

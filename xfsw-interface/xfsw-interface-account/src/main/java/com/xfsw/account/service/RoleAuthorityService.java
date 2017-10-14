@@ -18,7 +18,7 @@ public interface RoleAuthorityService {
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
-	public UserAuthorityIdsModel selectAllAuthorityHashIdsByRoleId(Integer userId,Integer tenantId);
+	UserAuthorityIdsModel selectAllAuthorityHashIdsByRoleId(Integer userId,Integer tenantId);
 	
 //	List<Integer> selectUnionAuthorityIdListByRoleId(Integer roleId);
 	

@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="RoleLinkAuthority">
 
+	<insert id="insertRoleLinkAuthorityList" parameterType="java.util.Map">
+  		INSERT INTO RoleLinkAuthority(roleId,authorityId,lastUpdater,lastUpdateTime) 
+  		VALUES
+  		<foreach collection="authorityIds" item="authorityId" index="index" open="" close="" separator=",">
+            (#{roleId},#{authorityId},#{lastUpdater},NOW())
+        </foreach>
+  	</insert>
+
 	<update id="updateRoleLinkAuthority" parameterType="LinkAuthority">
   		UPDATE RoleLinkAuthority SET authorityId = #{id} WHERE authorityId = #{oldId}
   	</update>
@@ -11,14 +19,6 @@
   		WHERE ra.roleId = #{roleId}
    	</select>
    	
-   	<insert id="insertRoleLinkAuthorityList" parameterType="java.util.Map">
-  		INSERT INTO RoleLinkAuthority(roleId,authorityId,lastUpdater,lastUpdateTime) 
-  		VALUES
-  		<foreach collection="authorityIds" item="authorityId" index="index" open="" close="" separator=",">
-            (#{roleId},#{authorityId},#{lastUpdater},NOW())
-        </foreach>
-  	</insert>
-
 	<insert id="bakByRoleIdAndAuthorityIds" parameterType="java.util.Map">
 		INSERT INTO RoleLinkAuthority_copy(
 			SELECT * FROM RoleLinkAuthority

@@ -25,14 +25,14 @@ public class CategoryAuthorityServiceImpl implements CategoryAuthorityService {
 	@Resource(name="authRedisTemplate")
 	private RedisTemplate<String, String> redisTemplate;
 	
-	@Resource(name="roleCategoryAuthorityService")
-	RoleCategoryAuthorityService roleCategoryAuthorityService;
-	
 	@Resource(name="linkAuthorityService")
 	LinkAuthorityService linkAuthorityService;
 	
 	@Resource(name="authorityCacheService")
 	AuthorityCacheService authorityCacheService;
+	
+	@Resource(name="roleCategoryAuthorityService")
+	RoleCategoryAuthorityService roleCategoryAuthorityService;
 	
 	@Override
 	public List<CategoryAuthority> selectListByIds(Integer[] categoryAuthorityIds){
@@ -78,9 +78,10 @@ public class CategoryAuthorityServiceImpl implements CategoryAuthorityService {
 	
 	@Override
 	@Transactional
-	public void initAuthority(List<CategoryAuthority> parentCategoryAuthorityList,List<CategoryAuthority> categoryAuthorityList,List<LinkAuthority> linkAuthorityList){
+	public void initAuthority(List<CategoryAuthority> parentCategoryAuthorityList,List<CategoryAuthority> categoryAuthorityList,List<LinkAuthority> linkAuthorityList,Integer roleId,String operator){
 		Map<Integer,Integer> categoryAuthorityIdMap = new HashMap<Integer,Integer>();
 		
+		List<Integer> categoryAuthorityIdList = new ArrayList<Integer>();
 		for(CategoryAuthority categoryAuthority:parentCategoryAuthorityList){
 			Integer id = commonMapper.get("CategoryAuthority.getIdByDefaultAuthorityIdAndTenantId",categoryAuthority);
 			Integer oldId = categoryAuthority.getId();
@@ -90,6 +91,7 @@ public class CategoryAuthorityServiceImpl implements CategoryAuthorityService {
 				id = categoryAuthority.getId();
 			}
 			categoryAuthorityIdMap.put(oldId, id);
+			categoryAuthorityIdList.add(id);
 		}
 		
 		for(CategoryAuthority categoryAuthority:categoryAuthorityList){
@@ -101,9 +103,12 @@ public class CategoryAuthorityServiceImpl implements CategoryAuthorityService {
 				id = categoryAuthority.getId();
 			}
 			categoryAuthorityIdMap.put(oldId, id);
+			categoryAuthorityIdList.add(id);
 		}
 		
-		linkAuthorityService.initLinkAuthority(linkAuthorityList, categoryAuthorityIdMap);
+		List<Integer> linkAuthorityIdList = linkAuthorityService.initLinkAuthority(linkAuthorityList, categoryAuthorityIdMap);
+		
+		roleCategoryAuthorityService.configAuthority(categoryAuthorityIdList, linkAuthorityIdList, roleId, operator);
 	}
 	
 //	@Transactional

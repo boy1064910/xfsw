@@ -1,5 +1,6 @@
 package com.xfsw.account.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,15 +62,21 @@ public class LinkAuthorityServiceImpl implements LinkAuthorityService {
 	
 	@Override
 	@Transactional
-	public void initLinkAuthority(List<LinkAuthority> linkAuthorityList,Map<Integer,Integer> categoryAuthorityIdMap){
+	public List<Integer> initLinkAuthority(List<LinkAuthority> linkAuthorityList,Map<Integer,Integer> categoryAuthorityIdMap){
+		List<Integer> linkAuthorityIdList = new ArrayList<Integer>();
 		for(LinkAuthority linkAuthority:linkAuthorityList){
-			if(commonMapper.check("LinkAuthority.isExsitLinkAuthority",linkAuthority)){
-				continue;
+			Integer id = commonMapper.get("LinkAuthority.getIdByDefaultLinkeAuthorityIdAndId",linkAuthority);
+			if(id!=null){
+				linkAuthorityIdList.add(id);
 			}
-			Integer oldId = linkAuthority.getCategoryAuthorityId();
-			linkAuthority.setCategoryAuthorityId(categoryAuthorityIdMap.get(oldId));
-			commonMapper.insert(LinkAuthority.class, linkAuthority);
+			else{
+				Integer oldId = linkAuthority.getCategoryAuthorityId();
+				linkAuthority.setCategoryAuthorityId(categoryAuthorityIdMap.get(oldId));
+				commonMapper.insert(LinkAuthority.class, linkAuthority);
+				linkAuthorityIdList.add(linkAuthority.getId());
+			}
 		}
+		return linkAuthorityIdList;
 	}
 	
 	

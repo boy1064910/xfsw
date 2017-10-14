@@ -22,6 +22,11 @@ public class RoleServiceImpl implements RoleService {
 		return commonMapper.selectList(Role.class, role);
 	}
 
+	@Override
+	public void insertRole(Role role) {
+		commonMapper.insert(Role.class, role);
+	}
+
 	
 //	
 //	@Resource(name="userService")

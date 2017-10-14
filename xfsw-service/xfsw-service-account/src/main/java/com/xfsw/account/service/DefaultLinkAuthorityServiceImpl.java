@@ -3,7 +3,9 @@
  */
 package com.xfsw.account.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -36,8 +38,15 @@ public class DefaultLinkAuthorityServiceImpl implements DefaultLinkAuthorityServ
 	}
 	
 	@Override
-	public void deleteDefaultLinkAuthority(Integer id,String operator){
+	public void deleteById(Integer id,String operator){
 		commonMapper.deleteAndBak(DefaultLinkAuthority.class, id, operator);
+	}
+	
+	@Override
+	public void deleteByDefaultAuthorityId(Integer defaultAuthorityId,String operator){
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("defaultAuthorityId", defaultAuthorityId);
+		commonMapper.deleteAndBak(DefaultLinkAuthority.class, params, operator);
 	}
 	
 	@Override
