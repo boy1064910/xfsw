@@ -21,7 +21,7 @@ columns.push({
     align: 'center',
     formatter:function(value,row,index){
         var result = '<a href="javascript:void(0)" onclick="initEdit('+row.id+','+index+')" title="编辑">编辑</a>';
-        //result+='<a href="javascript:void(0)" onclick="initDel('+row.id+')" title="删除">删除</a>';
+        result+='<a href="javascript:void(0)" onclick="initDel('+row.id+')" title="删除">删除</a>';
         //result+='<a href="javascript:void(0)" onclick="copyToOnline('+row.id+')" title="复制到线上">复制到线上</a>';
         return result;
     }

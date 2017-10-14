@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.xfsw.account.service.AuthorityCacheService;
+import com.xfsw.common.util.JsonUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:spring-service-tester.xml","classpath*:spring/spring-service-*.xml"})
@@ -21,6 +22,11 @@ public class AuthorityCacheServiceTester {
 	@Test
 	public void test() {
 //		authorityCacheService.test();
+	}
+	
+	@Test
+	public void getCategorytAuthorityMap(){
+		System.out.println(JsonUtil.entity2Json(authorityCacheService.getCategorytAuthorityMap()));
 	}
 	
 }

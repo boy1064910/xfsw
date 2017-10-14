@@ -18,8 +18,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.xfsw.account.entity.CategoryAuthority;
 import com.xfsw.account.entity.DefaultAuthority;
 import com.xfsw.account.entity.DefaultLinkAuthority;
+import com.xfsw.account.entity.LinkAuthority;
 import com.xfsw.account.entity.Tenant;
-import com.xfsw.account.service.CategoryAuthorityCacheService;
+import com.xfsw.account.service.CategoryAuthorityService;
 import com.xfsw.account.service.DefaultAuthorityService;
 import com.xfsw.account.service.DefaultLinkAuthorityService;
 import com.xfsw.account.service.TenantService;
@@ -39,7 +40,7 @@ public class TenantServiceTester {
 	TenantService tenantService;
 	
 	@Resource
-	CategoryAuthorityCacheService categoryAuthorityCacheService;
+	CategoryAuthorityService categoryAuthorityService;
 	
 	@Resource(name="defaultAuthorityService")
 	DefaultAuthorityService defaultAuthorityService;
@@ -69,8 +70,16 @@ public class TenantServiceTester {
 		}
 		
 		List<DefaultLinkAuthority> defaultLinkAuthorityList = defaultLinkAuthorityService.selectAll();
-		
+		List<LinkAuthority> linkAuthorityList = new ArrayList<LinkAuthority>();
+		for(DefaultLinkAuthority defaultLinkAuthority:defaultLinkAuthorityList) {
+			LinkAuthority linkAuthority = new LinkAuthority(defaultLinkAuthority,tenant.getId(),tenant.getCode());
+			linkAuthority.setLastUpdater(operator);
+			linkAuthority.setLastUpdateTime(currentTime);
+			linkAuthorityList.add(linkAuthority);
+		}
 		System.out.println(JsonUtil.entity2Json(defaultAuthorityList));
 		System.out.println(JsonUtil.entity2Json(defaultLinkAuthorityList));
+		
+		categoryAuthorityService.initAuthority(parentCategoryAuthorityList, categoryAuthorityList, linkAuthorityList);
 	}
 }

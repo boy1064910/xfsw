@@ -171,7 +171,7 @@ public class CommonMapper implements ICommonMapper {
 			}
 		}
 		queryParams.put("sql", sql);
-		List<Map<?,?>> list = sqlSessionTemplate.selectList("Common.queryOperation",queryParams);
+		List<Map<String,?>> list = sqlSessionTemplate.selectList("Common.queryOperation",queryParams);
 		return this.dealResultList(list, clazz);
 	}
 	
@@ -188,7 +188,7 @@ public class CommonMapper implements ICommonMapper {
 		String sql = "SELECT * FROM " + clazzName;
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("sql", sql);
-		List<Map<?,?>> list = this.sqlSessionTemplate.selectList("Common.queryOperation",params);
+		List<Map<String,?>> list = this.sqlSessionTemplate.selectList("Common.queryOperation",params);
 		if(CollectionUtils.isEmpty(list)){
 			return null;
 		}
@@ -198,7 +198,7 @@ public class CommonMapper implements ICommonMapper {
 	public <T> List<T> selectListBySql(String sql,Class<T> clazz) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("sql", sql);
-		List<Map<?, ?>> list = this.sqlSessionTemplate.selectList("Common.queryOperation", params); 
+		List<Map<String, ?>> list = this.sqlSessionTemplate.selectList("Common.queryOperation", params); 
 		return this.dealResultList(list,clazz);
 	}
 
@@ -210,7 +210,7 @@ public class CommonMapper implements ICommonMapper {
 			}
 		}
 		queryParams.put("sql", sql);
-		List<Map<?, ?>> list = this.sqlSessionTemplate.selectList("Common.queryOperation", queryParams);
+		List<Map<String, ?>> list = this.sqlSessionTemplate.selectList("Common.queryOperation", queryParams);
 		return this.dealResultList(list,clazz);
 	}
 	
@@ -533,7 +533,7 @@ public class CommonMapper implements ICommonMapper {
 		this.sqlSessionTemplate.delete("Common.delOperation",params);
 	}
 
-	private <T> List<T> dealResultList(List<Map<?,?>> list,Class<T> clazz){
+	private <T> List<T> dealResultList(List<Map<String,? extends Object>> list,Class<T> clazz){
 		if(CollectionUtils.isEmpty(list)) {
 			return null;
 		}

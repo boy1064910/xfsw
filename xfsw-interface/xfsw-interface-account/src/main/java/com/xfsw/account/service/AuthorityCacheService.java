@@ -1,5 +1,8 @@
 package com.xfsw.account.service;
 
+import java.util.Map;
+
+import com.xfsw.account.entity.CategoryAuthority;
 import com.xfsw.account.model.AuthorityModel;
 import com.xfsw.common.classes.BusinessException;
 
@@ -16,44 +19,24 @@ public interface AuthorityCacheService {
 	AuthorityModel getAuthorityModelById(Integer id) throws BusinessException;
 	
 	/**
-	 * 刷新权限缓存信息
+	 * 获取菜单权限数据
+	 * @return
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
-	void reloadCache();
+	Map<String,CategoryAuthority> getCategorytAuthorityMap();
 	
 	/**
 	 * 刷新菜单权限缓存信息信息
-	 * @param categoryAuthorityId
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
-	void reloadCategoryAuthorityCache(Integer categoryAuthorityId);
-	
-	/**
-	 * 刷新菜单权限缓存信息信息
-	 * @param categoryAuthorityId			新增的菜单权限ID
-	 * @param removeCategoryAuthorityId		删除的菜单权限ID
-	 * @author xiaopeng.liu
-	 * @version 0.0.1
-	 */
-	void reloadCategoryAuthorityCache(Integer categoryAuthorityId,Integer removeCategoryAuthorityId);
+	void reloadCategoryAuthorityIntoAuthorityCache();
 	
 	/**
 	 * 刷新功能权限缓存信息信息 
-	 * @param linkAuthorityId
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
-	void reloadLinkAuthorityCache(Integer linkAuthorityId);
-	
-	/**
-	 * 刷新功能权限缓存信息信息
-	 * @param linkAuthorityId			新增的功能权限ID
-	 * @param removeLinkAuthorityId		删除的功能权限ID
-	 * @author xiaopeng.liu
-	 * @version 0.0.1
-	 */
-	void reloadLinkAuthorityCache(Integer linkAuthorityId,Integer removeLinkAuthorityId);
-	
+	void reloadLinkAuthorityIntoAuthorityCache();
 }

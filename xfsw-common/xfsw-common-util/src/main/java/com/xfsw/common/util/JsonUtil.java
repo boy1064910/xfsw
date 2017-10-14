@@ -22,7 +22,8 @@ public class JsonUtil {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Map<String, Object> json2Map(String json) {
+	public static <K,V> Map<K, V> json2Map(String json) {
+//		return (Map<K, V>) JSON.parseObject(json);
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			return mapper.readValue(json, Map.class);

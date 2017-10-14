@@ -49,20 +49,23 @@ public class LinkAuthorityServiceImpl implements LinkAuthorityService {
 		//更新该角色权限对应的SQL配置表信息
 		commonMapper.update("RoleAuthoritySql.updateRoleAuthoritySqlByAuthorityId",linkAuthority);
 		//刷新缓存
-		authorityCacheService.reloadLinkAuthorityCache(linkAuthority.getId(), linkAuthority.getOldId());
+		authorityCacheService.reloadLinkAuthorityIntoAuthorityCache();
 	}
 	
 	@Override
 	public void insertLinkAuthority(LinkAuthority linkAuthority){
 		commonMapper.insert(LinkAuthority.class, linkAuthority);
 		//刷新缓存
-		authorityCacheService.reloadLinkAuthorityCache(linkAuthority.getId());
+		authorityCacheService.reloadLinkAuthorityIntoAuthorityCache();
 	}
 	
 	@Override
 	@Transactional
 	public void initLinkAuthority(List<LinkAuthority> linkAuthorityList,Map<Integer,Integer> categoryAuthorityIdMap){
 		for(LinkAuthority linkAuthority:linkAuthorityList){
+			if(commonMapper.check("LinkAuthority.isExsitLinkAuthority",linkAuthority)){
+				continue;
+			}
 			Integer oldId = linkAuthority.getCategoryAuthorityId();
 			linkAuthority.setCategoryAuthorityId(categoryAuthorityIdMap.get(oldId));
 			commonMapper.insert(LinkAuthority.class, linkAuthority);

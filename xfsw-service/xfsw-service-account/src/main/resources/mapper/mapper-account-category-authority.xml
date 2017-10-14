@@ -16,4 +16,8 @@
 	<select id="selectFirstAuthorityModelList" resultType="AuthorityModel">
 		SELECT id,pid AS pId,name,1 AS type FROM CategoryAuthority WHERE pid = 0
 	</select>
+	
+	<select id="getIdByDefaultAuthorityIdAndTenantId" parameterType="CategoryAuthority" resultType="java.lang.Integer">
+		SELECT id FROM CategoryAuthority WHERE defaultAuthorityId = #{defaultAuthorityId} AND tenantId = #{tenantId}
+	</select>
 </mapper>

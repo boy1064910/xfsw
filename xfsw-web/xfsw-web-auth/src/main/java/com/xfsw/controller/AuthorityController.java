@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.xfsw.account.service.CategoryAuthorityCacheService;
+import com.xfsw.account.service.CategoryAuthorityService;
 import com.xfsw.common.classes.ResponseModel;
 import com.xfsw.common.thread.ThreadUserInfoManager;
 import com.xfsw.session.model.UserSessionModel;
@@ -20,8 +20,8 @@ import com.xfsw.session.model.UserSessionModel;
 @RequestMapping("/manager/authority")
 public class AuthorityController {
 	
-	@Resource(name="categoryAuthorityCacheService")
-	CategoryAuthorityCacheService categoryAuthorityCacheService;
+	@Resource(name="categoryAuthorityService")
+	CategoryAuthorityService categoryAuthorityService;
 	
 	/**
 	 * 获取用户菜单权限
@@ -34,7 +34,7 @@ public class AuthorityController {
 		ResponseModel resultModel = new ResponseModel();
 		UserSessionModel userSessionModel = ThreadUserInfoManager.getUserInfo();
 		Integer[] categoryAuthorityIds = userSessionModel.getCategoryAuthorityIds();
-		resultModel.setData(categoryAuthorityCacheService.selectListByIds(categoryAuthorityIds));
+		resultModel.setData(categoryAuthorityService.selectListByIds(categoryAuthorityIds));
 		return resultModel;
 	}
 }

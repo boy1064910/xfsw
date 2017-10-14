@@ -16,7 +16,7 @@ import com.xfsw.account.entity.DefaultAuthority;
 import com.xfsw.account.entity.DefaultLinkAuthority;
 import com.xfsw.account.entity.LinkAuthority;
 import com.xfsw.account.entity.Tenant;
-import com.xfsw.account.service.CategoryAuthorityCacheService;
+import com.xfsw.account.service.CategoryAuthorityService;
 import com.xfsw.account.service.DefaultAuthorityService;
 import com.xfsw.account.service.DefaultLinkAuthorityService;
 import com.xfsw.account.service.TenantService;
@@ -43,8 +43,8 @@ public class RootTenantController {
 	@Resource(name="defaultLinkAuthorityService")
 	DefaultLinkAuthorityService defaultLinkAuthorityService;
 	
-	@Resource(name="categoryAuthorityCacheService")
-	CategoryAuthorityCacheService categoryAuthorityCacheService;
+	@Resource(name="categoryAuthorityService")
+	CategoryAuthorityService categoryAuthorityService;
 	
 	@RequestMapping(value="/index")
 	public void index(){
@@ -117,8 +117,7 @@ public class RootTenantController {
 			linkAuthority.setLastUpdateTime(currentTime);
 			linkAuthorityList.add(linkAuthority);
 		}
-		
-		//		tenantService.configDefaultAuthority(tenantId);
+		categoryAuthorityService.initAuthority(parentCategoryAuthorityList, categoryAuthorityList, linkAuthorityList);
 		return new ResponseModel();
 	}
 	

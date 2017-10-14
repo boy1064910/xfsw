@@ -1,9 +1,5 @@
 package com.xfsw.common.util;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -15,6 +11,7 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,23 +40,23 @@ public class MapUtil {
 		return entity;
 	}
 	
-	public static <T> T map2Entity(Map<?, ?> mp, Class<T> clazz) {
+	public static <T> T map2Entity(Map<String, ? extends Object> mp, Class<T> clazz) {
 		try {
-			BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
-			PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
 			T entity = clazz.newInstance();
-			for (PropertyDescriptor property : propertyDescriptors) {
-				String key = property.getName();
-				if (mp.containsKey(key)) {
-					Object value = mp.get(key);
-					// Java中提供了用来访问某个属性的getter/setter方法
-					Method setter = property.getWriteMethod();
-					setter.invoke(entity, value);
-				}
-			}
+			BeanUtils.populate(entity, mp);
 			return entity;
-		} catch (IntrospectionException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException e) {
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException e) {
 			throw new BusinessException(ErrorConstant.ERROR_SYSTEM_KNOWN,"Map transform to entity failed!",e);
+		}
+	}
+	
+	public static <T> T obj2Entity(Object obj,Class<T> clazz){
+		try {
+			T entity = clazz.newInstance();
+			BeanUtils.copyProperties(entity, obj);
+			return entity;
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException e) {
+			throw new BusinessException(ErrorConstant.ERROR_SYSTEM_KNOWN,"Object transform to entity failed!",e);
 		}
 	}
 	

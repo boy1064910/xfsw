@@ -43,7 +43,9 @@ columns.push({
     align: 'center',
     formatter:function(value,row,index){
         var result = '<a href="javascript:void(0)" onclick="initEdit('+row.id+','+index+')" title="编辑">编辑</a>';
-        result+='<a href="javascript:void(0)" onclick="initDelete('+row.id+')" title="删除">删除</a>';
+        if(row.pid!=0){
+        	result+='<a href="javascript:void(0)" onclick="initDelete('+row.id+')" title="删除">删除</a>';
+        }
         result+='<a href="javascript:void(0)" onclick="initConfig('+row.id+')" title="权限配置">权限配置</a>';
         return result;
     }

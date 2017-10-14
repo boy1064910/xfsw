@@ -16,7 +16,7 @@ public class LinkAuthority implements Serializable {
 	private Integer categoryAuthorityId;
 	private String url;
 	private Integer tenantId;
-	private Integer defaultAuthorityId;
+	private Integer defaultLinkeAuthorityId;
 	private String lastUpdater;
 	private Date lastUpdateTime;
 
@@ -30,7 +30,7 @@ public class LinkAuthority implements Serializable {
 		this.name = defaultLinkAuthority.getName();
 		this.categoryAuthorityId = defaultLinkAuthority.getDefaultAuthorityId();
 		this.tenantId = tenantId;
-		this.defaultAuthorityId = defaultLinkAuthority.getId();
+		this.defaultLinkeAuthorityId = defaultLinkAuthority.getId();
 		
 		if(!StringUtils.isEmpty(defaultLinkAuthority.getUrl())){
 			String url = defaultLinkAuthority.getUrl();
@@ -105,12 +105,13 @@ public class LinkAuthority implements Serializable {
 		this.categoryAuthorityId = categoryAuthorityId;
 	}
 
-	public Integer getDefaultAuthorityId() {
-		return defaultAuthorityId;
+	public Integer getDefaultLinkeAuthorityId() {
+		return defaultLinkeAuthorityId;
 	}
 
-	public void setDefaultAuthorityId(Integer defaultAuthorityId) {
-		this.defaultAuthorityId = defaultAuthorityId;
+	public void setDefaultLinkeAuthorityId(Integer defaultLinkeAuthorityId) {
+		this.defaultLinkeAuthorityId = defaultLinkeAuthorityId;
 	}
+
 
 }

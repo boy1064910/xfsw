@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.xfsw.account.entity.CategoryAuthority;
 import com.xfsw.account.entity.LinkAuthority;
 import com.xfsw.account.service.AuthorityCacheService;
-import com.xfsw.account.service.CategoryAuthorityCacheService;
+import com.xfsw.account.service.CategoryAuthorityService;
 import com.xfsw.account.service.LinkAuthorityService;
 import com.xfsw.common.classes.ResponseModel;
 import com.xfsw.common.thread.ThreadUserInfoManager;
@@ -29,8 +29,8 @@ import com.xfsw.session.service.UserSessionService;
 @RequestMapping("/root/category/authority")
 public class RootCategoryAuthorityController {
 
-	@Resource(name = "categoryAuthorityCacheService")
-	CategoryAuthorityCacheService categoryAuthorityCacheService;
+	@Resource(name = "categoryAuthorityService")
+	CategoryAuthorityService categoryAuthorityService;
 
 	@Resource(name = "linkAuthorityService")
 	LinkAuthorityService linkAuthorityService;
@@ -49,7 +49,7 @@ public class RootCategoryAuthorityController {
 	@RequestMapping(value = "/list")
 	@ResponseBody
 	public ResponseModel list(Integer tenantId) {
-		return new ResponseModel(categoryAuthorityCacheService.selectListByTenantId(tenantId));
+		return new ResponseModel(categoryAuthorityService.selectListByTenantId(tenantId));
 	}
 
 	@RequestMapping(value = "/insertCategoryAuthority", method = RequestMethod.POST)
@@ -62,14 +62,14 @@ public class RootCategoryAuthorityController {
 		}
 		categoryAuthority.setLastUpdater(ThreadUserInfoManager.getUserInfo().getAccount());
 		categoryAuthority.setLastUpdateTime(new Date());
-		categoryAuthorityCacheService.insertCategoryAuthority(categoryAuthority);
+		categoryAuthorityService.insertCategoryAuthority(categoryAuthority);
 		return new ResponseModel();
 	}
 
 	@RequestMapping(value = "/initEditCategoryAuthority")
 	@ResponseBody
 	public ResponseModel initEditCategoryAuthority(Integer id) {
-		return new ResponseModel(categoryAuthorityCacheService.getById(id));
+		return new ResponseModel(categoryAuthorityService.getById(id));
 	}
 	
 	@RequestMapping(value="/updateCategoryAuthority", method = RequestMethod.POST)
@@ -79,13 +79,13 @@ public class RootCategoryAuthorityController {
 			categoryAuthority.setHashId(DJBHashUtil.DJBHashId(categoryAuthority.getUrl()));
 		}
 		categoryAuthority.setLastUpdater(ThreadUserInfoManager.getUserInfo().getAccount());
-		categoryAuthorityCacheService.updateCategoryAuthority(categoryAuthority);
+		categoryAuthorityService.updateCategoryAuthority(categoryAuthority);
 		return new ResponseModel(categoryAuthority);
 	}
 
 	@RequestMapping(value = "/initConfigLinkAuthority")
 	public void initConfigLinkAuthority(Integer id, Model model) {
-		CategoryAuthority categoryAuthority = categoryAuthorityCacheService.getById(id);
+		CategoryAuthority categoryAuthority = categoryAuthorityService.getById(id);
 		model.addAttribute("id", id);
 		model.addAttribute("categoryAuthority", categoryAuthority);
 	}
@@ -115,7 +115,7 @@ public class RootCategoryAuthorityController {
 	@RequestMapping(value = "/insertLinkAuthority", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseModel insertLinkAuthority(LinkAuthority linkAuthority) {
-		CategoryAuthority categoryAuthority = categoryAuthorityCacheService.getById(linkAuthority.getCategoryAuthorityId());
+		CategoryAuthority categoryAuthority = categoryAuthorityService.getById(linkAuthority.getCategoryAuthorityId());
 		linkAuthority.setId(DJBHashUtil.DJBHashId(linkAuthority.getUrl()));
 		linkAuthority.setLastUpdater(ThreadUserInfoManager.getAccount());
 		linkAuthority.setTenantId(categoryAuthority.getTenantId());

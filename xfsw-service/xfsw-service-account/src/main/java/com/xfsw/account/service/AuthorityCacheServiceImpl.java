@@ -17,14 +17,15 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.druid.util.StringUtils;
 import com.xfsw.account.consts.RedisCacheDefineConstants;
+import com.xfsw.account.entity.CategoryAuthority;
 import com.xfsw.account.model.AuthorityModel;
 import com.xfsw.common.classes.BusinessException;
 import com.xfsw.common.consts.ErrorConstant;
 import com.xfsw.common.mapper.ICommonMapper;
 import com.xfsw.common.util.JsonUtil;
 import com.xfsw.common.util.ListUtil;
+import com.xfsw.common.util.MapUtil;
 
 @Service("authorityCacheService")
 public class AuthorityCacheServiceImpl implements AuthorityCacheService {
@@ -42,16 +43,76 @@ public class AuthorityCacheServiceImpl implements AuthorityCacheService {
 		if(id ==null)
 			return null;
 		
-		Map<String,AuthorityModel> authorityModelMap = this.loadAuthorityCache(false, true);
+		Map<String,AuthorityModel> authorityModelMap = this.loadAllAuthorityIntoAuthorityCache(false, true);
 		if(authorityModelMap.containsKey(id.toString())) {
 			return authorityModelMap.get(id.toString());
 		}
 		return null;
 	}
 	
+	public Map<String,CategoryAuthority> getCategorytAuthorityMap(){
+		return this.loadCategoryAuthorityCache(false, true);
+	}
+	
 	@Override
-	public void reloadCache(){
-		this.loadAuthorityCache(true, false);
+	public void reloadCategoryAuthorityIntoAuthorityCache() {
+		this.loadCategoryAuthorityCache(true, false);
+		this.loadAllAuthorityIntoAuthorityCache(true, false);
+	}
+	
+	@Override
+	public void reloadLinkAuthorityIntoAuthorityCache() {
+		this.loadAllAuthorityIntoAuthorityCache(true, false);
+	}
+	
+	/**
+	 * 加载所有菜单权限进入缓存
+	 * @param forced			是否强制加载
+	 * @param returnData		是否需要返回缓存数据，false则返回null
+	 * @return				map,key为权限ID
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	private Map<String,CategoryAuthority> loadCategoryAuthorityCache(boolean forced,boolean returnData) throws BusinessException {
+		boolean isReload = false;
+		if(forced) {
+			isReload = true;
+		}
+		else {
+			RedisCallback<Boolean> callback = (RedisConnection connection) -> {
+				return connection.exists(RedisCacheDefineConstants.XFSW_ALL_CATEGORY_AUTHORITY.getBytes());
+			};
+			boolean isExsit = redisTemplate.execute(callback);
+			if(!isExsit){
+				isReload = true;
+			}
+		}
+		
+		Map<String,CategoryAuthority> resultMap = null;
+		if(isReload) {
+			//获取所有菜单权限缓
+			List<CategoryAuthority> authorityList = commonMapper.selectList("CategoryAuthority.selectAll");
+			resultMap = new HashMap<String,CategoryAuthority>();
+			if(!ListUtil.isEmpty(authorityList)){
+				for(int i=0;i<authorityList.size();i++){
+					CategoryAuthority authority = (CategoryAuthority) authorityList.get(i);
+					resultMap.put(authority.getId().toString(), authority);
+				}
+			}
+			redisTemplate.opsForValue().set(RedisCacheDefineConstants.XFSW_ALL_CATEGORY_AUTHORITY, JsonUtil.entity2Json(resultMap), RedisCacheDefineConstants.XFSW_ALL_CATEGORY_AUTHORITY_CACHE_EXPIRED_TIME, TimeUnit.MILLISECONDS);
+			logger.debug("Category authority has loaded!");
+		}
+		else {
+			if(returnData) {
+				String info = redisTemplate.opsForValue().get(RedisCacheDefineConstants.XFSW_ALL_CATEGORY_AUTHORITY);
+				Map<String,Object> dataMap = JsonUtil.json2Map(info);
+				resultMap = new HashMap<String,CategoryAuthority>();
+				for(Entry<String,Object> entry:dataMap.entrySet()){
+					resultMap.put(entry.getKey(), MapUtil.obj2Entity(entry.getValue(),CategoryAuthority.class));
+				}
+			}
+		}
+		return resultMap;
 	}
 	
 	/**
@@ -62,7 +123,7 @@ public class AuthorityCacheServiceImpl implements AuthorityCacheService {
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
-	private Map<String,AuthorityModel> loadAuthorityCache(boolean forced,boolean returnData) throws BusinessException {
+	private Map<String,AuthorityModel> loadAllAuthorityIntoAuthorityCache(boolean forced,boolean returnData) throws BusinessException {
 		boolean isReload = false;
 		if(forced) {
 			isReload = true;
@@ -108,64 +169,6 @@ public class AuthorityCacheServiceImpl implements AuthorityCacheService {
 			}
 		}
 		return resultMap;
-	}
-
-	@Override
-	public void reloadCategoryAuthorityCache(Integer categoryAuthorityId) {
-		AuthorityModel authorityModel = commonMapper.get("Authority.getCategoryAuthorityModelById",categoryAuthorityId);
-		String info = redisTemplate.opsForValue().get(RedisCacheDefineConstants.XFSW_ALL_AUTHORITY);
-		if(StringUtils.isEmpty(info)){
-			this.loadAuthorityCache(true, false);
-			return;
-		}
-		Map<String,Object> dataMap = JsonUtil.json2Map(info);
-		dataMap.put(authorityModel.getId().toString(), authorityModel);
-		redisTemplate.opsForValue().set(RedisCacheDefineConstants.XFSW_ALL_AUTHORITY, JsonUtil.entity2Json(dataMap), RedisCacheDefineConstants.XFSW_ALL_CATEGORY_AUTHORITY_CACHE_EXPIRED_TIME, TimeUnit.MILLISECONDS);
-		logger.debug("Category authority has loaded!");
-	}
-	
-	@Override
-	public void reloadCategoryAuthorityCache(Integer categoryAuthorityId,Integer removeCategoryAuthorityId){
-		AuthorityModel authorityModel = commonMapper.get("Authority.getCategoryAuthorityModelById",categoryAuthorityId);
-		String info = redisTemplate.opsForValue().get(RedisCacheDefineConstants.XFSW_ALL_AUTHORITY);
-		if(StringUtils.isEmpty(info)){
-			this.loadAuthorityCache(true, false);
-			return;
-		}
-		Map<String,Object> dataMap = JsonUtil.json2Map(info);
-		dataMap.remove(removeCategoryAuthorityId.toString());
-		dataMap.put(authorityModel.getId().toString(), authorityModel);
-		redisTemplate.opsForValue().set(RedisCacheDefineConstants.XFSW_ALL_AUTHORITY, JsonUtil.entity2Json(dataMap), RedisCacheDefineConstants.XFSW_ALL_CATEGORY_AUTHORITY_CACHE_EXPIRED_TIME, TimeUnit.MILLISECONDS);
-		logger.debug("Category authority has loaded!");
-	}
-
-	@Override
-	public void reloadLinkAuthorityCache(Integer linkAuthorityId) {
-		AuthorityModel authorityModel = commonMapper.get("Authority.getLinkAuthorityModelById",linkAuthorityId);
-		String info = redisTemplate.opsForValue().get(RedisCacheDefineConstants.XFSW_ALL_AUTHORITY);
-		if(StringUtils.isEmpty(info)){
-			this.loadAuthorityCache(true, false);
-			return;
-		}
-		Map<String,Object> dataMap = JsonUtil.json2Map(info);
-		dataMap.put(authorityModel.getId().toString(), authorityModel);
-		redisTemplate.opsForValue().set(RedisCacheDefineConstants.XFSW_ALL_AUTHORITY, JsonUtil.entity2Json(dataMap), RedisCacheDefineConstants.XFSW_ALL_CATEGORY_AUTHORITY_CACHE_EXPIRED_TIME, TimeUnit.MILLISECONDS);
-		logger.debug("Link authority has loaded!");
-	}
-	
-	@Override
-	public void reloadLinkAuthorityCache(Integer linkAuthorityId,Integer removeLinkAuthorityId) {
-		AuthorityModel authorityModel = commonMapper.get("Authority.getLinkAuthorityModelById",linkAuthorityId);
-		String info = redisTemplate.opsForValue().get(RedisCacheDefineConstants.XFSW_ALL_AUTHORITY);
-		if(StringUtils.isEmpty(info)){
-			this.loadAuthorityCache(true, false);
-			return;
-		}
-		Map<String,Object> dataMap = JsonUtil.json2Map(info);
-		dataMap.remove(removeLinkAuthorityId.toString());
-		dataMap.put(authorityModel.getId().toString(), authorityModel);
-		redisTemplate.opsForValue().set(RedisCacheDefineConstants.XFSW_ALL_AUTHORITY, JsonUtil.entity2Json(dataMap), RedisCacheDefineConstants.XFSW_ALL_CATEGORY_AUTHORITY_CACHE_EXPIRED_TIME, TimeUnit.MILLISECONDS);
-		logger.debug("Link authority has loaded!");
 	}
 	
 }

@@ -14,7 +14,7 @@ import com.xfsw.common.classes.BusinessException;
  * @author liuxifan
  *
  */
-public interface CategoryAuthorityCacheService {
+public interface CategoryAuthorityService {
 
 	/**
 	 * 通过菜单权限ID数组获取菜单数据
