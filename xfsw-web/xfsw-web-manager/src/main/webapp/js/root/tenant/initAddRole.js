@@ -1,0 +1,3 @@
+Ding.ready(function(){
+	loadChildrenAuthorities();
+});

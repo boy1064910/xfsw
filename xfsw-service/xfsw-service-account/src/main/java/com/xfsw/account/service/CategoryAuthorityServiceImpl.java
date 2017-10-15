@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.xfsw.account.entity.CategoryAuthority;
 import com.xfsw.account.entity.LinkAuthority;
+import com.xfsw.account.model.AuthorityModel;
 import com.xfsw.common.mapper.ICommonMapper;
 import com.xfsw.common.util.ArrayUtil;
 
@@ -99,6 +100,7 @@ public class CategoryAuthorityServiceImpl implements CategoryAuthorityService {
 			Integer oldId = categoryAuthority.getId();
 			if(id==null){
 				categoryAuthority.setId(null);
+				categoryAuthority.setPid(categoryAuthorityIdMap.get(categoryAuthority.getPid()));
 				commonMapper.insert(CategoryAuthority.class, categoryAuthority);
 				id = categoryAuthority.getId();
 			}
@@ -111,8 +113,8 @@ public class CategoryAuthorityServiceImpl implements CategoryAuthorityService {
 		roleCategoryAuthorityService.configAuthority(categoryAuthorityIdList, linkAuthorityIdList, roleId, operator);
 	}
 
-	public List<AuthorityModel> selectFirstAuthorityModelList(){
-		return commonMapper.selectList("CategoryAuthority.selectFirstAuthorityModelList");
+	public List<AuthorityModel> selectFirstAuthorityModelList(Integer tenantId){
+		return commonMapper.selectList("CategoryAuthority.selectFirstAuthorityModelList",tenantId);
 	}
 	
 //	@Transactional

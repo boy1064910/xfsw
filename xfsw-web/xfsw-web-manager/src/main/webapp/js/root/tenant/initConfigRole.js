@@ -103,13 +103,7 @@ function loadData(){
 }
 
 function initAdd(){
-    $("#name").val('');
-    $("#remark").val('');
-    openModal({
-        'title':'添加角色信息',
-        'targetId':'addForm',
-        'sureBtnText':'保存'
-    });
+	this.location = "/xfsw-web-manager/root/tenant/initAddRole.shtml?tenantId="+$("#tenantId").val();
 }
 
 function insertSuccess(result){

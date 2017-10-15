@@ -13,8 +13,8 @@
 		WHERE id = #{id}
 	</update>
 	
-	<select id="selectFirstAuthorityModelList" resultType="AuthorityModel">
-		SELECT id,pid AS pId,name,1 AS type FROM CategoryAuthority WHERE pid = 0
+	<select id="selectFirstAuthorityModelList" parameterType="java.lang.Integer" resultType="AuthorityModel">
+		SELECT id,pid AS pId,name,1 AS type FROM CategoryAuthority WHERE pid = 0 AND tenantId = #{tenantId}
 	</select>
 	
 	<select id="getIdByDefaultAuthorityIdAndTenantId" parameterType="CategoryAuthority" resultType="java.lang.Integer">

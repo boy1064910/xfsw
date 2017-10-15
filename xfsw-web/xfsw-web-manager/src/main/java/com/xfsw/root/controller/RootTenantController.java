@@ -110,15 +110,15 @@ public class RootTenantController {
 		return new ResponseModel(roleService.selectListByTenantId(tenantId));
 	}
 	
-	@RequestMapping(value = "/insertTenantRole", method = RequestMethod.POST)
-	@ResponseBody
-	public ResponseModel insertTenantRole(Role role) {
-		role.setLastUpdater(ThreadUserInfoManager.getUserInfo().getAccount());
-		role.setLastUpdateTime(new Date());
-		roleService.insertRole(role);
-		return new ResponseModel();
-	}
-	
+	/**
+	 * 初始化默认权限给选择的角色
+	 * TODO 后期调整为界面可配置选择
+	 * @param tenantId
+	 * @param roleId
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
 	@RequestMapping(value = "/configDefaultAuthority", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseModel configDefaultAuthority(Integer tenantId,Integer roleId) {
@@ -154,6 +154,25 @@ public class RootTenantController {
 			linkAuthorityList.add(linkAuthority);
 		}
 		categoryAuthorityService.initAuthority(parentCategoryAuthorityList, categoryAuthorityList, linkAuthorityList,roleId,operator);
+		return new ResponseModel();
+	}
+	
+	/**
+	 * 给空间下的角色配置权限信息
+	 * @param model
+	 * @param tenantId
+	 */
+	@RequestMapping(value = "/initAddRole")
+	public void initAddRole(Model model,Integer tenantId) {
+		model.addAttribute("firstAuthorityList", categoryAuthorityService.selectFirstAuthorityModelList(tenantId));
+		model.addAttribute("tenantId",tenantId);
+	}
+	
+	@RequestMapping(value = "/addRole")
+	@ResponseBody
+	public ResponseModel addRole(Role role,Integer[] ids,Integer[] types){
+		role.setLastUpdater(ThreadUserInfoManager.getUserInfo().getAccount());
+		roleService.addRole(role, ids, types);
 		return new ResponseModel();
 	}
 	

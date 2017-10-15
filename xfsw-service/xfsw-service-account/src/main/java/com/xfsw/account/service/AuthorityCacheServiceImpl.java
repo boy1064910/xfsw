@@ -65,6 +65,13 @@ public class AuthorityCacheServiceImpl implements AuthorityCacheService {
 		this.loadAllAuthorityIntoAuthorityCache(true, false);
 	}
 	
+	public List<AuthorityModel> selectAuthorityModelListByPid(Integer pid,Integer tenantId){
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("tenantId", tenantId);
+		params.put("pid", pid);
+		return commonMapper.selectList("Authority.selectAuthorityModelListByPid",params);
+	}
+	
 	/**
 	 * 加载所有菜单权限进入缓存
 	 * @param forced			是否强制加载

@@ -28,11 +28,24 @@ public interface RoleService {
 	 */
 	void insertRole(Role role);
 	
-//	Role get(Integer id);
-//	
+	/**
+	 * 通过ID获取角色信息
+	 * @param id
+	 * @return
+	 */
+	Role getById(Integer id);
+	
+	/**
+	 * 添加空间下角色信息
+	 * @param role
+	 * @param ids
+	 * @param types
+	 * @author xiaopeng.liu
+	 * @version
+	 */
+	void addRole(Role role,Integer[] ids,Integer[] types);
+	
 //	void updateRole(Role role,Integer[] ids,Integer[] types);
-//	
-//	void addRole(Role role,Integer[] ids,Integer[] types);
 //	
 //	void deleteRole(Integer roleId,String operator);
 //	

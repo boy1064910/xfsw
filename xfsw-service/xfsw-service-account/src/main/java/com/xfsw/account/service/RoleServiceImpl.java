@@ -1,19 +1,28 @@
 package com.xfsw.account.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.stereotype.Service;
 
 import com.xfsw.account.entity.Role;
 import com.xfsw.common.mapper.ICommonMapper;
+import com.xfsw.common.util.ListUtil;
 
 @Service("roleService")
 public class RoleServiceImpl implements RoleService {
 
 	@Resource(name="accountCommonMapper")
 	ICommonMapper commonMapper;
+	
+	@Resource(name="roleCategoryAuthorityService")
+	RoleCategoryAuthorityService roleCategoryAuthorityService;
+	
+	@Resource(name="roleLinkAuthorityService")
+	RoleLinkAuthorityService roleLinkAuthorityService;
 	
 	@Override
 	public List<Role> selectListByTenantId(Integer tenantId) {
@@ -27,7 +36,35 @@ public class RoleServiceImpl implements RoleService {
 		commonMapper.insert(Role.class, role);
 	}
 
+	@Override
+	public Role getById(Integer id) {
+		return (Role) commonMapper.get(Role.class, id);
+	}
 	
+	public void addRole(Role role,Integer[] ids,Integer[] types) {
+		commonMapper.insert("Role.addRole", role);
+		//保存角色权限关系
+		if(!ArrayUtils.isEmpty(ids)){
+			List<Integer> authorityIdList = new ArrayList<Integer>();
+			List<Integer> linkAuthorityIdList = new ArrayList<Integer>();
+			for(int i=0;i<ids.length;i++){
+				if(types[i].intValue()==1){
+					authorityIdList.add(ids[i]);
+				}
+				else{
+					linkAuthorityIdList.add(ids[i]);
+				}
+			}
+			
+			if(!ListUtil.isEmpty(authorityIdList)){
+				roleCategoryAuthorityService.insertRoleCategoryAuthorityList(role.getId(), authorityIdList,role.getLastUpdater());
+			}
+			
+			if(!ListUtil.isEmpty(linkAuthorityIdList)){
+				roleLinkAuthorityService.insertRoleLinkAuthorityList(role.getId(), linkAuthorityIdList,role.getLastUpdater());
+			}
+		}
+	}
 //	
 //	@Resource(name="userService")
 //	UserService userService;
@@ -43,11 +80,6 @@ public class RoleServiceImpl implements RoleService {
 //	
 //	@Resource(name="roleAuthoritySqlParamService")
 //	RoleAuthoritySqlParamService roleAuthoritySqlParamService;
-//	
-//	@Override
-//	public Role get(Integer id) {
-//		return (Role) commonMapper.get(Role.class, id);
-//	}
 //	
 //	@Transactional
 //	public void updateRole(Role role,Integer[] ids,Integer[] types){

@@ -15,4 +15,19 @@
 	<select id="getLinkAuthorityModelById" parameterType="java.lang.Integer" resultType="AuthorityModel">
 		SELECT id,name,2 AS type FROM LinkAuthority WHERE id = #{id}
 	</select>
+	
+  	<select id="selectAuthorityModelListByPid" parameterType="java.util.Map" resultType="AuthorityModel">
+  		SELECT id,pid AS pId,name,1 AS type,0 AS orderIndex FROM CategoryAuthority WHERE id = #{pid} AND tenantId = #{tenantId}
+		UNION
+		SELECT id,pid AS pId,name,1 AS type,orderIndex FROM CategoryAuthority WHERE pid = #{pid} AND tenantId = #{tenantId}
+		UNION
+		SELECT id,categoryAuthorityId AS pId,name,2 AS type,999 as orderIndex FROM LinkAuthority 
+		WHERE categoryAuthorityId IN
+		(
+			SELECT id FROM CategoryAuthority WHERE pid = #{pid} AND tenantId = #{tenantId}
+		)
+		UNION
+		SELECT id,categoryAuthorityId AS pId,name,2 AS type,999 FROM LinkAuthority WHERE categoryAuthorityId = #{pid} AND tenantId = #{tenantId}
+		ORDER BY orderIndex ASC
+  	</select> 
 </mapper>

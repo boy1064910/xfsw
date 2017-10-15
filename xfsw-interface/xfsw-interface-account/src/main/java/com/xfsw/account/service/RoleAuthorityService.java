@@ -22,6 +22,4 @@ public interface RoleAuthorityService {
 	
 //	List<Integer> selectUnionAuthorityIdListByRoleId(Integer roleId);
 	
-//	List<AuthorityModel> selectAuthorityModelListByPid(Integer pid);
-
 }

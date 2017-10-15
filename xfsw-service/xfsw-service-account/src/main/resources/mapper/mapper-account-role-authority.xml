@@ -42,19 +42,4 @@
 <!--   		UNION  -->
 <!--   		SELECT la.id FROM LinkAuthority la,RoleLinkAuthority rla WHERE rla.authorityId = la.id AND rla.roleId = #{roleId} -->
 <!--   	</select> -->
-  	
-<!--   	<select id="selectAuthorityModelListByPid" parameterType="java.lang.Integer" resultType="AuthorityModel"> -->
-<!--   		SELECT id,pid AS pId,name,1 AS type,0 AS orderIndex FROM CategoryAuthority WHERE id = #{pid} -->
-<!-- 		UNION -->
-<!-- 		SELECT id,pid AS pId,name,1 AS type,orderIndex FROM CategoryAuthority WHERE pid = #{pid} -->
-<!-- 		UNION -->
-<!-- 		SELECT id,authorityId AS pId,name,2 AS type,999 as orderIndex FROM LinkAuthority  -->
-<!-- 		WHERE authorityId IN -->
-<!-- 		( -->
-<!-- 			SELECT id FROM CategoryAuthority WHERE pid = #{pid} -->
-<!-- 		) -->
-<!-- 		UNION -->
-<!-- 		SELECT id,authorityId AS pId,name,2 AS type,999 FROM LinkAuthority WHERE authorityId = #{pid} -->
-<!-- 		ORDER BY orderIndex ASC -->
-<!--   	</select>  -->
 </mapper>
