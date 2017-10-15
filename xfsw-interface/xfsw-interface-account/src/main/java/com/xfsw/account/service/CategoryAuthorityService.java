@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.xfsw.account.entity.CategoryAuthority;
 import com.xfsw.account.entity.LinkAuthority;
+import com.xfsw.account.model.AuthorityModel;
 import com.xfsw.common.classes.BusinessException;
 
 /**
@@ -68,6 +69,13 @@ public interface CategoryAuthorityService {
 	 */
 	void initAuthority(List<CategoryAuthority> parentCategoryAuthorityList,List<CategoryAuthority> categoryAuthorityList,List<LinkAuthority> linkAuthorityList,Integer roleId,String operator);
 	
+	/**
+	 * 查询空间下的一级菜单权限信息
+	 * @param tenantId
+	 * @return
+	 */
+	List<AuthorityModel> selectFirstAuthorityModelList(Integer tenantId);
+	
 //	void insertAuthority(CategoryAuthority authority);
 //	
 //	CategoryAuthority get(Integer id);
@@ -75,5 +83,5 @@ public interface CategoryAuthorityService {
 //	void deleteAuthority(Integer id,String operator);
 //	
 //	
-//	List<AuthorityModel> selectFirstAuthorityModelList();
+	
 }

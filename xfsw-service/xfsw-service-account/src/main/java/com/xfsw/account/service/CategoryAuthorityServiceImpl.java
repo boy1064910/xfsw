@@ -110,6 +110,10 @@ public class CategoryAuthorityServiceImpl implements CategoryAuthorityService {
 		
 		roleCategoryAuthorityService.configAuthority(categoryAuthorityIdList, linkAuthorityIdList, roleId, operator);
 	}
+
+	public List<AuthorityModel> selectFirstAuthorityModelList(){
+		return commonMapper.selectList("CategoryAuthority.selectFirstAuthorityModelList");
+	}
 	
 //	@Transactional
 //	public void deleteAuthority(Integer id,String operator){
@@ -130,8 +134,5 @@ public class CategoryAuthorityServiceImpl implements CategoryAuthorityService {
 //		commonMapper.insert("CategoryAuthority.updateCategoryAuthority", authority);
 //	}
 //	
-//	public List<AuthorityModel> selectFirstAuthorityModelList(){
-//		return commonMapper.selectList("CategoryAuthority.selectFirstAuthorityModelList");
-//	}
 	
 }

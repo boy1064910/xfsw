@@ -24,6 +24,7 @@ import com.xfsw.account.service.DefaultAuthorityService;
 import com.xfsw.account.service.DefaultLinkAuthorityService;
 import com.xfsw.account.service.RoleService;
 import com.xfsw.account.service.TenantService;
+import com.xfsw.account.service.UserService;
 import com.xfsw.common.classes.DataTablePageInfo;
 import com.xfsw.common.classes.DataTableResponseModel;
 import com.xfsw.common.classes.ResponseModel;
@@ -52,6 +53,9 @@ public class RootTenantController {
 	
 	@Resource(name="roleService")
 	RoleService roleService;
+	
+	@Resource(name="userService")
+	UserService userService;
 	
 	@RequestMapping(value="/index")
 	public void index(){
@@ -153,4 +157,15 @@ public class RootTenantController {
 		return new ResponseModel();
 	}
 	
+	@RequestMapping(value="/initConfigUser")
+	public void initConfigUser(Integer tenantId,Model model){
+		Tenant tenant = tenantService.getById(tenantId);
+		model.addAttribute("tenant", tenant);
+	}
+	
+	@RequestMapping(value="/userList")
+	@ResponseBody
+	public ResponseModel userList(Integer tenantId){
+		return new ResponseModel(userService.selectTenantUserList(tenantId));
+	}
 }

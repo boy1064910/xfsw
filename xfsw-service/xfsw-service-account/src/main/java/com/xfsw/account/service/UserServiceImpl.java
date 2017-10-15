@@ -1,6 +1,8 @@
 package com.xfsw.account.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -37,6 +39,13 @@ public class UserServiceImpl implements UserService {
 	
 	public void switchTenant(Integer userTenantId) {
 		commonMapper.update("UserTenant.switchTenant",userTenantId);
+	}
+	
+	public List<User> selectTenantUserList(Integer tenantId){
+		String sql = "SELECT u.* FROM User u,UserTenant ut WHERE u.id = ut.userId AND ut.tenantId = #{tenantId}";
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("tenantId", tenantId);
+		return commonMapper.selectListBySql(sql, User.class);
 	}
 	
 //	public UserModel wxLogin(String unionId,String ip) {

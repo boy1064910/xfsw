@@ -1,5 +1,8 @@
 package com.xfsw.account.service;
 
+import java.util.List;
+
+import com.xfsw.account.entity.User;
 import com.xfsw.account.model.UserModel;
 import com.xfsw.common.classes.BusinessException;
 
@@ -28,6 +31,13 @@ public interface UserService {
 	 * @version 0.0.1
 	 */
 	void switchTenant(Integer userTenantId);
+	
+	/**
+	 * 查询空间下的用户信息
+	 * @param tenantId
+	 * @return
+	 */
+	List<User> selectTenantUserList(Integer tenantId);
 	
 	/**
 	 * 微信登录和注册逻辑，使用微信的unionId进行登录，调用本接口之前请先做好相关的业务逻辑校验
