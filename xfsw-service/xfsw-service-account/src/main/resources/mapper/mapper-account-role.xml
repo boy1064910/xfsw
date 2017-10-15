@@ -5,8 +5,4 @@
 	    UPDATE Role SET name=#{name},remark=#{remark},dataSql=#{dataSql},lastUpdater = #{lastUpdater},lastUpdateTime = NOW() WHERE id=#{id}
   	</update>  
   	
-  	<insert id="addRole" parameterType="Role" keyProperty="id" useGeneratedKeys="true">
-	    INSERT INTO Role(name,remark,dataSql,lastUpdater,lastUpdateTime) 
-	    VALUES(#{name},#{remark},#{dataSql},#{lastUpdater},NOW())
-  	</insert>	
 </mapper>

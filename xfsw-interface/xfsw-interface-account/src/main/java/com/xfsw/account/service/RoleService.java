@@ -45,6 +45,14 @@ public interface RoleService {
 	 */
 	void addRole(Role role,Integer[] ids,Integer[] types);
 	
+	/**
+	 * 更新角色信息
+	 * @param role
+	 * @param ids
+	 * @param types
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
 //	void updateRole(Role role,Integer[] ids,Integer[] types);
 //	
 //	void deleteRole(Integer roleId,String operator);

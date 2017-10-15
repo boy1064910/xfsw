@@ -23,9 +23,9 @@
 		</div>
 	</div>
 	<form class="Ding-Form modal-form form-horizontal" id="addForm" method="post"
-		action="/xfsw-web-manager/root/tenant/insertTenantRole.shtml" successCallback="insertSuccess">
+		action="/xfsw-web-manager/root/tenant/insertUser.shtml" successCallback="insertSuccess">
 		<div class="form-group">
-            <label class="col-lg-2 col-sm-2 control-label">角色名称</label>
+            <label class="col-lg-2 col-sm-2 control-label">用户账号</label>
             <div class="col-lg-10">
             	<input class="form-control" type="text" id="name" name="name" validations="required&&vComplexMaxLength=20" validationTips="角色名称不能为空&&角色名称长度不能超过10个中文字符或者20个英文字符"  />
             </div>

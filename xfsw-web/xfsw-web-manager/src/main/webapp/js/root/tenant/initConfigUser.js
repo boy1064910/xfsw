@@ -1,3 +1,4 @@
+var aRandomCode = 'AccountLinkAuthority';
 var columns = [];
 columns.push({
     field: 'id',
@@ -5,42 +6,14 @@ columns.push({
     align: 'center'
 });
 columns.push({
-    field: 'pid',
-    title: 'pid',
-    align: 'center'
-});
-columns.push({
-    field: 'hashId',
-    title: 'HashId',
-    align: 'center'
-});
-columns.push({
     field: 'name',
-    title: '权限名称',
+    title: '功能权限名称',
     align: 'center'
 });
 columns.push({
     field: 'url',
-    title: '链接',
+    title: '链接地址',
     align: 'center'
-});
-columns.push({
-    field: 'remark',
-    title: '备注',
-    align: 'center'
-});
-columns.push({
-    field: 'orderIndex',
-    title: '顺序',
-    align: 'center'
-});
-columns.push({
-    field: 'ico',
-    title: '图标',
-    align: 'center',
-    formatter:function(value,row,index){
-        return '<i class="fa fa-'+value+'"></i>';
-    }
 });
 columns.push({
     field: 'id',
@@ -48,13 +21,12 @@ columns.push({
     align: 'center',
     formatter:function(value,row,index){
         var result = '<a href="javascript:void(0)" onclick="initEdit('+row.id+','+index+')" title="编辑">编辑</a>';
-        if(row.pid!=0){
-        	result+='<a href="javascript:void(0)" onclick="initDelete('+row.id+')" title="删除">删除</a>';
-        }
-        result+='<a href="javascript:void(0)" onclick="initConfig('+row.id+')" title="权限配置">权限配置</a>';
+        result+='<a href="javascript:void(0)" onclick="initDel('+row.id+')" title="删除">删除</a>';
+        //result+='<a href="javascript:void(0)" onclick="copyToOnline('+row.id+')" title="复制到线上">复制到线上</a>';
         return result;
     }
 });
+
 Ding.ready(function(){
     //请求商品表格数据
     $("#dataTable").bootstrapTable({
@@ -114,106 +86,53 @@ Ding.ready(function(){
         //     }
         // }
     });
+
+    loadData();
 });
 
-function queryTenantCategoryAuthoirty(selector){
-	Ding.ajax({
-        'url' : "/xfsw-web-manager/root/category/authority/list.shtml",
+function loadData(){
+    Ding.ajax({
+        'url' : "/xfsw-web-manager/root/tenant/userList.shtml",
         'params' : {
-    		'tenantId' : $(selector).val()
+            'tenantId' : $("#tenantId").val()
         },
         'successCallback' : function(result){
             var data = {};
             data.rows = result.data;
-            $("#dataTable").bootstrapTable('removeAll');
             $("#dataTable").bootstrapTable('load',data);
         }
     })
 }
 
-function initAddCategoryAuthority(){
-	if(Ding.isEmpty($("#tenantId").val())){
-		$.alert({
-            content: '请先选择空间信息',
-            confirmButton:'确定'
-        });
-		return false;
-	}
+function initAdd(){
     $("#name").val('');
-    $("#pid").val('');
     $("#url").val('');
-    $("#remark").val('');
-    $("#orderIndex").val('');
-    $("#ico").val('');
     openModal({
-        'title':'添加菜单权限',
-        'targetId':'addCategoryAuthorityForm',
+        'title':'添加功能权限',
+        'targetId':'addForm',
         'sureBtnText':'保存'
     });
 }
 
-function insertSubmitValidation(){
-	if(Ding.isEmpty($("#tenantId").val())){
-		$.alert({
-            content: '空间信息不能为空',
-            confirmButton:'确定'
-        });
-		return false;
-	}
-	D("#addCategoryAuthorityForm").submitParams['tenantId'] = $("#tenantId").val();
-	return true;
-}
-
-//添加权限成功回调事件
 function insertSuccess(result){
-    Ding.tips("添加成功");
     loadData();
-}
-
-//配置权限
-function initConfig(id){
-    this.location = "/xfsw-web-manager/root/category/authority/initConfigLinkAuthority.shtml?id="+id;
-}
-
-
-function initDelete(id){
-    $.confirm({
-        backgroundDismiss: true,
-        title:'删除菜单权限',
-        content: '删除菜单权限将会同时清除角色权限关系，是否删除 !',
-        confirmButton:'删除',
-        cancelButton:'取消',
-        confirmButtonClass:'btn-success',
-        confirm:function(){
-            Ding.ajax({
-                'url':projectName+'/manager/account/category/authority/deleteAuthority.shtml?id='+id,
-                'successCallback':function(result){
-                    $("#dataTable").bootstrapTable('removeByUniqueId',id);
-                }
-            });
-        }
-    });
 }
 
 function initEdit(id,index){
     Ding.ajax({
-        'url' : '/xfsw-web-manager/root/category/authority/initEditCategoryAuthority.shtml',
+    	'url' : '/xfsw-web-manager/root/category/authority/initEditLinkAuthority.shtml',
         'params' : {
             'id' : id
         },
         'successCallback' : function(result){
             var data = result.data;
-            $("#editid").val(data.id);
-            $("#editname").val(data.name);
-            $("#editpid").val(data.pid);
-            $("#editurl").val(data.url);
-            $("#editremark").val(data.remark);
-            $("#editorderIndex").val(data.orderIndex);
-            $("#editico").val(data.ico);
-            $("#editindex").val(index);
+            $("#editId").val(data.id);
+            $("#editName").val(data.name);
+            $("#editUrl").val(data.url);
+            $("#editIndex").val(index);
             openModal({
-                'title':'编辑菜单权限',
-                'targetId':'editCategoryAuthorityForm',
+                'title':'编辑功能权限',
+                'targetId':'editLinkAuthorityForm',
                 'sureBtnText':'保存'
             });
         }
@@ -222,19 +141,36 @@ function initEdit(id,index){
 
 function updateSuccess(result){
     var data = result.data;
-    var index = $("#editindex").val();
+    var index = $("#editIndex").val();
     $("#dataTable").bootstrapTable('updateRow',{
         'index' : index,
         'row' : data
     });
 }
 
-
-function refreshAuthorityCache(){
-    Ding.ajax({
-        'url':projectName+'/manager/account/category/authority/refreshAuthorityCache.shtml',
-        successCallback:function(result){
-            Ding.tips("刷新成功");
+function initDel(id){
+    $.confirm({
+        backgroundDismiss: true,
+        title:'删除功能权限',
+        content: '删除功能权限将会同时清除角色权限关系和角色权限SQL配置信息，是否删除 !',
+        confirmButton:'删除',
+        cancelButton:'取消',
+        confirmButtonClass:'btn-success',
+        confirm:function(){
+            Ding.ajax({
+                'url':projectName+'/manager/account/category/authority/deleteLinkAuthority.shtml?id='+id,
+                'successCallback':function(result){
+                    $("#dataTable").bootstrapTable('removeByUniqueId',id);
+                }
+            });
         }
+    });
+}
+
+function copyToOnline(id){
+    $.alert({
+        title:'学术葩提示',
+        content: '【学术葩】尚未部署线上服务器',
+        confirmButton:'确定'
     });
 }

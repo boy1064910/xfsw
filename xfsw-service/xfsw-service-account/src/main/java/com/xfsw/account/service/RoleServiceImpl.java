@@ -42,7 +42,7 @@ public class RoleServiceImpl implements RoleService {
 	}
 	
 	public void addRole(Role role,Integer[] ids,Integer[] types) {
-		commonMapper.insert("Role.addRole", role);
+		commonMapper.insert(Role.class, role);
 		//保存角色权限关系
 		if(!ArrayUtils.isEmpty(ids)){
 			List<Integer> authorityIdList = new ArrayList<Integer>();
@@ -65,22 +65,7 @@ public class RoleServiceImpl implements RoleService {
 			}
 		}
 	}
-//	
-//	@Resource(name="userService")
-//	UserService userService;
-//	
-//	@Resource(name="roleCategoryAuthorityService")
-//	RoleCategoryAuthorityService roleCategoryAuthorityService;
-//	
-//	@Resource(name="roleLinkAuthorityService")
-//	RoleLinkAuthorityService roleLinkAuthorityService;
-//	
-//	@Resource(name="roleAuthoritySqlService")
-//	RoleAuthoritySqlService roleAuthoritySqlService;
-//	
-//	@Resource(name="roleAuthoritySqlParamService")
-//	RoleAuthoritySqlParamService roleAuthoritySqlParamService;
-//	
+	
 //	@Transactional
 //	public void updateRole(Role role,Integer[] ids,Integer[] types){
 //		List<Integer> oldCategoryAuthorityIds = roleCategoryAuthorityService.selectAuthorityIdsByRoleId(role.getId());
@@ -165,6 +150,24 @@ public class RoleServiceImpl implements RoleService {
 //		}
 //		commonMapper.update("Role.updateRole", role);
 //	}
+	
+//	
+//	@Resource(name="userService")
+//	UserService userService;
+//	
+//	@Resource(name="roleCategoryAuthorityService")
+//	RoleCategoryAuthorityService roleCategoryAuthorityService;
+//	
+//	@Resource(name="roleLinkAuthorityService")
+//	RoleLinkAuthorityService roleLinkAuthorityService;
+//	
+//	@Resource(name="roleAuthoritySqlService")
+//	RoleAuthoritySqlService roleAuthoritySqlService;
+//	
+//	@Resource(name="roleAuthoritySqlParamService")
+//	RoleAuthoritySqlParamService roleAuthoritySqlParamService;
+//	
+//	
 //	
 //	@Transactional
 //	public void addRole(Role role,Integer[] ids,Integer[] types){

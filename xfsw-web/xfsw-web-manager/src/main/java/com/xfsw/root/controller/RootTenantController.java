@@ -168,6 +168,15 @@ public class RootTenantController {
 		model.addAttribute("tenantId",tenantId);
 	}
 	
+	/**
+	 * 添加角色并配置权限
+	 * @param role
+	 * @param ids
+	 * @param types
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
 	@RequestMapping(value = "/addRole")
 	@ResponseBody
 	public ResponseModel addRole(Role role,Integer[] ids,Integer[] types){
@@ -175,6 +184,29 @@ public class RootTenantController {
 		roleService.addRole(role, ids, types);
 		return new ResponseModel();
 	}
+	
+	/**
+	 * 进入编辑角色页面
+	 * @param model
+	 * @param tenantId
+	 * @param roleId
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+//	@RequestMapping(value = "/initEditRole")
+//	public void initAddRole(Model model,Integer tenantId,Integer roleId) {
+//		Role role  = roleService.getById(roleId);
+//		model.addAttribute("firstAuthorityList", categoryAuthorityService.selectFirstAuthorityModelList(tenantId));
+//		model.addAttribute("role",role);
+//	}
+	
+//	@RequestMapping(value = "/updateRole")
+//	@ResponseBody
+//	public ResponseModel updateRole(Role role,Integer[] ids,Integer[] types){
+//		role.setLastUpdater(ThreadUserInfoManager.getUserInfo().getAccount());
+//		roleService.addRole(role, ids, types);
+//		return new ResponseModel();
+//	}
 	
 	@RequestMapping(value="/initConfigUser")
 	public void initConfigUser(Integer tenantId,Model model){
