@@ -27,13 +27,33 @@
 		<div class="form-group">
             <label class="col-lg-2 col-sm-2 control-label">用户账号</label>
             <div class="col-lg-10">
-            	<input class="form-control" type="text" id="name" name="name" validations="required&&vComplexMaxLength=20" validationTips="角色名称不能为空&&角色名称长度不能超过10个中文字符或者20个英文字符"  />
+            	<input class="form-control" type="text" id="account" name="account" />
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-2 col-sm-2 control-label">角色备注</label>
+            <label class="col-lg-2 col-sm-2 control-label">用户密码</label>
             <div class="col-lg-10">
-            	<input class="form-control" type="text" id="remark" name="remark" validations="vComplexMaxLength=100" validationTips="角色备注信息不能超过100个字符" />
+            	<input class="form-control" type="text" id="pwd" name="pwd" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 col-sm-2 control-label">用户昵称</label>
+            <div class="col-lg-10">
+            	<input class="form-control" type="text" id="nickName" name="nickName" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 col-sm-2 control-label">用户邮箱</label>
+            <div class="col-lg-10">
+            	<input class="form-control" type="text" id="email" name="email" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 col-sm-2 control-label">用户角色</label>
+            <div class="col-lg-10">
+            	<select id="roleId" class="Ding-Selector" defaultOptionHtml="请选择角色信息" name="roleId"
+					url="/xfsw-web-manager/root/tenant/roleList.shtml?tenantId=${tenant.id }" valueProperty="id" htmlProperty="name">
+				</select>
             </div>
         </div>
 		<div>

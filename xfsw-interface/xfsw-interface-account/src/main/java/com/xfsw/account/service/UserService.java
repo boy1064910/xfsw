@@ -40,6 +40,18 @@ public interface UserService {
 	List<User> selectTenantUserList(Integer tenantId);
 	
 	/**
+	 * 保存用户信息
+	 * @param user
+	 * @param roleId
+	 * @param tenantId
+	 * @param operator
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	void insertTenantUser(User user,Integer roleId,Integer tenantId,String operator);
+	
+	/**
 	 * 微信登录和注册逻辑，使用微信的unionId进行登录，调用本接口之前请先做好相关的业务逻辑校验
 	 * @param unionId	微信平台用户的unionId
 	 * @param ip		用户请求登录的IP地址

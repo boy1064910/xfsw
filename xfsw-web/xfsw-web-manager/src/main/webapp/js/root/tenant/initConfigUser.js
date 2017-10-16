@@ -6,13 +6,23 @@ columns.push({
     align: 'center'
 });
 columns.push({
-    field: 'name',
-    title: '功能权限名称',
+    field: 'account',
+    title: '账号',
     align: 'center'
 });
 columns.push({
-    field: 'url',
-    title: '链接地址',
+    field: 'nickName',
+    title: '昵称',
+    align: 'center'
+});
+columns.push({
+    field: 'email',
+    title: '邮箱',
+    align: 'center'
+});
+columns.push({
+    field: 'pwd',
+    title: '密码',
     align: 'center'
 });
 columns.push({
@@ -105,10 +115,8 @@ function loadData(){
 }
 
 function initAdd(){
-    $("#name").val('');
-    $("#url").val('');
     openModal({
-        'title':'添加功能权限',
+        'title':'添加用户信息',
         'targetId':'addForm',
         'sureBtnText':'保存'
     });

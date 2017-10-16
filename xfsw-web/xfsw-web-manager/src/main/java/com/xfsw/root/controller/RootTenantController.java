@@ -19,6 +19,7 @@ import com.xfsw.account.entity.DefaultLinkAuthority;
 import com.xfsw.account.entity.LinkAuthority;
 import com.xfsw.account.entity.Role;
 import com.xfsw.account.entity.Tenant;
+import com.xfsw.account.entity.User;
 import com.xfsw.account.service.CategoryAuthorityService;
 import com.xfsw.account.service.DefaultAuthorityService;
 import com.xfsw.account.service.DefaultLinkAuthorityService;
@@ -219,4 +220,13 @@ public class RootTenantController {
 	public ResponseModel userList(Integer tenantId){
 		return new ResponseModel(userService.selectTenantUserList(tenantId));
 	}
+	
+	@RequestMapping(value="/insertUser")
+	@ResponseBody
+	public ResponseModel insertUser(User user,Integer roleId,Integer tenantId){
+		userService.insertTenantUser(user,roleId,tenantId,ThreadUserInfoManager.getAccount());
+		return new ResponseModel();
+	}
+	
+	
 }

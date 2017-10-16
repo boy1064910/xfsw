@@ -1,5 +1,6 @@
 package com.xfsw.account.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,15 +8,19 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.xfsw.account.entity.User;
+import com.xfsw.account.entity.UserTenant;
+import com.xfsw.account.entity.UserTenantRole;
 import com.xfsw.account.model.UserAuthorityIdsModel;
 import com.xfsw.account.model.UserModel;
 import com.xfsw.account.model.UserTenantModel;
 import com.xfsw.common.classes.BusinessException;
 import com.xfsw.common.consts.ErrorConstant;
 import com.xfsw.common.mapper.ICommonMapper;
+import com.xfsw.common.util.MD5Util;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -45,7 +50,30 @@ public class UserServiceImpl implements UserService {
 		String sql = "SELECT u.* FROM User u,UserTenant ut WHERE u.id = ut.userId AND ut.tenantId = #{tenantId}";
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("tenantId", tenantId);
-		return commonMapper.selectListBySql(sql, User.class);
+		return commonMapper.selectListBySql(sql, params, User.class);
+	}
+	
+	@Override
+	@Transactional
+	public void insertTenantUser(User user,Integer roleId,Integer tenantId,String operator){
+		user.setRegisteTime(new Date());
+		user.setPwd(MD5Util.md5(user.getPwd()).toUpperCase());
+		commonMapper.insert(User.class, user);
+		
+		UserTenant userTenant = new UserTenant();
+		userTenant.setUserId(user.getId());
+		userTenant.setTenantId(tenantId);
+		userTenant.setLastUpdater(operator);
+		userTenant.setLastUpdateTime(new Date());
+		commonMapper.insert(UserTenant.class, userTenant);
+		
+		UserTenantRole userTenantRole = new UserTenantRole();
+		userTenantRole.setUserId(user.getId());
+		userTenantRole.setLastUpdater(operator);
+		userTenantRole.setLastUpdateTime(new Date());
+		userTenantRole.setTenantId(tenantId);
+		userTenantRole.setRoleId(roleId);
+		commonMapper.insert(UserTenantRole.class, userTenantRole);
 	}
 	
 //	public UserModel wxLogin(String unionId,String ip) {
