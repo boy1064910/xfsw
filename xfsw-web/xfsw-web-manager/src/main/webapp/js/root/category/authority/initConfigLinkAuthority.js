@@ -109,7 +109,7 @@ function initAdd(){
     $("#url").val('');
     openModal({
         'title':'添加功能权限',
-        'targetId':'addLinkAuthorityForm',
+        'targetId':'addForm',
         'sureBtnText':'保存'
     });
 }

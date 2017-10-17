@@ -106,38 +106,8 @@ function initAdd(){
 	this.location = "/xfsw-web-manager/root/tenant/initAddRole.shtml?tenantId="+$("#tenantId").val();
 }
 
-function insertSuccess(result){
-    loadData();
-}
-
 function initEdit(id,index){
-    Ding.ajax({
-    	'url' : '/xfsw-web-manager/root/category/authority/initEditLinkAuthority.shtml',
-        'params' : {
-            'id' : id
-        },
-        'successCallback' : function(result){
-            var data = result.data;
-            $("#editId").val(data.id);
-            $("#editName").val(data.name);
-            $("#editUrl").val(data.url);
-            $("#editIndex").val(index);
-            openModal({
-                'title':'编辑功能权限',
-                'targetId':'editLinkAuthorityForm',
-                'sureBtnText':'保存'
-            });
-        }
-    })
-}
-
-function updateSuccess(result){
-    var data = result.data;
-    var index = $("#editIndex").val();
-    $("#dataTable").bootstrapTable('updateRow',{
-        'index' : index,
-        'row' : data
-    });
+	this.location = "/xfsw-web-manager/root/tenant/initEditRole.shtml?tenantId="+$("#tenantId").val()+"&roleId="+id;
 }
 
 function initDel(id){

@@ -9,6 +9,8 @@ import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +25,7 @@ import com.xfsw.account.entity.User;
 import com.xfsw.account.service.CategoryAuthorityService;
 import com.xfsw.account.service.DefaultAuthorityService;
 import com.xfsw.account.service.DefaultLinkAuthorityService;
+import com.xfsw.account.service.RoleAuthorityService;
 import com.xfsw.account.service.RoleService;
 import com.xfsw.account.service.TenantService;
 import com.xfsw.account.service.UserService;
@@ -54,6 +57,9 @@ public class RootTenantController {
 	
 	@Resource(name="roleService")
 	RoleService roleService;
+	
+	@Resource(name="roleAuthorityService")
+	RoleAuthorityService roleAuthorityService;
 	
 	@Resource(name="userService")
 	UserService userService;
@@ -164,9 +170,43 @@ public class RootTenantController {
 	 * @param tenantId
 	 */
 	@RequestMapping(value = "/initAddRole")
-	public void initAddRole(Model model,Integer tenantId) {
+	public void initAddRole(Model model,Integer tenantId,Integer roleId) {
 		model.addAttribute("firstAuthorityList", categoryAuthorityService.selectFirstAuthorityModelList(tenantId));
 		model.addAttribute("tenantId",tenantId);
+		if(roleId!=null){
+			model.addAttribute("role",roleService.getById(roleId));
+		}
+	}
+	
+	/**
+	 * 进入编辑角色页面
+	 * @param model
+	 * @param tenantId
+	 * @param roleId
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	@RequestMapping(value = "/initEditRole")
+	public void initAddRole(Model model,Integer roleId) {
+		Role role = roleService.getById(roleId);
+		if(role!=null){
+			model.addAttribute("tenantId",role.getTenantId());
+			model.addAttribute("firstAuthorityList", categoryAuthorityService.selectFirstAuthorityModelList(role.getTenantId()));
+			model.addAttribute("role",role);
+		}
+	}
+	
+	/**
+	 * 查询角色下的权限集合ID
+	 * @param roleId
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	@RequestMapping(value = "/selectAuthorityListByRoleId")
+	@ResponseBody
+	public ResponseModel selectAuthorityListByRoleId(Integer roleId) {
+		return new ResponseModel(roleAuthorityService.selectUnionAuthorityIdListByRoleId(roleId));
 	}
 	
 	/**
@@ -187,27 +227,21 @@ public class RootTenantController {
 	}
 	
 	/**
-	 * 进入编辑角色页面
-	 * @param model
-	 * @param tenantId
-	 * @param roleId
+	 * 更新角色信息
+	 * @param role
+	 * @param ids
+	 * @param types
+	 * @return
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
-//	@RequestMapping(value = "/initEditRole")
-//	public void initAddRole(Model model,Integer tenantId,Integer roleId) {
-//		Role role  = roleService.getById(roleId);
-//		model.addAttribute("firstAuthorityList", categoryAuthorityService.selectFirstAuthorityModelList(tenantId));
-//		model.addAttribute("role",role);
-//	}
-	
-//	@RequestMapping(value = "/updateRole")
-//	@ResponseBody
-//	public ResponseModel updateRole(Role role,Integer[] ids,Integer[] types){
-//		role.setLastUpdater(ThreadUserInfoManager.getUserInfo().getAccount());
-//		roleService.addRole(role, ids, types);
-//		return new ResponseModel();
-//	}
+	@RequestMapping(value = "/updateRole")
+	@ResponseBody
+	public ResponseModel updateRole(Role role,Integer[] ids,Integer[] types){
+		role.setLastUpdater(ThreadUserInfoManager.getUserInfo().getAccount());
+		roleService.updateRole(role, ids, types);
+		return new ResponseModel();
+	}
 	
 	@RequestMapping(value="/initConfigUser")
 	public void initConfigUser(Integer tenantId,Model model){

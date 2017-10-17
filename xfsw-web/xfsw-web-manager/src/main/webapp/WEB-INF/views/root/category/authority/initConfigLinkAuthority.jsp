@@ -23,7 +23,7 @@
 		</div>
 	</div>
 	<form class="Ding-Form modal-form form-horizontal" id="addForm" 
-		action="/xfsw-web-manager/root/default/authority/insertLinkAuthority.shtml" successCallback="insertSuccess">
+		action="/xfsw-web-manager/root/category/authority/insertLinkAuthority.shtml" successCallback="insertSuccess">
 		<div class="form-group">
             <label class="col-lg-2 col-sm-2 control-label">权限名称</label>
             <div class="col-lg-10">

@@ -116,11 +116,15 @@ Ding.ready(function(){
     });
 });
 
-function queryTenantCategoryAuthoirty(selector){
+function queryTenantCategoryAuthoirty(){
+	loadData();
+}
+
+function loadData(){
 	Ding.ajax({
         'url' : "/xfsw-web-manager/root/category/authority/list.shtml",
         'params' : {
-    		'tenantId' : $(selector).val()
+    		'tenantId' : $("#tenantId").val()
         },
         'successCallback' : function(result){
             var data = {};

@@ -18,7 +18,7 @@ var code;
 
 function loadAuthorityTab(pid){
 	Ding.ajax({
-		'url':'/xfsw-web-auth//manager/authority/selectAuthorityModelListByPid.shtml',
+		'url':'/xfsw-web-auth/manager/authority/selectAuthorityModelListByPid.shtml',
 		'params':{
 			'tenantId':$("#tenantId").val(),
 			'pid':pid

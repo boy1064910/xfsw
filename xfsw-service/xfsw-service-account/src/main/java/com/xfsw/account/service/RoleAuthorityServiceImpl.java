@@ -18,6 +18,7 @@ public class RoleAuthorityServiceImpl implements RoleAuthorityService {
 	@Resource(name="accountCommonMapper")
 	private ICommonMapper commonMapper;
 	
+	@Override
 	public UserAuthorityIdsModel selectAllAuthorityHashIdsByRoleId(Integer userId,Integer tenantId){
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("userId", userId);
@@ -40,8 +41,9 @@ public class RoleAuthorityServiceImpl implements RoleAuthorityService {
 		return new UserAuthorityIdsModel(authorityIds,categoryAuthorityIds);
 	}
 	
-//	public List<Integer> selectUnionAuthorityIdListByRoleId(Integer roleId){
-//		return commonMapper.selectList("RoleAuthority.selectUnionAuthorityIdListByRoleId",roleId);
-//	}
-//	
+	@Override
+	public List<Integer> selectUnionAuthorityIdListByRoleId(Integer roleId){
+		return commonMapper.selectList("RoleAuthority.selectUnionAuthorityIdListByRoleId",roleId);
+	}
+	
 }

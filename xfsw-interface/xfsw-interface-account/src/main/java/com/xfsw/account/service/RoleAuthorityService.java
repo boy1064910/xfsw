@@ -3,6 +3,8 @@
  */
 package com.xfsw.account.service;
 
+import java.util.List;
+
 import com.xfsw.account.model.UserAuthorityIdsModel;
 
 /**
@@ -20,6 +22,13 @@ public interface RoleAuthorityService {
 	 */
 	UserAuthorityIdsModel selectAllAuthorityHashIdsByRoleId(Integer userId,Integer tenantId);
 	
-//	List<Integer> selectUnionAuthorityIdListByRoleId(Integer roleId);
+	/**
+	 * 查询角色的权限集合ID
+	 * @param roleId
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	List<Integer> selectUnionAuthorityIdListByRoleId(Integer roleId);
 	
 }

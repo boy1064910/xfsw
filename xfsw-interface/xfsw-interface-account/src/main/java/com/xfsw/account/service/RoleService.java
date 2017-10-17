@@ -53,7 +53,7 @@ public interface RoleService {
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
-//	void updateRole(Role role,Integer[] ids,Integer[] types);
+	void updateRole(Role role,Integer[] ids,Integer[] types);
 //	
 //	void deleteRole(Integer roleId,String operator);
 //	
