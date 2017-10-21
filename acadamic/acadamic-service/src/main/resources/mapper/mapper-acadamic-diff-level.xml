@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DiffLevel">
+	<insert id="insertDiffLevel" parameterType="DiffLevel" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO DiffLevel(code,sequence,orderIndex,lastUpdater,lastUpdateTime)
+		VALUES(#{code},#{sequence},#{orderIndex},#{lastUpdater},NOW())
+	</insert>
+	
+	<select id="selectListByKnowledgeCode" parameterType="java.lang.String" resultType="DiffLevel">
+		SELECT * FROM DiffLevel WHERE code LIKE CONCAT(#{knowledgeCode},'%') ORDER BY orderIndex ASC 
+	</select>
+	
+	<select id="selectMaxOrderIndexByCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT MAX(orderIndex) FROM DiffLevel WHERE code LIKE CONCAT(#{code},'%')
+	</select>
+	
+	<select id="selectMiniListByKnowledgeCode" parameterType="java.lang.String" resultType="MiniDiffLevelListModel">
+		SELECT id,code,sequence,answerInfo,answerType FROM DiffLevel WHERE code LIKE CONCAT(#{knowledgeCode},'%') ORDER BY orderIndex ASC 
+	</select>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Exercise">
+	<insert id="insertExercise" parameterType="Exercise" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO Exercise(code,picUrl,orderIndex,lastUpdater,lastUpdateTime)
+		VALUES(#{code},#{picUrl},#{orderIndex},#{lastUpdater},NOW())
+	</insert>
+
+	<select id="selectListByDiffLevelCode" parameterType="java.lang.String" resultType="Exercise">
+		SELECT * FROM Exercise WHERE code LIKE CONCAT(#{code},'%') ORDER BY orderIndex ASC 
+	</select>
+	
+	<update id="updateExercise" parameterType="Exercise">
+		UPDATE Exercise SET 
+			<if test="picUrl!=null and ''!=picUrl">
+				picUrl=#{picUrl},
+			</if>
+			lastUpdater=#{lastUpdater},lastUpdateTime = NOW()
+		WHERE id = #{id}
+	</update>
+	
+	<select id="selectMaxOrderIndexByCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT MAX(orderIndex) FROM Exercise WHERE code LIKE CONCAT(#{code},'%')
+	</select>
+	
+	<select id="selectListByKnowledgeCode" parameterType="java.lang.String" resultType="Exercise">
+		SELECT * FROM Exercise WHERE code LIKE CONCAT(#{code},'%') ORDER BY orderIndex ASC 
+	</select>
+</mapper>

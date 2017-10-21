@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Chapter">
+	<select id="selectMaxOrderIndexByCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT MAX(orderIndex) FROM Chapter WHERE code LIKE CONCAT(#{code},'%')
+	</select>
+
+	<insert id="insertChapter" parameterType="Chapter" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO Chapter(sequence,code,name,price,info,orderIndex,lastUpdater,lastUpdateTime)
+		VALUES(#{sequence},#{code},#{name},#{price},#{info},#{orderIndex},#{lastUpdater},NOW())
+	</insert>
+	
+	<update id="updateChapter" parameterType="Chapter">
+		UPDATE Chapter SET name = #{name},price = #{price},info=#{info},lastUpdater=#{lastUpdater},lastUpdateTime = NOW()
+	</update>
+	
+	<select id="selectListByCourseCode" parameterType="java.lang.String" resultType="Chapter">
+		SELECT * FROM Chapter WHERE code LIKE CONCAT(#{courseCode},'%') ORDER BY orderIndex ASC 
+	</select>
+	
+	<!-- 前端接口调用 -->
+	<select id="selectMiniChapterList" parameterType="java.lang.String" resultType="MiniChapterListModel">
+		SELECT id,code,sequence,name,knowledgeCount,exampleCount,videoSeconds,buyCount,price FROM Chapter WHERE code LIKE CONCAT(#{courseCode},'%') ORDER BY orderIndex ASC
+	</select>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="defaultStatementTimeout" value="600" />
+		<setting name="logImpl" value="SLF4J" />
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<setting name="callSettersOnNulls" value="true"/>
+	</settings>
+
+	<typeAliases>
+		<!-- entity -->
+		<typeAlias type="net.xueshupa.entity.Course" alias="Course"/>
+		<typeAlias type="net.xueshupa.entity.Chapter" alias="Chapter"/>
+		<typeAlias type="net.xueshupa.entity.Knowledge" alias="Knowledge"/>
+		<typeAlias type="net.xueshupa.entity.DiffLevel" alias="DiffLevel"/>
+		<typeAlias type="net.xueshupa.entity.Exercise" alias="Exercise"/>
+		<typeAlias type="net.xueshupa.entity.Answer" alias="Answer"/>
+		<!-- model -->
+		<typeAlias type="net.xueshupa.model.MiniCourseListModel" alias="MiniCourseListModel"/>
+		<typeAlias type="net.xueshupa.model.MiniChapterListModel" alias="MiniChapterListModel"/>
+		<typeAlias type="net.xueshupa.model.MiniKnowledgeListModel" alias="MiniKnowledgeListModel"/>
+		<typeAlias type="net.xueshupa.model.MiniKnowledgeInfoModel" alias="MiniKnowledgeInfoModel"/>
+		<typeAlias type="net.xueshupa.model.MiniDiffLevelListModel" alias="MiniDiffLevelListModel"/>
+	</typeAliases>
+
+</configuration>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Answer">
+	<insert id="insertAnswer" parameterType="Answer" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO Answer(exerciseId,answer,orderIndex,lastUpdater,lastUpdateTime)
+		VALUES(#{exerciseId},#{answer},#{orderIndex},#{lastUpdater},NOW())
+	</insert>
+	
+	<update id="updateAnswer" parameterType="Answer">
+		UPDATE Answer 
+		SET 
+			answer = #{answer}, orderIndex = #{orderIndex},
+			lastUpdater=#{lastUpdater},lastUpdateTime = NOW()
+		WHERE id = #{id}
+	</update>
+	
+	<select id="selectListByExerciseIds" resultType="Answer">
+		SELECT * FROM Answer WHERE exerciseId IN
+		<foreach collection="array" item="exerciseId" open="(" close=")" separator=",">
+			#{exerciseId}
+		</foreach>
+		ORDER BY FIELD(
+			exerciseId,
+			<foreach collection="array" item="exerciseId" open="" close="" separator=",">
+				#{exerciseId}
+			</foreach>
+		), orderIndex ASC
+	</select>
+	
+	<select id="selectListByExerciseId" parameterType="java.lang.Integer" resultType="Answer">
+		SELECT * FROM Answer WHERE exerciseId = #{exerciseId}
+	</select>
+</mapper>

@@ -9,14 +9,14 @@
 		http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-	<context:property-placeholder location="classpath*:conf/${env}/config.properties" />
+	<context:property-placeholder location="classpath*:conf/dev/config.properties" />
 
 	<!-- 数据源 org.apache.commons.dbcp.BasicDataSource com.alibaba.druid.pool.DruidDataSource -->
-	<bean id="accountDataSource" class="com.alibaba.druid.pool.DruidDataSource">
+	<bean id="acadamicDataSource" class="com.alibaba.druid.pool.DruidDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://${account.jdbc.host}:${account.jdbc.port}/${account.jdbc.database}?useUnicode=true&amp;characterEncoding=utf8" />
-		<property name="username" value="${account.jdbc.username}" />
-		<property name="password" value="${account.jdbc.password}" />
+		<property name="url" value="jdbc:mysql://${acadamic.jdbc.host}:${acadamic.jdbc.port}/${acadamic.jdbc.database}?useUnicode=true&amp;characterEncoding=utf8" />
+		<property name="username" value="${acadamic.jdbc.username}" />
+		<property name="password" value="${acadamic.jdbc.password}" />
 		<!-- 初始化连接大小 -->
 		<property name="initialSize" value="0" />
 		<!-- 连接池最大使用连接数量 -->
@@ -60,49 +60,33 @@
 		<aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
 	</aop:config>
 
-	<bean id="accountTxManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="accountDataSource" />
+	<bean id="acadamicTxManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="acadamicDataSource" />
 	</bean>
 
 	<!-- 声明式事务 -->
-	<tx:annotation-driven transaction-manager="accountTxManager" proxy-target-class="true" />
+	<tx:annotation-driven transaction-manager="acadamicTxManager" proxy-target-class="true" />
 
-	<bean id="accountSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="accountDataSource" />
-		<property name="configLocation" value="classpath:spring/mybatis-account.xml" />
+	<bean id="acadamicSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="acadamicDataSource" />
+		<property name="configLocation" value="classpath:spring/mybatis-acadamic.xml" />
 		<property name="mapperLocations">
 			<list>
 				<value>classpath*:mapper/mapper-common.xml</value>
-				<value>classpath*:mapper/mapper-account-*.xml</value>
+				<value>classpath*:mapper/mapper-acadamic-*.xml</value>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="accountSqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg ref="accountSqlSessionFactory" />
+	<bean id="acadamicSqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="acadamicSqlSessionFactory" />
 	</bean>
 
-	<bean id="accountCommonMapper" class="com.xfsw.common.mapper.CommonMapper">
-		<constructor-arg ref="accountSqlSessionTemplate"></constructor-arg>
+	<bean id="acadamicCommonMapper" class="com.xfsw.common.mapper.CommonMapper">
+		<constructor-arg ref="acadamicSqlSessionTemplate"></constructor-arg>
 	</bean>
 
-
-	<bean id="authJedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" 
-		p:use-pool="true" p:host-name="${auth.cache.redis.host}" p:database="${auth.cache.redis.database}"
-		p:port="${auth.cache.redis.port}" p:password="${auth.cache.redis.password}" />
-
-	<!-- redis template definition -->
-	<bean id="authRedisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
-		<property name="connectionFactory" ref="authJedisConnectionFactory" />
-		<property name="keySerializer">
-			<bean class="org.springframework.data.redis.serializer.StringRedisSerializer"></bean>
-		</property>
-		<property name="valueSerializer">  
-        		<bean class="org.springframework.data.redis.serializer.StringRedisSerializer"/>  
-        </property>
-	</bean>
-	
 	<!-- 扫描包 -->
 	<context:annotation-config />
-	<context:component-scan base-package="com.xfsw.account.service" />
+	<context:component-scan base-package="net.xueshupa.acadamic.service" />
 </beans>

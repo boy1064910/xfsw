@@ -8,7 +8,7 @@
 		http://www.springframework.org/schema/aop
        http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-<!-- 	<context:property-placeholder location="classpath*:conf/${environment}/config.properties" /> -->
+	<context:property-placeholder location="classpath*:conf/${env}/config.properties" />
 
 	<!-- redis连接池 -->
 	<bean id="sessionJedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
