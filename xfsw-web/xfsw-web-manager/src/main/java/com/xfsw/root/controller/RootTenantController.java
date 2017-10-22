@@ -9,8 +9,6 @@ import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -240,6 +238,7 @@ public class RootTenantController {
 	public ResponseModel updateRole(Role role,Integer[] ids,Integer[] types){
 		role.setLastUpdater(ThreadUserInfoManager.getUserInfo().getAccount());
 		roleService.updateRole(role, ids, types);
+		
 		return new ResponseModel();
 	}
 	

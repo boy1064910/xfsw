@@ -1,5 +1,6 @@
 package com.xfsw;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,6 +30,10 @@ public class WebManagerApplication {
 	 * @version 0.0.1
 	 */
 	public static void main(String[] args) {
+		String env = System.getProperty("env");//加载spring配置文件
+		if (StringUtils.isEmpty(env)){
+			System.setProperty("env", "dev");
+		}
 		SpringApplication.run(WebManagerApplication.class, args);
 	}
 	

@@ -56,8 +56,9 @@ public class UserSessionServiceImpl implements UserSessionService {
 	
 	@Override
 	public void refreshUserSessionAuthorityInfo(Integer roleId){
-		Map<String,UserSessionModel> allUserSessionModel = this.listUserSession();
 		//后期用户数量多,改成消息机制
+		Map<String,UserSessionModel> allUserSessionModel = this.listUserSession();
+		Map<String,UserSessionModel>
 		
 		List<UserTenantRole> userTenantRoleList = userTenantRoleService.selectListByRoleId(roleId);
 	}
