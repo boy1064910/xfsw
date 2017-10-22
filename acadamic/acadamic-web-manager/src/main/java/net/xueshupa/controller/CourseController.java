@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xfsw.common.classes.DataTablePageInfo;
+import com.xfsw.common.classes.DataTableResponseModel;
 import com.xfsw.common.classes.ResponseModel;
 import com.xfsw.common.thread.ThreadUserInfoManager;
 import com.xfsw.session.model.UserSessionModel;
@@ -33,5 +35,11 @@ public class CourseController {
 		course.setLastUpdater(user.getAccount());
 		course.setUserId(user.getId());
 		return new ResponseModel();
+	}
+	
+	@RequestMapping("/pageInfo")
+	@ResponseBody
+	public DataTableResponseModel pageInfo(DataTablePageInfo pageInfo){
+		return courseService.selectPageInfo(pageInfo);
 	}
 }

@@ -34,7 +34,38 @@ public interface ICommonMapper {
 	 */
 	<T> T get(String sqlId,Object entity);
 	
+	/**
+	 * 根据id获取单条数据
+	 * @param clazz
+	 * @param id
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
 	<T> T get(Class<T> clazz,Integer id);
+	
+	/**
+	 * 根据字段获取单条数据
+	 * @param clazz
+	 * @param fieldName
+	 * @param value
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	<T> T get(Class<T> clazz,String fieldName,Object value);
+	
+	/**
+	 * 根据字段信息查询单条数据
+	 * @param clazz			查询的类名,需要和表名一致
+	 * @param targetClazz	目标返回类名
+	 * @param fieldName		字段名称
+	 * @param value			字段值
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	<T> T get(Class<? extends Object> clazz,Class<T> targetClazz,String fieldName,Object value);
 	
 	Object get(Class<? extends Object> clazz,Class<? extends Object> targetClazz,Integer id);
 	
@@ -42,9 +73,6 @@ public interface ICommonMapper {
 	
 	Object get(Class<? extends Object> clazz,Object entity);
 	
-	Object get(Class<? extends Object> clazz,String fieldName,Object value);
-	
-	Object get(Class<? extends Object> clazz,Class<? extends Object> targetClazz,String fieldName,Object value);
 	
 	/**
 	 * 通过mybatis定义的sqlId关联语句查询多条数据

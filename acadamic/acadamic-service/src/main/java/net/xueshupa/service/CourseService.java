@@ -7,6 +7,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.xfsw.common.classes.DataTablePageInfo;
+import com.xfsw.common.classes.DataTableResponseModel;
 import com.xfsw.common.mapper.ICommonMapper;
 
 import net.xueshupa.entity.Course;
@@ -56,7 +58,7 @@ public class CourseService {
 	}
 	
 	public Course getByCode(String code){
-		return (Course)commonMapper.get(Course.class, "code", code);
+		return commonMapper.get(Course.class, "code", code);
 	}
 	
 	/**
@@ -65,5 +67,11 @@ public class CourseService {
 	 */
 	public List<MiniCourseListModel> selectMiniCourseList(){
 		return commonMapper.selectList("Course.selectMiniCourseList");
+	}
+	
+	public DataTableResponseModel selectPageInfo(DataTablePageInfo pageInfo){
+		String countSql = "SELECT COUNT(id) FROM Course";
+		String dataSql = "SELECT * FROM Course";
+		return commonMapper.selectPageBySql(countSql, dataSql, pageInfo, null);
 	}
 }

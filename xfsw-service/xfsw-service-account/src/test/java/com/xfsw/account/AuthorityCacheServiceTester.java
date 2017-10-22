@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.xfsw.account.service.AuthorityCacheService;
+import com.xfsw.common.util.DJBHashUtil;
 import com.xfsw.common.util.JsonUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -22,6 +23,7 @@ public class AuthorityCacheServiceTester {
 	@Test
 	public void test() {
 //		authorityCacheService.test();
+		System.out.println(DJBHashUtil.DJBHashId("/index.shtml"));
 	}
 	
 	@Test

@@ -110,11 +110,11 @@ public class CommonMapper implements ICommonMapper {
 		return this.get(clazz, params);
 	}
 	
-	public Object get(Class<? extends Object> clazz,String fieldName,Object value){
+	public <T> T get(Class<T> clazz,String fieldName,Object value){
 		return this.get(clazz, clazz, fieldName, value);
 	}
 	
-	public Object get(Class<? extends Object> clazz,Class<? extends Object> targetClazz,String fieldName,Object value){
+	public <T> T get(Class<? extends Object> clazz,Class<T> targetClazz,String fieldName,Object value){
 		if(StringUtil.isEmpty(fieldName)){
 			throw new RuntimeException("查询参数为空！");
 		}
@@ -130,7 +130,7 @@ public class CommonMapper implements ICommonMapper {
 			return null;
 		}
 		this.dealDataResultMap(result);
-		return MapUtil.map2Pojo(result, targetClazz);
+		return MapUtil.map2Entity(result, targetClazz);
 	}
 
 	public <T> List<T> selectList(String sqlId) {
@@ -215,16 +215,22 @@ public class CommonMapper implements ICommonMapper {
 	}
 	
 	public DataTableResponseModel selectPageBySql(String countSql,String dataSql,DataTablePageInfo pageInfo, Map<String, Object> params){
-		if(params==null) params = new HashMap<String,Object>();
-		DataTableResponseModel model = new DataTableResponseModel();
-		params.put("sql", countSql);
-		model.setTotal((Integer)this.sqlSessionTemplate.selectOne("Common.getCount", params));
+		Map<String, Object> queryParams = new HashMap<String, Object>();
+		if (params != null) {
+			for (Map.Entry<String, Object> entry : params.entrySet()) {
+				queryParams.put(entry.getKey(), entry.getValue());
+			}
+		}
 		
-		params.put("startIndex", pageInfo.getCurrentIndex()-1);
-		params.put("pageSize", pageInfo.getPageSize());
+		DataTableResponseModel model = new DataTableResponseModel();
+		queryParams.put("sql", countSql);
+		model.setTotal((Integer)this.sqlSessionTemplate.selectOne("Common.getCount", queryParams));
+		
+		queryParams.put("startIndex", pageInfo.getCurrentIndex()-1);
+		queryParams.put("pageSize", pageInfo.getPageSize());
 		dataSql+=" LIMIT #{startIndex},#{pageSize}";
-		params.put("sql", dataSql);
-		model.setRows(this.sqlSessionTemplate.selectList("Common.queryOperation",params));
+		queryParams.put("sql", dataSql);
+		model.setRows(this.sqlSessionTemplate.selectList("Common.queryOperation",queryParams));
 		return model;
 	}
 	

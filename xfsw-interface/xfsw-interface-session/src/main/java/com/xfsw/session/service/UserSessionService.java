@@ -37,7 +37,13 @@ public interface UserSessionService {
 	 */
 	void deleteUserSession(String sessionIdValue);
 	
-//	void refreshUserSessionAuthorityInfo();
+	/**
+	 * 刷新角色下的用户权限信息
+	 * @param roleId
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	void refreshUserSessionAuthorityInfo(Integer roleId);
 //	
 //	void refreshSystemUserSessionAuthorityInfoByRoleId(Integer roleId);
 	

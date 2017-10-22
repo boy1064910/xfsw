@@ -73,39 +73,66 @@ Ding.ready(function(){
 				$("#mMenuText").attr("href",$($(selectedMenu).children()[0]).attr("href"));
 				$("#pMenuText").html(currentParentMenuName);
 			}
+			
+			//TODO 面包屑接龙逻辑,链接中携带参数代码 breadSequence=1
+			var breadSequence = Ding.getQueryParameterByName('breadSequence');
+			var breadSequences = [];
+			if(breadSequence=='1'){
+				breadSequences = $.cookie('breadSequences');
+				console.log(breadSequences);
+				console.log($("#requestMenuName").html());
+				if(Ding.isEmpty(breadSequences)){
+					breadSequences = [];
+					breadSequences.push({
+						'name' : $("#requestMenuName").html(),
+						'url' : window.location.href
+					});
+					pushBreadSequences(breadSequences);
+				}
+				else{
+					breadSequences = JSON.parse(breadSequences);
+					var isExsit = false;
+					var breadIndex = 0;
+					for(var i=0;i<breadSequences.length;i++){
+						if(breadSequences[i].url==window.location.href){
+							isExsit = true;
+							breadIndex = i;
+							break;
+						}
+					}
+					if(!isExsit){
+						breadSequences.push({
+							'name' : $("#requestMenuName").html(),
+							'url' : window.location.href
+						});
+						pushBreadSequences(breadSequences);
+						//将数组中的面包屑全部显示
+						showBreadSequences(breadSequences);
+					}
+					else{
+						//删除定位索引之后的数据
+						var deleteLength = breadSequences.length - (breadIndex + 1);
+						breadSequences.splice(breadIndex,deleteLength);
+						//将定位之前的数据显示在面包屑中
+						showBreadSequences(breadSequences);
+					}
+				}
+			}
+			else{
+				pushBreadSequences(breadSequences);
+			}
 			controlMenu();
 		}
 	});
-
-	// Ding.ajax({
-	// 	'url':projectName+'/system/user/info/list.shtml',
-	// 	successCallback:function(result){
-	// 		var data = result.data;
-	// 		$("#mSystemInfoCount").html(result.count);
-	// 		$("#mSystemInfoCountHtml").html("您有"+result.count+"条新消息");
-	// 		if($.isEmpty(data)) return;
-	// 		for(var i=0;i<data.length;i++){
-	// 			var info = data[i];
-	// 			var li = $('<li></li>');
- //    			var descSpan = $('<span class="desc"></span>');
- //    			var nameSpan = $('<span class="name">'+info.sender+'</span>');
- //    			if(info.status==0){
- //    				nameSpan.append('<span class="badge badge-success">new</span>');
- //    			}
- //    			var msgSpan = $('<span class="msg">'+info.title+'</span>');
- //    			descSpan.append(nameSpan).append(msgSpan);
-
- //    			var a = $('<a></a>');
- //    			a.append('<span class="thumb"><img src="'+info.senderHeader+'"/></span>');
- //    			a.append(descSpan);
- //    			a.attr("onclick","openSystemInfoModal('"+info.id+"','"+info.sender+"','"+info.senderHeader+"','"+info.lastUpdateTime+"','"+info.title+"','"+info.content+"','"+info.status+"',this)");
- //    			// a.on("click",function(){
- //    			// 	openSystemInfoModal(info);
- //    			// })
-
- //    			li.append(a);
- //    			$('#mSystemInfo').prepend(li);
-	// 		}
-	// 	}
-	// });
 });
+
+function pushBreadSequences(breadSequences){
+	$.cookie('breadSequences',JSON.stringify(breadSequences));
+}
+
+function showBreadSequences(breadSequences){
+	if(breadSequences.length<1) return;
+	for(var i=breadSequences.length-2;i>=0;i--){
+		$("#mMenuText").parent().after('<li class="active"><a href="'+breadSequences[i].url+'">'+breadSequences[i].name+'</a></li>');
+	}
+}

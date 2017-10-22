@@ -14,7 +14,7 @@ import net.xueshupa.entity.Chapter;
 import net.xueshupa.service.ChapterService;
 
 @Controller
-@RequestMapping("/manager/acadamic/course/chapter")
+@RequestMapping("/manager/course/chapter")
 public class ChapterController {
 
 	@Resource(name="chapterService")

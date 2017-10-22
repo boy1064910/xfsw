@@ -9,8 +9,8 @@
 <!-- Latest compiled and minified Locales -->
 <script src="/widgets/bootstrap/bootstrap-table/bootstrap-table-zh-CN.js"></script>
 
-<link rel="stylesheet" href="/js/manager/acadamic/course/index.css" type="text/css">
-<script type="text/javascript" src="/js/manager/acadamic/course/index.js"></script>
+<link rel="stylesheet" href="/acadamic-web-manager/js/manager/course/index.css" type="text/css">
+<script type="text/javascript" src="/acadamic-web-manager/js/manager/course/index.js"></script>
 </head>
 <body>
 	<div class="panel">

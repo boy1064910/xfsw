@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
@@ -22,7 +23,7 @@ import com.xfsw.common.filter.WebSiteMeshFilter;
 //@EnableEurekaClient
 @SpringBootApplication
 @ImportResource(locations={"classpath:spring-web.xml","classpath*:spring/spring-service-*.xml"})
-@EnableAutoConfiguration(exclude={RedisAutoConfiguration.class,RedisRepositoriesAutoConfiguration.class})
+@EnableAutoConfiguration(exclude={RedisAutoConfiguration.class,RedisRepositoriesAutoConfiguration.class,DataSourceAutoConfiguration.class})
 public class AcadamicWebManagerApplication {
 
 	public static void main(String[] args) {  	

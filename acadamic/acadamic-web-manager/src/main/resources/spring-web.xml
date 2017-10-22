@@ -32,5 +32,18 @@
 				<property name="urlPrefix" value="/acadamic-web-manager"></property>
 			</bean>
 		</mvc:interceptor>
+		
+		<!-- 权限拦截器 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/error"/>
+			<bean class="com.xfsw.common.interceptor.UniverseAuthInterceptor">
+				<property name="userSessionService" ref="userSessionService"></property>
+				<property name="authorityCacheService" ref="authorityCacheService"></property>
+			</bean>
+		</mvc:interceptor>
 	</mvc:interceptors>
+	
+	<!-- 导入服务spring配置文件 -->
+	<import resource="classpath*:spring/spring-service-*.xml" />
 </beans>

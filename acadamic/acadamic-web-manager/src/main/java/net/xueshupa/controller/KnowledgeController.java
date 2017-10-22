@@ -14,7 +14,7 @@ import net.xueshupa.entity.Knowledge;
 import net.xueshupa.service.KnowledgeService;
 
 @Controller
-@RequestMapping("/manager/acadamic/course/chapter/knowledge")
+@RequestMapping("/manager/course/chapter/knowledge")
 public class KnowledgeController {
 
 //	@Value("${ali.oss.define.domain}")

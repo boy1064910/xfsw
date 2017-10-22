@@ -75,5 +75,5 @@ function save(){
 
 function success(result) {
 	Ding.tips("操作成功");
-	this.location = "/xfsw-web-manager/root/tenant//initConfigRole.shtml?tenantId="+$("#tenantId").val();
+	this.location = "/xfsw-web-manager/root/tenant/initConfigRole.shtml?tenantId="+$("#tenantId").val();
 }

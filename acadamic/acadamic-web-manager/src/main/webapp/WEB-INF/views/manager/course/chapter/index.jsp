@@ -9,7 +9,7 @@
 <!-- Latest compiled and minified Locales -->
 <script src="/widgets/bootstrap/bootstrap-table/bootstrap-table-zh-CN.js"></script>
 
-<script type="text/javascript" src="/js/manager/acadamic/course/chapter/index.js"></script>
+<script type="text/javascript" src="/acadamic-web-manager/js/manager/course/chapter/index.js"></script>
 </head>
 <body>
 	<div class="panel">
