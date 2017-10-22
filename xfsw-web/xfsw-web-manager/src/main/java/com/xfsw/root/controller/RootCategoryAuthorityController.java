@@ -51,14 +51,14 @@ public class RootCategoryAuthorityController {
 	public ResponseModel list(Integer tenantId) {
 		return new ResponseModel(categoryAuthorityService.selectListByTenantId(tenantId));
 	}
-
+	
 	@RequestMapping(value = "/insertCategoryAuthority", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseModel insertCategoryAuthority(CategoryAuthority categoryAuthority) {
 		if (categoryAuthority.getPid() == null)
 			categoryAuthority.setPid(0);
 		if (!StringUtils.isEmpty(categoryAuthority.getUrl())) {
-			categoryAuthority.setHashId(DJBHashUtil.DJBHashId(categoryAuthority.getUrl()));
+			categoryAuthority.setHashId(this.parseHashId(categoryAuthority.getUrl()));
 		}
 		categoryAuthority.setLastUpdater(ThreadUserInfoManager.getUserInfo().getAccount());
 		categoryAuthority.setLastUpdateTime(new Date());
@@ -76,7 +76,7 @@ public class RootCategoryAuthorityController {
 	@ResponseBody
 	public ResponseModel updateCategoryAuthority(CategoryAuthority categoryAuthority) {
 		if (!StringUtils.isEmpty(categoryAuthority.getUrl())) {
-			categoryAuthority.setHashId(DJBHashUtil.DJBHashId(categoryAuthority.getUrl()));
+			categoryAuthority.setHashId(this.parseHashId(categoryAuthority.getUrl()));
 		}
 		categoryAuthority.setLastUpdater(ThreadUserInfoManager.getUserInfo().getAccount());
 		categoryAuthorityService.updateCategoryAuthority(categoryAuthority);
@@ -107,7 +107,7 @@ public class RootCategoryAuthorityController {
 	public ResponseModel updateLinkAuthority(LinkAuthority linkAuthority) {
 		linkAuthority.setLastUpdater(ThreadUserInfoManager.getAccount());
 		linkAuthority.setOldId(linkAuthority.getId());
-		linkAuthority.setId(DJBHashUtil.DJBHashId(linkAuthority.getUrl()));
+		linkAuthority.setId(this.parseHashId(linkAuthority.getUrl()));
 		linkAuthorityService.updateLinkAuthority(linkAuthority);
 		return new ResponseModel(linkAuthority);
 	}
@@ -116,11 +116,22 @@ public class RootCategoryAuthorityController {
 	@ResponseBody
 	public ResponseModel insertLinkAuthority(LinkAuthority linkAuthority) {
 		CategoryAuthority categoryAuthority = categoryAuthorityService.getById(linkAuthority.getCategoryAuthorityId());
-		linkAuthority.setId(DJBHashUtil.DJBHashId(linkAuthority.getUrl()));
+		linkAuthority.setId(this.parseHashId(linkAuthority.getUrl()));
 		linkAuthority.setLastUpdater(ThreadUserInfoManager.getAccount());
 		linkAuthority.setTenantId(categoryAuthority.getTenantId());
 		linkAuthorityService.insertLinkAuthority(linkAuthority);
 		return new ResponseModel();
+	}
+	
+	private Integer parseHashId(String url){
+		if(url.indexOf("/")!=-1){
+			String secondUrl = url.substring(url.indexOf("/")+1);
+			if(secondUrl.indexOf("/")!=-1){
+				String newUrl = secondUrl.substring(secondUrl.indexOf("/"));
+				return DJBHashUtil.DJBHashId(newUrl);
+			}
+		}
+		return DJBHashUtil.DJBHashId(url);
 	}
 
 	// @RequestMapping(value="/deleteAuthority")

@@ -24,6 +24,7 @@
 		<!-- 暂时作废 -->
 <!-- 		<module>xfsw-web-config-server</module> -->
 		<module>xfsw-web-manager</module>
+		<module>xfsw-web-business</module>
 	</modules>
 	
 	<dependencies>

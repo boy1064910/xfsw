@@ -6,15 +6,19 @@ package com.xfsw.session.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.xfsw.account.entity.UserTenantRole;
+import com.xfsw.account.model.UserAuthorityIdsModel;
+import com.xfsw.account.service.RoleAuthorityService;
 import com.xfsw.account.service.UserTenantRoleService;
 import com.xfsw.common.classes.BusinessException;
 import com.xfsw.common.util.JsonUtil;
@@ -33,8 +37,8 @@ public class UserSessionServiceImpl implements UserSessionService {
 	@Resource(name="userTenantRoleService")
 	UserTenantRoleService userTenantRoleService;
 	
-//	@Resource(name="roleAuthorityService")
-//	RoleAuthorityService roleAuthorityService;
+	@Resource(name="roleAuthorityService")
+	RoleAuthorityService roleAuthorityService;
 	
 	public void addUserSession(String sessionIdValue,UserSessionModel userSessionModel){
 		sessionRedisTemplate.opsForValue().set(SessionConstant.XFSW_SESSION_REDIS_PREFIX + sessionIdValue, JsonUtil.entity2Json(userSessionModel),SessionConstant.XFSW_SESSION_EXPIRE, TimeUnit.MILLISECONDS);
@@ -57,10 +61,27 @@ public class UserSessionServiceImpl implements UserSessionService {
 	@Override
 	public void refreshUserSessionAuthorityInfo(Integer roleId){
 		//后期用户数量多,改成消息机制
-		Map<String,UserSessionModel> allUserSessionModel = this.listUserSession();
-		Map<String,UserSessionModel>
-		
 		List<UserTenantRole> userTenantRoleList = userTenantRoleService.selectListByRoleId(roleId);
+		if(CollectionUtils.isEmpty(userTenantRoleList))
+			return;
+		
+		Map<String,UserSessionModel> allUserSessionModel = this.listUserSession();
+		Map<String,InnerUserSessionModel> innerUserSessionModelMap = new HashMap<String,InnerUserSessionModel>(allUserSessionModel.size());
+		for(Entry<String,UserSessionModel> entry:allUserSessionModel.entrySet()){
+			innerUserSessionModelMap.put(entry.getValue().getId()+"-"+entry.getValue().getTenantId(), new InnerUserSessionModel(entry.getKey(), entry.getValue()));
+		}
+		
+		for(UserTenantRole userTenantRole:userTenantRoleList){
+			UserAuthorityIdsModel userAuthorityIdsModel = roleAuthorityService.selectAllAuthorityHashIdsByRoleId(userTenantRole.getUserId(), userTenantRole.getTenantId());
+			InnerUserSessionModel innerUserSessionModel = innerUserSessionModelMap.get(userTenantRole.getUserId()+"-"+userTenantRole.getTenantId());
+			if(innerUserSessionModel!=null){
+				String sessionKey = innerUserSessionModel.getSessionKey();
+				UserSessionModel userSessionModel = innerUserSessionModel.getUserSessionModel();
+				userSessionModel.setAuthorityIds(userAuthorityIdsModel.getAuthorityIds());
+				userSessionModel.setCategoryAuthorityIds(userAuthorityIdsModel.getCategoryAuthorityIds());
+				sessionRedisTemplate.opsForValue().set(sessionKey, JsonUtil.entity2Json(userSessionModel),SessionConstant.XFSW_SESSION_EXPIRE, TimeUnit.MILLISECONDS);
+			}
+		}
 	}
 	
 //	public void refreshUserSessionAuthorityInfo(){
@@ -134,4 +155,27 @@ public class UserSessionServiceImpl implements UserSessionService {
 		}
 	}
 	
+}
+
+class InnerUserSessionModel{
+	String sessionKey;
+	UserSessionModel userSessionModel;
+	
+	public InnerUserSessionModel(String sessionKey, UserSessionModel userSessionModel) {
+		super();
+		this.sessionKey = sessionKey;
+		this.userSessionModel = userSessionModel;
+	}
+	public String getSessionKey() {
+		return sessionKey;
+	}
+	public void setSessionKey(String sessionKey) {
+		this.sessionKey = sessionKey;
+	}
+	public UserSessionModel getUserSessionModel() {
+		return userSessionModel;
+	}
+	public void setUserSessionModel(UserSessionModel userSessionModel) {
+		this.userSessionModel = userSessionModel;
+	}
 }

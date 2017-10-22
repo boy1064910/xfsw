@@ -29,6 +29,10 @@ public class ErrorConstant {
 	/**系统异常，前端提示统一错误信息，异常拦截器记录msg（如果携带信息）*/
 	public final static int ERROR_SYSTEM_KNOWN = 103;
 	
+	// ======================================系统异常-错误代码===================================
+	/** 无权限 */
+	public final static int ERROR_NO_AUTH = 201;
+	
 	// ======================================登录业务-错误代码（用于具体的业务逻辑处理）======================================
 	/** 平台用户未登录-1001 */
 	public final static int ACCOUNT_SESSION_NOT_EXIST = 1001;//登录超时

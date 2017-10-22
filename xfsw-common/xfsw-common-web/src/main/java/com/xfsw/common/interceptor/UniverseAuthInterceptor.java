@@ -61,12 +61,7 @@ public class UniverseAuthInterceptor implements HandlerInterceptor {
 	private void noAuthorityOut(HttpServletRequest request,HttpServletResponse response) throws Exception{
 		if (HttpServletRequestUtil.isAjaxRequest(request)) {// 属于ajax请求
 			ResponseModel resultModel = new ResponseModel();
-			resultModel.setCode(ErrorConstant.ERROR_BUSINESS_KNOWN);
-			String uri = request.getRequestURI();
-			if(request.getParameter("aRandomCode")!=null){
-				uri+="?aRandomCode="+request.getParameter("aRandomCode");
-			}
-			resultModel.setMsg(uri+"，未经授权，请联系系统管理员！");
+			resultModel.setCode(ErrorConstant.ERROR_NO_AUTH);
 			PrintWriter pw = response.getWriter();
 			pw.print(JsonUtil.entity2Json(resultModel));// 输出json格式，登录超时
 			pw.close();

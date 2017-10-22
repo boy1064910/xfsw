@@ -13,7 +13,7 @@
 <script type="text/javascript" src="/widgets/plupload-2.1.2/js/plupload.full.min.js"></script>
 <script type="text/javascript" src="/widgets/dingui/Ding.FileUploader.js"></script>
 
-<script type="text/javascript" src="/js/manager/acadamic/course/chapter/knowledge/index.js"></script>
+<script type="text/javascript" src="/acadamic-web-manager/js/manager/course/chapter/knowledge/index.js"></script>
 </head>
 <body>
 	<div class="panel">

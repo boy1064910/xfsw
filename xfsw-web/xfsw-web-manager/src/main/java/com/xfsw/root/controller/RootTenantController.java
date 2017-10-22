@@ -31,6 +31,7 @@ import com.xfsw.common.classes.DataTablePageInfo;
 import com.xfsw.common.classes.DataTableResponseModel;
 import com.xfsw.common.classes.ResponseModel;
 import com.xfsw.common.thread.ThreadUserInfoManager;
+import com.xfsw.session.service.UserSessionService;
 
 /**
  * 空间管理
@@ -61,6 +62,9 @@ public class RootTenantController {
 	
 	@Resource(name="userService")
 	UserService userService;
+	
+	@Resource(name="userSessionService")
+	UserSessionService userSessionService;
 	
 	@RequestMapping(value="/index")
 	public void index(){
@@ -238,7 +242,8 @@ public class RootTenantController {
 	public ResponseModel updateRole(Role role,Integer[] ids,Integer[] types){
 		role.setLastUpdater(ThreadUserInfoManager.getUserInfo().getAccount());
 		roleService.updateRole(role, ids, types);
-		
+		//刷新登录session
+		userSessionService.refreshUserSessionAuthorityInfo(role.getId());
 		return new ResponseModel();
 	}
 	

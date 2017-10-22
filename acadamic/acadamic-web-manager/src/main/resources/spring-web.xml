@@ -11,6 +11,11 @@
         http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
+	<mvc:annotation-driven /> 
+	<mvc:resources location="/image/" mapping="/image/**"/> 
+	<mvc:resources location="/css/" mapping="/css/**"/> 
+	<mvc:resources location="/js/" mapping="/js/**"/>
+
 	<!-- 异常处理器 -->
 	<bean id="exceptionHandler" class="com.xfsw.common.handler.ExceptionHandler" />
 	
@@ -35,7 +40,7 @@
 		
 		<!-- 权限拦截器 -->
 		<mvc:interceptor>
-			<mvc:mapping path="/**" />
+			<mvc:mapping path="/**/**.shtml" />
 			<mvc:exclude-mapping path="/error"/>
 			<bean class="com.xfsw.common.interceptor.UniverseAuthInterceptor">
 				<property name="userSessionService" ref="userSessionService"></property>

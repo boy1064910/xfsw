@@ -65,7 +65,7 @@ Ding.ready(function(){
     });
 
     Ding.ajax({
-        'url' : projectName+"/manager/acadamic/course/chapter/knowledge/list.shtml?chapterCode="+Ding.getQueryParameterByName("chapterCode"),
+        'url' : "/acadamic-web-manager/manager/course/chapter/knowledge/list.shtml?chapterCode="+Ding.getQueryParameterByName("chapterCode"),
         'successCallback' : function(result){
             var data = {};
             data.rows = result.data;

@@ -5,7 +5,8 @@
 		<artifactId>xfsw-web</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>xfsw-web-auth</artifactId>
+	<artifactId>xfsw-web-business</artifactId>
+	<description>xfsw公共业务web服务</description>
 	
 	<dependencies>
 		<dependency>
@@ -48,18 +49,8 @@
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
 		</dependency>
-		
-		<dependency>
-			<groupId>com.xfsw</groupId>
-			<artifactId>xfsw-service-session</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.xfsw</groupId>
-			<artifactId>xfsw-service-account</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
+	
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<resources>

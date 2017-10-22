@@ -79,8 +79,6 @@ Ding.ready(function(){
 			var breadSequences = [];
 			if(breadSequence=='1'){
 				breadSequences = $.cookie('breadSequences');
-				console.log(breadSequences);
-				console.log($("#requestMenuName").html());
 				if(Ding.isEmpty(breadSequences)){
 					breadSequences = [];
 					breadSequences.push({
@@ -127,7 +125,8 @@ Ding.ready(function(){
 });
 
 function pushBreadSequences(breadSequences){
-	$.cookie('breadSequences',JSON.stringify(breadSequences));
+	if(breadSequences.length!=0)
+		$.cookie('breadSequences',JSON.stringify(breadSequences));
 }
 
 function showBreadSequences(breadSequences){

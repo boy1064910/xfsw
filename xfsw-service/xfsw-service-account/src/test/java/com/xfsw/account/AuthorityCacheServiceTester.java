@@ -23,7 +23,7 @@ public class AuthorityCacheServiceTester {
 	@Test
 	public void test() {
 //		authorityCacheService.test();
-		System.out.println(DJBHashUtil.DJBHashId("/index.shtml"));
+		System.out.println(DJBHashUtil.DJBHashId("/manager/course/index.shtml"));
 	}
 	
 	@Test
