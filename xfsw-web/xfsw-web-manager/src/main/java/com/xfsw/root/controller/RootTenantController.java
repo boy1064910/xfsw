@@ -20,6 +20,7 @@ import com.xfsw.account.entity.LinkAuthority;
 import com.xfsw.account.entity.Role;
 import com.xfsw.account.entity.Tenant;
 import com.xfsw.account.entity.User;
+import com.xfsw.account.model.UserAuthorityIdsModel;
 import com.xfsw.account.service.CategoryAuthorityService;
 import com.xfsw.account.service.DefaultAuthorityService;
 import com.xfsw.account.service.DefaultLinkAuthorityService;
@@ -27,6 +28,7 @@ import com.xfsw.account.service.RoleAuthorityService;
 import com.xfsw.account.service.RoleService;
 import com.xfsw.account.service.TenantService;
 import com.xfsw.account.service.UserService;
+import com.xfsw.account.service.UserTenantRoleService;
 import com.xfsw.common.classes.DataTablePageInfo;
 import com.xfsw.common.classes.DataTableResponseModel;
 import com.xfsw.common.classes.ResponseModel;
@@ -65,6 +67,9 @@ public class RootTenantController {
 	
 	@Resource(name="userSessionService")
 	UserSessionService userSessionService;
+	
+	@Resource(name="userTenantRoleService")
+	UserTenantRoleService userTenantRoleService;
 	
 	@RequestMapping(value="/index")
 	public void index(){
@@ -242,8 +247,10 @@ public class RootTenantController {
 	public ResponseModel updateRole(Role role,Integer[] ids,Integer[] types){
 		role.setLastUpdater(ThreadUserInfoManager.getUserInfo().getAccount());
 		roleService.updateRole(role, ids, types);
+		//查询相关的用户信息
+		List<UserAuthorityIdsModel> userAuthorityIdsModelList = roleAuthorityService.selectAllUserAuthorityByRoleId(role.getId());
 		//刷新登录session
-		userSessionService.refreshUserSessionAuthorityInfo(role.getId());
+		userSessionService.refreshUserSessionAuthorityInfo(userAuthorityIdsModelList);
 		return new ResponseModel();
 	}
 	

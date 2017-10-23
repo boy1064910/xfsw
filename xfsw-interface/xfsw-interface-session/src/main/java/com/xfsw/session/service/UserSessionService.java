@@ -3,6 +3,9 @@
  */
 package com.xfsw.session.service;
 
+import java.util.List;
+
+import com.xfsw.account.model.UserAuthorityIdsModel;
 import com.xfsw.common.classes.BusinessException;
 import com.xfsw.session.model.UserSessionModel;
 
@@ -43,7 +46,7 @@ public interface UserSessionService {
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
-	void refreshUserSessionAuthorityInfo(Integer roleId);
+	void refreshUserSessionAuthorityInfo(List<UserAuthorityIdsModel> userAuthorityIdsModelList);
 //	
 //	void refreshSystemUserSessionAuthorityInfoByRoleId(Integer roleId);
 	

@@ -20,7 +20,16 @@ public interface RoleAuthorityService {
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
-	UserAuthorityIdsModel selectAllAuthorityHashIdsByRoleId(Integer userId,Integer tenantId);
+	UserAuthorityIdsModel selectAllAuthorityHashIdsByUserInfo(Integer userId,Integer tenantId);
+	
+	/**
+	 * 根据角色ID查询相关用户权限信息
+	 * @param roleId
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	List<UserAuthorityIdsModel> selectAllUserAuthorityByRoleId(Integer roleId);
 	
 	/**
 	 * 查询角色的权限集合ID

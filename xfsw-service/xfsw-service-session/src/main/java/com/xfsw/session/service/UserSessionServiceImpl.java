@@ -16,10 +16,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import com.xfsw.account.entity.UserTenantRole;
 import com.xfsw.account.model.UserAuthorityIdsModel;
-import com.xfsw.account.service.RoleAuthorityService;
-import com.xfsw.account.service.UserTenantRoleService;
 import com.xfsw.common.classes.BusinessException;
 import com.xfsw.common.util.JsonUtil;
 import com.xfsw.common.util.StringUtil;
@@ -34,12 +31,7 @@ public class UserSessionServiceImpl implements UserSessionService {
 	@Resource(name="sessionRedisTemplate")
 	RedisTemplate<String, String> sessionRedisTemplate;
 	
-	@Resource(name="userTenantRoleService")
-	UserTenantRoleService userTenantRoleService;
-	
-	@Resource(name="roleAuthorityService")
-	RoleAuthorityService roleAuthorityService;
-	
+	@Override
 	public void addUserSession(String sessionIdValue,UserSessionModel userSessionModel){
 		sessionRedisTemplate.opsForValue().set(SessionConstant.XFSW_SESSION_REDIS_PREFIX + sessionIdValue, JsonUtil.entity2Json(userSessionModel),SessionConstant.XFSW_SESSION_EXPIRE, TimeUnit.MILLISECONDS);
 	}
@@ -59,10 +51,9 @@ public class UserSessionServiceImpl implements UserSessionService {
 	}
 	
 	@Override
-	public void refreshUserSessionAuthorityInfo(Integer roleId){
+	public void refreshUserSessionAuthorityInfo(List<UserAuthorityIdsModel> userAuthorityIdsModelList){
 		//后期用户数量多,改成消息机制
-		List<UserTenantRole> userTenantRoleList = userTenantRoleService.selectListByRoleId(roleId);
-		if(CollectionUtils.isEmpty(userTenantRoleList))
+		if(CollectionUtils.isEmpty(userAuthorityIdsModelList))
 			return;
 		
 		Map<String,UserSessionModel> allUserSessionModel = this.listUserSession();
@@ -71,9 +62,8 @@ public class UserSessionServiceImpl implements UserSessionService {
 			innerUserSessionModelMap.put(entry.getValue().getId()+"-"+entry.getValue().getTenantId(), new InnerUserSessionModel(entry.getKey(), entry.getValue()));
 		}
 		
-		for(UserTenantRole userTenantRole:userTenantRoleList){
-			UserAuthorityIdsModel userAuthorityIdsModel = roleAuthorityService.selectAllAuthorityHashIdsByRoleId(userTenantRole.getUserId(), userTenantRole.getTenantId());
-			InnerUserSessionModel innerUserSessionModel = innerUserSessionModelMap.get(userTenantRole.getUserId()+"-"+userTenantRole.getTenantId());
+		for(UserAuthorityIdsModel userAuthorityIdsModel:userAuthorityIdsModelList){
+			InnerUserSessionModel innerUserSessionModel = innerUserSessionModelMap.get(userAuthorityIdsModel.getUserId()+"-"+userAuthorityIdsModel.getTenantId());
 			if(innerUserSessionModel!=null){
 				String sessionKey = innerUserSessionModel.getSessionKey();
 				UserSessionModel userSessionModel = innerUserSessionModel.getUserSessionModel();

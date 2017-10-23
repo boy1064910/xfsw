@@ -1,13 +1,16 @@
 package com.xfsw.account.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
+import com.xfsw.account.entity.UserTenantRole;
 import com.xfsw.account.model.UserAuthorityIdsModel;
 import com.xfsw.common.mapper.ICommonMapper;
 import com.xfsw.common.util.ListUtil;
@@ -18,8 +21,11 @@ public class RoleAuthorityServiceImpl implements RoleAuthorityService {
 	@Resource(name="accountCommonMapper")
 	private ICommonMapper commonMapper;
 	
+	@Resource(name="userTenantRoleService")
+	UserTenantRoleService userTenantRoleService;
+	
 	@Override
-	public UserAuthorityIdsModel selectAllAuthorityHashIdsByRoleId(Integer userId,Integer tenantId){
+	public UserAuthorityIdsModel selectAllAuthorityHashIdsByUserInfo(Integer userId,Integer tenantId){
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("userId", userId);
 		params.put("tenantId", tenantId);
@@ -38,7 +44,20 @@ public class RoleAuthorityServiceImpl implements RoleAuthorityService {
 			categoryAuthorityIds = new Integer[categoryAuthorityList.size()];
 			categoryAuthorityList.toArray(categoryAuthorityIds);
 		}
-		return new UserAuthorityIdsModel(authorityIds,categoryAuthorityIds);
+		return new UserAuthorityIdsModel(userId,tenantId,authorityIds,categoryAuthorityIds);
+	}
+	
+	@Override
+	public List<UserAuthorityIdsModel> selectAllUserAuthorityByRoleId(Integer roleId){
+		List<UserTenantRole> userTenantRoleList = userTenantRoleService.selectListByRoleId(roleId);
+		if(CollectionUtils.isEmpty(userTenantRoleList)){
+			return null;
+		}
+		List<UserAuthorityIdsModel> userAuthorityIdsModelList = new ArrayList<UserAuthorityIdsModel>();
+		for(UserTenantRole userTenantRole:userTenantRoleList){
+			userAuthorityIdsModelList.add(this.selectAllAuthorityHashIdsByUserInfo(userTenantRole.getUserId(), userTenantRole.getTenantId()));
+		}
+		return userAuthorityIdsModelList;
 	}
 	
 	@Override

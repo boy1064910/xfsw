@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,30 +18,27 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
-
-import cn.com.decked.common.classes.ResponseModel;
-import cn.com.decked.common.util.Base64;
-import cn.com.decked.common.util.JsonUtil;
+import com.xfsw.common.classes.ResponseModel;
+import com.xfsw.common.util.Base64;
+import com.xfsw.common.util.JsonUtil;
 
 @Controller
-@RequestMapping("/business/postObjectPolicy")
-public class BusinessPostObjectPolicyController {
-	@Value("${decked.oss.endpoint}")
+@RequestMapping("/business/oss")
+public class AliYunOssController {
+	
+	@Value("${xfsw.oss.endpoint}")
 	private String endpoint;
-	@Value("${decked.oss.accessId}")
+	@Value("${xfsw.oss.accessId}")
 	private String accessId;
-	@Value("${decked.oss.accessKey}")
+	@Value("${xfsw.oss.accessKey}")
 	private String accessKey;
-	@Value("${decked.oss.bucket}")
+	@Value("${xfsw.oss.bucket}")
 	private String bucket;
-	@Value("${decked.oss.dir}")
+	@Value("${xfsw.oss.dir}")
 	private String dir;
-	@Value("${decked.oss.expire}")
+	@Value("${xfsw.oss.expire}")
 	private int expire;
 	
-	@Value("${decked.system.domain.name}")
-	private String domainName;
-
 	@RequestMapping("/successReceive")
 	@ResponseBody
 	public ResponseModel successReceive(String filename) {
@@ -48,9 +47,11 @@ public class BusinessPostObjectPolicyController {
 
 	@RequestMapping("/list")
 	@ResponseBody
-	public ResponseModel list() {
+	public ResponseModel list(HttpServletRequest request) {
+		String schema = request.getScheme();
+		String serverName = request.getServerName();
 		Map<Object, Object> map = new HashMap<>();
-		map.put("callbackUrl", "http://"+domainName+"/decked-web-platform-business/business/postObjectPolicy/successReceive.shtml");
+		map.put("callbackUrl", schema + "://" + serverName + "/decked-web-business/business/oss/successReceive.shtml");
 		map.put("callbackBody", "filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}");
 		map.put("callbackBodyType", "application/x-www-form-urlencoded");
 		/* map.put("callbackHost", "business.materia.mobi"); */

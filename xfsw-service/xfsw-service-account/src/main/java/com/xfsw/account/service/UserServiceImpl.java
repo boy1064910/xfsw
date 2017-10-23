@@ -183,7 +183,7 @@ public class UserServiceImpl implements UserService {
 					//读取空间角色信息
 					tenant.setRoleIdList(commonMapper.selectList("UserTenantRole.selectRoleIdListByUserIdAndTenantId",tenant));
 					//读取用户空间角色下的权限信息
-					UserAuthorityIdsModel userAuthorityIdsModel = roleAuthorityService.selectAllAuthorityHashIdsByRoleId(tenant.getUserId(), tenant.getTenantId());
+					UserAuthorityIdsModel userAuthorityIdsModel = roleAuthorityService.selectAllAuthorityHashIdsByUserInfo(tenant.getUserId(), tenant.getTenantId());
 					tenant.setAuthorityIds(userAuthorityIdsModel.getAuthorityIds());
 					tenant.setCategoryAuthorityIds(userAuthorityIdsModel.getCategoryAuthorityIds());
 				});
