@@ -44,6 +44,11 @@ public class KnowledgeController {
 		return new ResponseModel(knowledgeService.selectListByChapterCode(chapterCode));
 	}
 	
+	@RequestMapping("/initAddKnowledge")
+	public void initAddKnowledge(Model model,String chapterCode){
+		model.addAttribute("chapterCode", chapterCode);
+	}
+	
 	@RequestMapping("/saveKnowledge")
 	@ResponseBody
 	public ResponseModel saveKnowledge(Knowledge knowledge,String chapterCode){

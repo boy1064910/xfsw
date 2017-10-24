@@ -83,11 +83,7 @@ function resetForm(){
 }
 
 function initAdd(){
-    openModal({
-        'title':'添加知识点',
-        'targetId':'form',
-        'sureBtnText':'保存'
-    });
+    this.location = '/acadamic-web-manager/manager/course/chapter/knowledge/initAddKnowledge.shtml?breadSequence=1&chapterCode='+Ding.getQueryParameterByName("chapterCode");
 }
 
 function initEdit(id,index){

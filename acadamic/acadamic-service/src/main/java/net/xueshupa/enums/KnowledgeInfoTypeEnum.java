@@ -3,6 +3,9 @@
  */
 package net.xueshupa.enums;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 
  * @author xiaopeng.liu
@@ -29,5 +32,13 @@ public enum KnowledgeInfoTypeEnum {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public static List<KnowledgeInfoTypeModel> toModelList(){
+		List<KnowledgeInfoTypeModel> typeList = new ArrayList<KnowledgeInfoTypeModel>();
+		for(KnowledgeInfoTypeEnum typeEnum:KnowledgeInfoTypeEnum.values()){
+			typeList.add(new KnowledgeInfoTypeModel(typeEnum.toString(),typeEnum.getName()));
+		}
+		return typeList;
 	}
 }

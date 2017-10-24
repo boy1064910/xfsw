@@ -5,29 +5,22 @@ columns.push({
     align: 'center'
 });
 columns.push({
-    field: 'sequence',
-    title: '章节序号',
-    align: 'center'
-});
-columns.push({
     field: 'code',
-    title: '章节编号',
+    title: '知识点编号',
     align: 'center'
 });
 columns.push({
     field: 'name',
-    title: '章节名称',
+    title: '知识点名称',
     align: 'center'
 });
 columns.push({
-    field: 'info',
-    title: '章节介绍',
-    align: 'center'
-});
-columns.push({
-    field: 'price',
-    title: '单价',
-    align: 'center'
+    field: 'videoUrl',
+    title: '知识点视频链接',
+    align: 'center',
+    formatter:function(value,row,index){
+        return '<a href="'+value+'" target="_blank">'+value+'</a>';
+    }
 });
 columns.push({
     field: 'id',
@@ -36,12 +29,13 @@ columns.push({
     formatter:function(value,row,index){
         var result ;
         result = '<a href="javascript:void(0)" onclick="initEdit('+row.id+','+index+')" title="编辑">编辑</a>';
-        result += '<a href="javascript:void(0)" onclick="initSettle('+row.id+',\''+row.code+'\')" title="设置知识点">设置知识点</a>';
+        result += '<a href="javascript:void(0)" onclick="initSettle('+row.id+',\''+row.code+'\')" title="设置习题难度">设置习题难度</a>';
         result +='<a href="javascript:void(0)" onclick="initDelete('+row.id+')" title="删除">删除</a>';
         return result;
     }
 });
 
+var videoUploader;
 Ding.ready(function(){
     $("#dataTable").bootstrapTable({
         method: 'get',
@@ -61,8 +55,17 @@ Ding.ready(function(){
         columns: columns
     });
 
+    DingUploaderManager.loadSign(function() {
+        videoUploader = new Ding.FileUploader({
+            'id' : 'video',
+            'limitType' : 'mp4,rmvb,rm,hlv,flv',
+            'preventDuplicate' : false,
+            'needPreview' : false
+        });
+    });
+
     Ding.ajax({
-        'url' : "/acadamic-web-manager/manager/course/chapter/list.shtml?courseCode="+Ding.getQueryParameterByName("code"),
+        'url' : "/acadamic-web-manager/manager/course/chapter/knowledge/list.shtml?chapterCode="+Ding.getQueryParameterByName("chapterCode"),
         'successCallback' : function(result){
             var data = {};
             data.rows = result.data;
@@ -81,10 +84,11 @@ function resetForm(){
 
 function initAdd(){
     openModal({
-        'title':'添加章节信息',
+        'title':'添加知识点',
         'targetId':'form',
         'sureBtnText':'保存'
     });
+    this.location = '/acadamic-web-manager/manager/course/chapter/knowledge/initAddKnowledge.shtml?chapterCode='+Ding.getQueryParameterByName("chapterCode");
 }
 
 function initEdit(id,index){
@@ -107,6 +111,21 @@ function initEdit(id,index){
         }
     });
 }   
+
+function submitValidation(){
+    if(Ding.isEmpty($("#id").val())){
+        if(videoUploader.uploader.files.length<1){
+            $.alert({
+                title:'温馨提示',
+                content: '请先上传知识点教学视频！',
+                confirmButton:'确定'
+            });
+            return false;
+        }
+        D("#form").submitParams['videoUrl'] = videoUploader.uploader.files[0].uploadPath;
+    }
+    return true;
+}
 
 function saveSuccess(result){
     if($.isEmpty($("#id").val())){
@@ -146,5 +165,5 @@ function initDelete(id){
 }
 
 function initSettle(id,code){
-    this.location = '/acadamic-web-manager/manager/course/chapter/knowledge/index.shtml?chapterId='+id+'&chapterCode='+code+'&breadSequence=1';
+    this.location = projectName + '/manager/acadamic/course/chapter/knowledge/diff/level/index.shtml?knowledgeId='+id+'&knowledgeCode='+code+'&breadSequence=1';
 }
