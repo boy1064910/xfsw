@@ -12,11 +12,13 @@
 .add_btn{
 	font-size:50px;
 	cursor: pointer;
-	display: none;
 }
 .add_btn:hover,
 .point_item_div>div:hover{
 	color:#b9bfc1;
+}
+.point_item_div{
+	display: none;
 }
 .point_item_div:after{
 	clear: both;

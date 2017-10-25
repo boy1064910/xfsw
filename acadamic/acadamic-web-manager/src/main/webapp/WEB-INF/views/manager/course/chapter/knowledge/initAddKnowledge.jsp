@@ -29,7 +29,7 @@
 								<p>探索</p>
 							</div>
 							<div>
-								<i class="fa fa-game"></i>
+								<i class="fa fa-meh-o"></i>
 								<p>游戏</p>
 							</div>
 							<div>

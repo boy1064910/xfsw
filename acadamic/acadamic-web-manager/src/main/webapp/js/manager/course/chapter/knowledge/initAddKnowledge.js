@@ -142,6 +142,11 @@ function initSettle(id,code){
 }
 
 $("#addBtn").on("click",function(){
-	console.log("sdsds");
+	$("#addBtn").slideToggle("fast");
+	$("#pointItem").slideToggle();
+});
+
+$("#pointItem").on("mouseout",function(){
 	$("#addBtn").slideToggle();
+	$("#pointItem").slideToggle();
 });
