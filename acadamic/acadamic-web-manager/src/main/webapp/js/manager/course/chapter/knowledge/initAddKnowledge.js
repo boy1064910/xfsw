@@ -37,24 +37,6 @@ columns.push({
 
 var videoUploader;
 Ding.ready(function(){
-    $("#dataTable").bootstrapTable({
-        method: 'get',
-        striped: true,
-        cache: false,    
-        pagination: false,   
-        sortable: false,    
-        sortOrder: "asc",    
-        showRefresh:false,
-        singleSelect: false,
-        sidePagination: "server",
-        search: false,
-        searchOnEnterKey:false,
-        idField : "id",
-        uniqueId: "id",
-        url: '',
-        columns: columns
-    });
-
     DingUploaderManager.loadSign(function() {
         videoUploader = new Ding.FileUploader({
             'id' : 'video',
@@ -63,15 +45,6 @@ Ding.ready(function(){
             'needPreview' : false
         });
     });
-
-    Ding.ajax({
-        'url' : "/acadamic-web-manager/manager/course/chapter/knowledge/list.shtml?chapterCode="+Ding.getQueryParameterByName("chapterCode"),
-        'successCallback' : function(result){
-            var data = {};
-            data.rows = result.data;
-            $("#dataTable").bootstrapTable('load',data);
-        }
-    })
 });
 
 function resetForm(){
@@ -167,3 +140,8 @@ function initDelete(id){
 function initSettle(id,code){
     this.location = projectName + '/manager/acadamic/course/chapter/knowledge/diff/level/index.shtml?knowledgeId='+id+'&knowledgeCode='+code+'&breadSequence=1';
 }
+
+$("#addBtn").on("click",function(){
+	console.log("sdsds");
+	$("#addBtn").slideToggle();
+});

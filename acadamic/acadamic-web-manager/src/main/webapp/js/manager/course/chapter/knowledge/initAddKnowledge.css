@@ -1,0 +1,32 @@
+.add_panel{
+	height:300px;
+	text-align: center;
+}
+
+.point_panel{
+	width: 100%;
+	height: 80px;
+	margin-top:80px;
+}
+
+.add_btn{
+	font-size:50px;
+	cursor: pointer;
+	display: none;
+}
+.add_btn:hover,
+.point_item_div>div:hover{
+	color:#b9bfc1;
+}
+.point_item_div:after{
+	clear: both;
+	content:" ";
+}
+.point_item_div>div{
+	float:left;
+	margin:0 10px;
+	cursor: pointer;
+}
+.point_item_div i{
+	font-size:40px;
+}

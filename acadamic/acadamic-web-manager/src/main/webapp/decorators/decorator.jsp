@@ -4,7 +4,7 @@
 <html>
 <head>
 	<title>学术葩管理平台</title>
-	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="shortcut icon" type="image/x-icon" href="/images/login-logo.png">
 	<link href="/css/style.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/widgets/dingui/themes/default/ding.css" />

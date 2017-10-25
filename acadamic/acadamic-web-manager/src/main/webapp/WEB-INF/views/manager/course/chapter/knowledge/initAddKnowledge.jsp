@@ -3,39 +3,48 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title></title>
-<link rel="stylesheet" href="/widgets/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
-<script type="text/javascript" src="/widgets/ztree/js/jquery.ztree.core.js"></script>
-<script type="text/javascript" src="/widgets/ztree/js/jquery.ztree.excheck.js"></script>
-<script type="text/javascript" src="/xfsw-web-manager/js/root/tenant/role.js"></script>
-<script type="text/javascript" src="/xfsw-web-manager/js/root/tenant/initAddRole.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/widgets/dingui/Ding.FileUploader.css" />
+<script type="text/javascript" src="/widgets/plupload-2.1.2/js/plupload.full.min.js"></script>
+<script type="text/javascript" src="/widgets/dingui/Ding.FileUploader.js"></script>
+
+<script type="text/javascript" src="/acadamic-web-manager/js/manager/course/chapter/knowledge/initAddKnowledge.js"></script>
+<link href="/acadamic-web-manager/js/manager/course/chapter/knowledge/initAddKnowledge.css" rel="stylesheet">
 </head>
 <body>
-	<input type="hidden" id="chapterCode" value="${chapterCode }" />
-	<form class="Ding-Form form" id="editRoleForm" method="post"
-		action="/xfsw-web-manager/root/tenant/addRole.shtml" submitValidation="submitValidation" successCallback="success">
-		<div class="panel">
-			<div class="panel-body">
-				<div class="form-group">
-		            <label class="col-lg-2 col-sm-2 control-label">角色名称</label>
-	            	<input class="form-control" type="text" id="name" name="name" validations="required&&vComplexMaxLength=20" validationTips="角色名称不能为空&&名称长度不能超过20个字符"  />
-		        </div>
-		        <div class="form-group">
-		            <label class="col-lg-2 col-sm-2 control-label">备注</label>
-					<input class="form-control" type="text" name="remark" validations="vComplexMaxLength=100" validationTips="备注长度不能超过100个字符"  /> 
-		        </div>
-		        <div class="form-group">
-		        	<input type="hidden" name="tenantId" value="${tenantId }" />
-		        </div>
+	<div class="row">
+		<div class="col-md-4">
+			<div class="panel">
+				<div class="panel-body add_panel">
+					<div class="point_panel">
+						<i id="addBtn" class="fa fa-plus-circle add_btn"></i>
+						<div class="point_item_div" id="pointItem">
+							<div>
+								<i class="fa fa-lightbulb-o"></i>
+								<p>发现</p>
+							</div>
+							<div>
+								<i class="fa fa-magnet"></i>
+								<p>探索</p>
+							</div>
+							<div>
+								<i class="fa fa-game"></i>
+								<p>游戏</p>
+							</div>
+							<div>
+								<i class="fa fa-inbox"></i>
+								<p>总结</p>
+							</div>
+							<div>
+								<i class="fa fa-road"></i>
+								<p>练习</p>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="panel">
-			<div class="panel-body">
-				<button class="btn btn-success" type="button" onclick="save()"><i class="fa fa-save"></i> 保存</button>
-				<button class="btn " type="button" onclick="back()"><i class="fa fa-arrow-left"></i> 返回</button>
-			</div>
-		</div>
-	</form>
+	</div>
 </body>
 </html>
