@@ -78,7 +78,7 @@ public class UniverseLoginInterceptor implements HandlerInterceptor {
 			String returnUrl = protocol + request.getHeader("Host") + loginUrl + "?returnUrl=" + protocol + request.getHeader("Host") + urlPrefix + request.getRequestURI();
 			// 带上returnUrl，登录页登录成功之后重新跳转进入原来的请求页面
 			if (!StringUtil.isEmpty(request.getQueryString()))// 携带参数的请求链接
-				returnUrl += request.getQueryString();
+				returnUrl += "?" + request.getQueryString();
 			response.sendRedirect(returnUrl);
 		}
 	}

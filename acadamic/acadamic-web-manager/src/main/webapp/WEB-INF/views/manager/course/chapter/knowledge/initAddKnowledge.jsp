@@ -14,37 +14,44 @@
 </head>
 <body>
 	<div class="row">
-		<div class="col-md-4">
+		<div class="col-md-12">
 			<div class="panel">
 				<div class="panel-body add_panel">
-					<div class="point_panel">
-						<i id="addBtn" class="fa fa-plus-circle add_btn"></i>
-						<div class="point_item_div" id="pointItem">
-							<div>
-								<i class="fa fa-lightbulb-o"></i>
-								<p>发现</p>
-							</div>
-							<div>
-								<i class="fa fa-magnet"></i>
-								<p>探索</p>
-							</div>
-							<div>
-								<i class="fa fa-meh-o"></i>
-								<p>游戏</p>
-							</div>
-							<div>
-								<i class="fa fa-inbox"></i>
-								<p>总结</p>
-							</div>
-							<div>
-								<i class="fa fa-road"></i>
-								<p>练习</p>
-							</div>
+					<div class="point_item_div" id="pointItem">
+						<div>
+							<i class="fa fa-plus"></i>
+						</div>
+						<div onclick="initAddPoint('DISCOVER')">
+							<i class="fa fa-lightbulb-o"></i>
+							<p>发现</p>
+						</div>
+						<div onclick="initAddPoint('EXPLORE')">
+							<i class="fa fa-magnet"></i>
+							<p>探索</p>
+						</div>
+						<div onclick="initAddPoint('GAME')">
+							<i class="fa fa-meh-o"></i>
+							<p>游戏</p>
+						</div>
+						<div onclick="initAddPoint('SUMMARY')">
+							<i class="fa fa-inbox"></i>
+							<p>总结</p>
+						</div>
+						<div onclick="initAddPoint('STEP')">
+							<i class="fa fa-road"></i>
+							<p>套路</p>
+						</div>
+						<div onclick="initAddPoint('EXERCISE')">
+							<i class="fa fa-road"></i>
+							<p>练习</p>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+	<div id="pointPanel">
+		
 	</div>
 </body>
 </html>

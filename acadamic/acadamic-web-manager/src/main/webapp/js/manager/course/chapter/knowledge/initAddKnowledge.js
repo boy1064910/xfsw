@@ -141,12 +141,51 @@ function initSettle(id,code){
     this.location = projectName + '/manager/acadamic/course/chapter/knowledge/diff/level/index.shtml?knowledgeId='+id+'&knowledgeCode='+code+'&breadSequence=1';
 }
 
-$("#addBtn").on("click",function(){
-	$("#addBtn").slideToggle("fast");
-	$("#pointItem").slideToggle();
-});
+function initAddPoint(type){
+	var outerPanel = $('<div class="col-md-4"></div>');
+	var panel = $('<div class="panel"></div>');
+	var innerPanel = $('<div class="panel-body point-panel-body"></div>');
+	
+	var formGroup = $('<div class="form-group"></form>');
+	var typeLable = $('<label>'+type+'</label>');
+	var inputDiv = $('<input type="text" placeholder="标题" class="form-control" />');
+	formGroup.append(typeLable).append(inputDiv);
+	innerPanel.append(formGroup);
+	
+	var btnFormGroup = $('<div class="form-group btn-form-group"></form>');
+	var addBtnDiv = $('<div class="add_btn_panel"><i class="fa fa-plus-square-o" onclick="addPointInfo(this)"></i></div>');
+	btnFormGroup.append(addBtnDiv);
+	
+	var addInfoBtnDiv = $('<div class="add_info_btn_panel"></div>');
+	var addVideoBtn =$('<div><p><i class="fa fa-video-camera"></i></p><p class="add_info_text">视频</p></div>');
+	addVideoBtn.on("click",function(){
+		var div = $('<div id="123" class="video_div"></div>');
+		btnFormGroup.before(div);
+		
+		new Ding.FileUploader({
+			'id':'123',
+			'selectorTitle':'请选择视频文件',
+			'limitType':'mp4',
+			'maxFileSize':'20m'
+		});
+	});
+	var addPicBtn =$('<div><p><i class="fa fa-picture-o" onclick="addPointInfo(this)"></i></p><p class="add_info_text">图片</p></div>');
+	var addTextBtn =$('<div><p><i class="fa fa-file-text-o" onclick="addPointInfo(this)"></i></p><p class="add_info_text">段落</p></div>');
+	addInfoBtnDiv.append(addVideoBtn).append(addPicBtn).append(addTextBtn);
+	addInfoBtnDiv.mouseleave(function(){
+		$(this).removeClass("move_show");
+		$(this).prev().removeClass("move_hide");
+	});
+	btnFormGroup.append(addInfoBtnDiv);
+	
+	innerPanel.append(btnFormGroup);
+	
+	panel.append(innerPanel);
+	outerPanel.append(panel);
+	$("#pointPanel").append(outerPanel);
+}
 
-$("#pointItem").on("mouseout",function(){
-	$("#addBtn").slideToggle();
-	$("#pointItem").slideToggle();
-});
+function addPointInfo(btn){
+	$(btn).parent().addClass("move_hide");
+	$(btn).parent().next().addClass("move_show");
+}
