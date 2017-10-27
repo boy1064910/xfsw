@@ -159,14 +159,32 @@ function initAddPoint(type){
 	var addInfoBtnDiv = $('<div class="add_info_btn_panel"></div>');
 	var addVideoBtn =$('<div><p><i class="fa fa-video-camera"></i></p><p class="add_info_text">视频</p></div>');
 	addVideoBtn.on("click",function(){
-		var div = $('<div id="123" class="video_div"></div>');
-		btnFormGroup.before(div);
-		
+		var randomId = Ding.randomId(8);
+		var videoFormGroup = $('<div class="form-group"></div>');
+		var videoDiv = $('<div id="'+randomId+'" class="video_div"></div>');
+		videoFormGroup.append(videoDiv);
+		btnFormGroup.before(videoFormGroup);
 		new Ding.FileUploader({
-			'id':'123',
+			'id':randomId,
+			'multiSelection':false,
 			'selectorTitle':'请选择视频文件',
 			'limitType':'mp4',
-			'maxFileSize':'20m'
+			'maxFileSize':'20m',
+			'addedCallback':function(uploader,files,container){
+				for(var f in files){
+					var jpreviewDiv = $('<div class="preview-div"></div>');
+					var jprocessDiv = $('<div class="progress" id="progress'+files[f].id+'"></div>');
+					var jprocessBar = $('<div class="progress-bar" id="progressBar'+files[f].id+'"></div>');
+					jprocessDiv.append(jprocessBar);
+					
+					jpreviewDiv.append(jprocessDiv);
+					container.append(jpreviewDiv);
+				}
+			},
+			'completeCallback':function(uploader,files){
+				var url = DingUploaderManager.host+'/'+files[0].uploadPath+'?OSSAccessKeyId='+DingUploaderManager.uploadParams.OSSAccessKeyId+'&Expires='+DingUploaderManager.expire+'&Signature='+DingUploaderManager.uploadParams.signature
+				videoDiv.append('<video src="'+url+'" controls="controls"><video>');
+			}
 		});
 	});
 	var addPicBtn =$('<div><p><i class="fa fa-picture-o" onclick="addPointInfo(this)"></i></p><p class="add_info_text">图片</p></div>');
