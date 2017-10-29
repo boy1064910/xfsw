@@ -29,7 +29,7 @@
 							<i class="fa fa-magnet"></i>
 							<p>探索</p>
 						</div>
-						<div onclick="initAddPoint('GAME')">
+						<div onclick="initAddExcercise('GAME')">
 							<i class="fa fa-meh-o"></i>
 							<p>游戏</p>
 						</div>
@@ -38,7 +38,7 @@
 							<p>总结</p>
 						</div>
 						<div onclick="initAddPoint('STEP')">
-							<i class="fa fa-road"></i>
+							<i class="fa fa-puzzle-piece"></i>
 							<p>套路</p>
 						</div>
 						<div onclick="initAddPoint('EXERCISE')">
