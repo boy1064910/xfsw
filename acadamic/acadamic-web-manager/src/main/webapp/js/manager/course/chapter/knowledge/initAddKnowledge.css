@@ -31,9 +31,6 @@
 }
 
 
-.form-group{
-	text-align: center;
-}
 .point-panel-body{
 	overflow: hidden;
 }
@@ -97,8 +94,6 @@
 }
 
 .point_div{
-	border: 1px solid #ccc;
-	border-radius: 5px;
 }
 .point_div button{
 	margin:10px 0;
@@ -109,7 +104,6 @@
 	margin:0;
 }
 .point_div video,
-.point_div>img,
 .point_div textarea{
 	width:100%;
 	border-radius: 5px;
@@ -183,4 +177,12 @@
 	clear: both;
 	content:" ";
 	display: block;
+}
+
+.form-group{
+	padding:8px;
+}
+#questionDiv img{
+	width:100%;
+	margin: 5px 0;
 }

@@ -30,4 +30,8 @@
 	<select id="selectListByExerciseId" parameterType="java.lang.Integer" resultType="Answer">
 		SELECT * FROM Answer WHERE exerciseId = #{exerciseId}
 	</select>
+	
+	<select id="selectPreAnswerList" resultType="Answer">
+		SELECT * FROM Answer WHERE exerciseId IS NULL
+	</select>
 </mapper>

@@ -49,4 +49,14 @@ public class AnswerService {
 	public List<Answer> selectListByExerciseId(Integer exerciseId){
 		return commonMapper.selectList("Answer.selectListByExerciseId",exerciseId);
 	}
+	
+	/**
+	 * 查询预设答案列表
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	public List<Answer> selectPreAnswerList(){
+		return commonMapper.selectList("Answer.selectPreAnswerList");
+	}
 }

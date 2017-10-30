@@ -29,7 +29,7 @@
 							<i class="fa fa-magnet"></i>
 							<p>探索</p>
 						</div>
-						<div onclick="initAddExcercise('GAME')">
+						<div onclick="initAddGamePoint()">
 							<i class="fa fa-meh-o"></i>
 							<p>游戏</p>
 						</div>
@@ -53,5 +53,23 @@
 	<div id="pointPanel">
 		
 	</div>
+	
+	<form class="Ding-Form modal-form form-horizontal" id="form" 
+		action="<%=request.getContextPath() %>/manager/acadamic/course/chapter/knowledge/saveKnowledge.shtml" 
+		submitValidation="submitValidation"
+		successCallback="saveSuccess">
+		<div class="form-group">
+			<div id="questionDiv"></div>
+        </div>
+        <div class="form-group">
+        	<div id="answerDiv"></div>
+        </div>
+        <div class="form-group">
+			<label class="col-lg-2 col-sm-2 control-label">知识点视频</label>
+			<div class="col-md-8">
+				<div id="video"></div>
+			</div>
+		</div>
+	</form>
 </body>
 </html>
