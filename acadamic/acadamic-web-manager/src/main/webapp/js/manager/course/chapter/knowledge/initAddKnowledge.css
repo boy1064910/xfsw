@@ -155,17 +155,18 @@
 /*练习题答案*/
 .answer_div{
 	float: left;
-	width: 50px;
+	min-width: 50px;
 	height: 50px;
 	border: 1px solid #ccc;
     margin: 5px;
     cursor: pointer;
 }
 .answer_div>img{
-	height: 50px;
+	height: 46px;
+	padding:1px;
 }
 .answer_div_selected{
-	border: 1px solid #00D604;
+	border: 2px solid #00D604;
 }
 
 .move_hide{

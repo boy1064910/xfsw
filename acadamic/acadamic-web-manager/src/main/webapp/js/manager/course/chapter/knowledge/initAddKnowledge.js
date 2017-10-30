@@ -165,7 +165,7 @@ function initAddPoint(type){
 			'id':randomId,
 			'multiSelection':false,
 			'selectorTitle':'请选择视频文件',
-			'limitType':'mp4',
+			'limitType':'mp4,ogg',
 			'maxFileSize':'20m',
 			'addedCallback':function(uploader,files,fileUploader){
 				for(var f in files){
@@ -322,6 +322,19 @@ function initAddExcercise(type){
 				var url = DingUploaderManager.host+'/'+files[f].uploadPath;
 				$("#answer"+files[f].id).attr("src",url);
 				$("#answer"+files[f].id).parent().css("width","auto");
+				$("#answer"+files[f].id).on("click",function(){
+					if(!Ding.isEmpty($(".answer_div_selected")[0])){
+						var imgUrl = $(this).attr("src");
+						var selectedAnswerDiv = $(".answer_div_selected");
+						selectedAnswerDiv.empty();
+						selectedAnswerDiv.append('<img src="'+imgUrl+'" />');
+						var nextSelectAnswerDiv = selectedAnswerDiv.next();
+						selectedAnswerDiv.parent().children().removeClass("answer_div_selected");
+						if(!Ding.isEmpty(nextSelectAnswerDiv[0])){
+							nextSelectAnswerDiv.addClass("answer_div_selected");
+						}
+					}
+				});
 			}
 		}
 	});
@@ -348,13 +361,30 @@ function initAddExcercise(type){
 			'id':randomId,
 			'multiSelection':false,
 			'selectorTitle':'请选择视频讲解文件',
-			'limitType':'mp4',
+			'limitType':'mp4,swf,ogg',
 			'maxFileSize':'20m',
 			'addedCallback':function(uploader,files,fileUploader){
-				
+				for(var f in files){
+					var jpreviewDiv = $('<div class="preview-div"></div>');
+					var jprocessDiv = $('<div class="progress" id="progress'+files[f].id+'"></div>');
+					var jprocessBar = $('<div class="progress-bar" id="progressBar'+files[f].id+'"></div>');
+					jprocessDiv.append(jprocessBar);
+					
+					jpreviewDiv.append(jprocessDiv);
+					fileUploader.jcontainer.append(jpreviewDiv);
+				}
 			},
 			'completeCallback':function(uploader,files){
+				explainVideoDiv.empty();
+//				var url = DingUploaderManager.host+'/'+files[0].uploadPath+'?OSSAccessKeyId='+DingUploaderManager.uploadParams.OSSAccessKeyId+'&Expires='+DingUploaderManager.expire+'&Signature='+DingUploaderManager.uploadParams.signature;
+				var url = DingUploaderManager.host+'/'+files[0].uploadPath;
+				explainVideoDiv.append('<video src="'+url+'" controls="controls"></video>');
 				
+				var deletePointDiv = $('<div class="delete_point_mask_div"><i class="fa fa-trash-o"></i></div>');
+				explainVideoDiv.append(deletePointDiv);
+				deletePointDiv.on("click",function(){
+					explainVideoDiv.parent().remove();
+				});
 			}
 		});
 	});
@@ -373,10 +403,26 @@ function initAddExcercise(type){
 			'limitType':'jpg,jpeg',
 			'maxFileSize':'1m',
 			'addedCallback':function(uploader,files,fileUploader){
-				
+				for(var f in files){
+					var jpreviewDiv = $('<div class="preview-div"></div>');
+					var jprocessDiv = $('<div class="progress" id="progress'+files[f].id+'"></div>');
+					var jprocessBar = $('<div class="progress-bar" id="progressBar'+files[f].id+'"></div>');
+					jprocessDiv.append(jprocessBar);
+					jpreviewDiv.append(jprocessDiv);
+					fileUploader.jcontainer.append(jpreviewDiv);
+				}
 			},
 			'completeCallback':function(uploader,files){
+				explainPicDiv.empty();
+//				var url = DingUploaderManager.host+'/'+files[0].uploadPath+'?OSSAccessKeyId='+DingUploaderManager.uploadParams.OSSAccessKeyId+'&Expires='+DingUploaderManager.expire+'&Signature='+DingUploaderManager.uploadParams.signature;
+				var url = DingUploaderManager.host+'/'+files[0].uploadPath;
+				explainPicDiv.append('<img src="'+url+'"></img>');
 				
+				var deletePointDiv = $('<div class="delete_point_mask_div"><i class="fa fa-trash-o"></i></div>');
+				explainPicDiv.append(deletePointDiv);
+				deletePointDiv.on("click",function(){
+					explainPicDiv.parent().remove();
+				});
 			}
 		});
 	});
@@ -389,8 +435,13 @@ function changeAnswerCount(input){
 	
 	if(count>exsitCount){
 		var leaveCount = count - exsitCount;
+		var index = exsitCount;
+		if(exsitCount==0){
+			index = 1;
+		}
 		for(var i=0;i<leaveCount;i++){
-			$(input).parent().next().append('<div class="answer_div"><img src="" /></div>');
+			$(input).parent().next().append('<div class="answer_div" onclick="changeSelectedAnswer(this)">'+index+'</div>');
+			index++;
 		}
 	}
 	else{
@@ -399,6 +450,11 @@ function changeAnswerCount(input){
 	if($(input).parent().next().children(".answer_div_selected").length==0){
 		$($(input).parent().next().children()[0]).addClass("answer_div_selected");
 	}
+}
+
+function changeSelectedAnswer(answer){
+	$(answer).parent().children().removeClass("answer_div_selected");
+	$(answer).addClass("answer_div_selected");
 }
 
 //点击知识点面板添加按钮样式变化
