@@ -19,7 +19,8 @@ Ding.ready(function(){
 					$("#answer-"+files[f].id).css({
 						"background":"url("+url+")",
 						"background-repeat":"no-repeat",
-						"background-position":"center"
+						"background-position":"center",
+						"background-size": "contain"
 					});
 				}
 				fileUploader.reset();
