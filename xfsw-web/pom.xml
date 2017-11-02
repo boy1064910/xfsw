@@ -145,5 +145,6 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-	<name>公共登录接口模块</name>
+	<description>公共登录接口模块</description>
+	<name>xfsw-web-api模块</name>
 </project>

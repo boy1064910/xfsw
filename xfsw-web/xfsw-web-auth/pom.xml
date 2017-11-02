@@ -90,7 +90,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>com.xfsw.Application</mainClass>
+							<mainClass>com.xfsw.WebAuthApplication</mainClass>
 						</manifest>
 					</archive>
 					<outputDirectory>/server/service/${project.artifactId}</outputDirectory>

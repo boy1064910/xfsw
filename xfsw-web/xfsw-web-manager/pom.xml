@@ -98,7 +98,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>com.xfsw.Appplcation</mainClass>
+							<mainClass>com.xfsw.WebManagerApplication</mainClass>
 						</manifest>
 					</archive>
 					<outputDirectory>/server/service/${project.artifactId}</outputDirectory>

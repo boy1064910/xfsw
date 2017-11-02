@@ -28,7 +28,7 @@ Ding.ready(function(){
     });
 	
 	Ding.ajax({
-        'url' : '/acadamic-web-manager/manager/pre/answer/list.shtml',
+        'url' : '/acadamic-web-manager/manager/answer/list.shtml',
         'successCallback' : function(result){
             var data = result.data;
             console.log(data);
