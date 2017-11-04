@@ -25,7 +25,6 @@ import net.xueshupa.service.AnswerService;
 public class AnswerController {
 
 	private String answerOssFolder = "answer/";
-	private String 
 	
 	@Resource(name="answerService")
 	AnswerService answerService;
@@ -46,13 +45,15 @@ public class AnswerController {
 	
 	/**
 	 * 保存答案信息
+	 * @param answerFileNames	答案文件名称数组
 	 * @return
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
 	@RequestMapping(value="/saveAnswer",method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseModel saveAnswer(String[] answerPicUrls){
+	public ResponseModel saveAnswer(String[] answerFileNames){
+		String[] answerFileUrls = ossService.saveObject(answerFileNames, answerOssFolder);
 		return new ResponseModel(answerService.selectPreAnswerList());
 	}
 }

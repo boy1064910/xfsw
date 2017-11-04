@@ -2,6 +2,8 @@ package com.xfsw.business.service;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +17,7 @@ import com.aliyun.oss.model.CopyObjectResult;
 
 @Lazy
 @Service("ossService")
-public class OssServiceImpl {
+public class OssServiceImpl implements OssService {
 
 	private static Logger logger = LoggerFactory.getLogger(OssServiceImpl.class);
 	
@@ -33,6 +35,8 @@ public class OssServiceImpl {
 	
 	@Value("${ali.oss.define.domain}")
 	private String defineDomain;//自定义域名
+	
+	private String defaultTmpFolder = "tmp/";
 
 	private OSSClient client = null;
 
@@ -45,12 +49,30 @@ public class OssServiceImpl {
 
 
 	@Override
-	public void saveObject(String fileName, String destFolder) {
+	public String saveObject(String fileName, String destFolder) {
+		if(StringUtils.isEmpty(fileName)) {
+			return null;
+		}
 		// 创建CopyObjectRequest对象
-		CopyObjectRequest copyObjectRequest = new CopyObjectRequest(bucket, srcPath, bucket, destPath);
+		CopyObjectRequest copyObjectRequest = new CopyObjectRequest(bucket, defaultTmpFolder + fileName, bucket, destFolder + fileName);
 		// 复制Object
 		CopyObjectResult result = client.copyObject(copyObjectRequest);
 		logger.info("oss copy file result:"+result.getETag());
+		return this.defineDomain + destFolder + fileName;
+	}
+	
+	@Override
+	public String[] saveObject(String[] fileNames,String destFolder){
+		if(!ArrayUtils.isEmpty(fileNames)) {
+			return null;
+		}
+		String[] fileUrls = new String[fileNames.length];
+		int index = 0;
+		for(String fileName:fileNames) {
+			fileUrls[index] = this.saveObject(fileName, destFolder);
+			index++;
+		}
+		return fileUrls;
 	}
 	
 	@Override
