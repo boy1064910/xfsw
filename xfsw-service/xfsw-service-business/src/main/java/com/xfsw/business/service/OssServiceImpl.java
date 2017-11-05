@@ -23,16 +23,12 @@ public class OssServiceImpl implements OssService {
 	
 	@Value("${ali.oss.endpoint}")
 	private String endpoint;
-
 	@Value("${ali.oss.accessId}")
 	private String accessId;
-
 	@Value("${ali.oss.accessKey}")
 	private String accessKey;
-	
 	@Value("${ali.oss.bucket}")
 	private String bucket;//存储空间名称
-	
 	@Value("${ali.oss.define.domain}")
 	private String defineDomain;//自定义域名
 	
@@ -49,27 +45,28 @@ public class OssServiceImpl implements OssService {
 
 
 	@Override
-	public String saveObject(String fileName, String destFolder) {
-		if(StringUtils.isEmpty(fileName)) {
+	public String saveObject(String filePath, String destFolder) {
+		if(StringUtils.isEmpty(filePath)) {
 			return null;
 		}
+		String newFilePath = filePath.replace(defaultTmpFolder, destFolder);
 		// 创建CopyObjectRequest对象
-		CopyObjectRequest copyObjectRequest = new CopyObjectRequest(bucket, defaultTmpFolder + fileName, bucket, destFolder + fileName);
+		CopyObjectRequest copyObjectRequest = new CopyObjectRequest(bucket, filePath, bucket, newFilePath);
 		// 复制Object
 		CopyObjectResult result = client.copyObject(copyObjectRequest);
 		logger.info("oss copy file result:"+result.getETag());
-		return this.defineDomain + destFolder + fileName;
+		return this.defineDomain + newFilePath;
 	}
 	
 	@Override
-	public String[] saveObject(String[] fileNames,String destFolder){
-		if(!ArrayUtils.isEmpty(fileNames)) {
+	public String[] saveObject(String[] filePaths,String destFolder){
+		if(ArrayUtils.isEmpty(filePaths)) {
 			return null;
 		}
-		String[] fileUrls = new String[fileNames.length];
+		String[] fileUrls = new String[filePaths.length];
 		int index = 0;
-		for(String fileName:fileNames) {
-			fileUrls[index] = this.saveObject(fileName, destFolder);
+		for(String filePath:filePaths) {
+			fileUrls[index] = this.saveObject(filePath, destFolder);
 			index++;
 		}
 		return fileUrls;

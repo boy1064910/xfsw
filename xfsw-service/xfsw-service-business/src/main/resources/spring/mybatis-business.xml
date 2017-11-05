@@ -11,7 +11,7 @@
 
 	<typeAliases>
 		<!-- entity -->
-		<typeAlias type="com.xfsw.account.entity.MessageCode" alias="MessageCode" />
+		<typeAlias type="com.xfsw.business.entity.MessageCode" alias="MessageCode" />
 	</typeAliases>
 
 </configuration>

@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Answer">
-	<insert id="insertAnswer" parameterType="Answer" keyProperty="id" useGeneratedKeys="true">
-		INSERT INTO Answer(exerciseId,answer,orderIndex,lastUpdater,lastUpdateTime)
-		VALUES(#{exerciseId},#{answer},#{orderIndex},#{lastUpdater},NOW())
-	</insert>
-	
 	<update id="updateAnswer" parameterType="Answer">
 		UPDATE Answer 
 		SET 
@@ -34,4 +29,17 @@
 	<select id="selectPreAnswerList" resultType="Answer">
 		SELECT * FROM Answer WHERE exerciseId IS NULL
 	</select>
+	
+	<insert id="saveAnswer" parameterType="Answer" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO Answer(exerciseId,answer,orderIndex,lastUpdater,lastUpdateTime)
+		VALUES(
+			#{exerciseId},
+			#{answer},
+			(
+				SELECT IF(ISNULL(MAX(a.orderIndex)),1,MAX(a.orderIndex) + 1) FROM Answer a WHERE a.exerciseId IN (#{exerciseId})
+			),
+			#{lastUpdater},
+			#{lastUpdateTime}
+		)
+	</insert>
 </mapper>

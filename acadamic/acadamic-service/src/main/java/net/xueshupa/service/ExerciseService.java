@@ -55,8 +55,8 @@ public class ExerciseService {
 			exercise.setOrderIndex(orderIndex);
 			commonMapper.insert("Exercise.insertExercise", exercise);
 		}
-		List<Answer> tmpAnswerList = answerService.saveAnswerList(answerList, exercise.getId(),deleteAnswerIds,exercise.getLastUpdater());
-		exercise.setAnswerList(tmpAnswerList);
+//		List<Answer> tmpAnswerList = answerService.saveAnswerList(answerList, exercise.getId(),deleteAnswerIds,exercise.getLastUpdater());
+//		exercise.setAnswerList(tmpAnswerList);
 		return exercise;
 	}
 	

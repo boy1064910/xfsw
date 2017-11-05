@@ -13,17 +13,31 @@ Ding.ready(function(){
 				}
 			},
 			'completeCallback':function(uploader,files,fileUploader){
+				var filePaths = [];
 				for(var f in files){
-					var url = DingUploaderManager.host+'/'+files[f].uploadPath;
-					$("#answer-"+files[f].id).css("background","url("+url+")");
-					$("#answer-"+files[f].id).css({
-						"background":"url("+url+")",
-						"background-repeat":"no-repeat",
-						"background-position":"center",
-						"background-size": "contain"
-					});
+					filePaths.push(files[f].uploadPath);
 				}
-				fileUploader.reset();
+				Ding.ajax({
+			        'url' : '/acadamic-web-manager/manager/answer/saveAnswers.shtml',
+			        'method' : 'post',
+			        'params' : {
+			        	'answerFileNames':filePaths
+			        },
+			        'successCallback' : function(result){
+			            var data = result.data;
+			            for(var f in files){
+							var url = DingUploaderManager.host+'/'+files[f].uploadPath;
+							$("#answer-"+files[f].id).css("background","url("+url+")");
+							$("#answer-"+files[f].id).css({
+								"background":"url("+url+")",
+								"background-repeat":"no-repeat",
+								"background-position":"center",
+								"background-size": "contain"
+							});
+						}
+						fileUploader.reset();
+			        }
+			    });
 			}
 		});
     });

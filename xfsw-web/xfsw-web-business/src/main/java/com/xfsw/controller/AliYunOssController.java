@@ -26,17 +26,17 @@ import com.xfsw.common.util.JsonUtil;
 @RequestMapping("/business/oss")
 public class AliYunOssController {
 	
-	@Value("${xfsw.oss.endpoint}")
+	@Value("${ali.oss.endpoint}")
 	private String endpoint;
-	@Value("${xfsw.oss.accessId}")
+	@Value("${ali.oss.accessId}")
 	private String accessId;
-	@Value("${xfsw.oss.accessKey}")
+	@Value("${ali.oss.accessKey}")
 	private String accessKey;
-	@Value("${xfsw.oss.bucket}")
+	@Value("${ali.oss.bucket}")
 	private String bucket;
-	@Value("${xfsw.oss.dir}")
-	private String dir;
-	@Value("${xfsw.oss.expire}")
+	@Value("${ali.oss.dir}")
+	private String dir;//临时保存路径
+	@Value("${ali.oss.expire}")
 	private int expire;
 	
 	@RequestMapping("/successReceive")
@@ -54,7 +54,6 @@ public class AliYunOssController {
 		map.put("callbackUrl", schema + "://" + serverName + "/decked-web-business/business/oss/successReceive.shtml");
 		map.put("callbackBody", "filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}");
 		map.put("callbackBodyType", "application/x-www-form-urlencoded");
-		/* map.put("callbackHost", "business.materia.mobi"); */
 		String callbackBody = JsonUtil.entity2Json(map);
 		String base64CallbackBody = Base64.encode(callbackBody.getBytes());
 
@@ -74,7 +73,6 @@ public class AliYunOssController {
 		try {
 			binaryData = postPolicy.getBytes("utf-8");
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		String encodedPolicy = BinaryUtil.toBase64String(binaryData);

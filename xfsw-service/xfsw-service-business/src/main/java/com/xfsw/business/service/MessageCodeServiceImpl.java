@@ -58,7 +58,7 @@ public class MessageCodeServiceImpl implements MessageCodeService {
 	@Value("${message.send.pwd}")
 	String messageSendPwd;
 
-	@Resource(name = "accountCommonMapper")
+	@Resource(name = "businessCommonMapper")
 	ICommonMapper commonMapper;
 	
 	@PostConstruct

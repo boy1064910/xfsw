@@ -4,12 +4,11 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xfsw.common.mapper.ICommonMapper;
-import com.xfsw.common.util.ArrayUtil;
-import com.xfsw.common.util.ListUtil;
 
 import net.xueshupa.entity.Answer;
 
@@ -18,25 +17,6 @@ public class AnswerService {
 
 	@Resource(name="acadamicCommonMapper")
 	ICommonMapper commonMapper;
-	
-	@Transactional
-	public List<Answer> saveAnswerList(List<Answer> answerList,Integer exerciseId,Integer[] deleteIds,String operator){
-		if(!ListUtil.isEmpty(answerList)){
-			for(Answer answer:answerList){
-				if(answer.getId().intValue()!=0){
-					commonMapper.update("Answer.updateAnswer",answer);
-				}
-				else{
-					answer.setExerciseId(exerciseId);
-					commonMapper.update("Answer.insertAnswer",answer);
-				}
-			}
-		}
-		if(!ArrayUtil.isEmpty(deleteIds)){
-			commonMapper.deleteAndBak(Answer.class, "id", deleteIds, operator);
-		}
-		return answerList;
-	}
 	
 	public List<Answer> selectListByExerciseIds(Integer[] exerciseIds){
 		return commonMapper.selectList("Answer.selectListByExerciseIds",exerciseIds);
@@ -58,5 +38,25 @@ public class AnswerService {
 	 */
 	public List<Answer> selectPreAnswerList(){
 		return commonMapper.selectList("Answer.selectPreAnswerList");
+	}
+	
+	/**
+	 * 保存答案数组数据
+	 * @param answerList
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	@Transactional(transactionManager="acadamicTxManager")
+	public Integer[] saveAnswers(Answer[] answers){
+		if(ArrayUtils.isEmpty(answers)){
+			return null;
+		}
+		Integer[] ids = new Integer[answers.length];
+		for(int i=0;i<answers.length;i++){
+			commonMapper.insert("Answer.saveAnswer", answers[i]);
+			ids[i] = answers[i].getId();
+		}
+		return ids;
 	}
 }

@@ -3,8 +3,11 @@
  */
 package net.xueshupa.controller;
 
+import java.util.Date;
+
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xfsw.business.service.OssService;
 import com.xfsw.common.classes.ResponseModel;
+import com.xfsw.common.thread.ThreadUserInfoManager;
 
+import net.xueshupa.entity.Answer;
 import net.xueshupa.service.AnswerService;
 
 /**
@@ -50,10 +55,24 @@ public class AnswerController {
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
-	@RequestMapping(value="/saveAnswer",method=RequestMethod.POST)
+	@RequestMapping(value="/saveAnswers",method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseModel saveAnswer(String[] answerFileNames){
+	public ResponseModel saveAnswers(String[] answerFileNames){
+		if(ArrayUtils.isEmpty(answerFileNames)){
+			return new ResponseModel();
+		}
+		String lastUpdater = ThreadUserInfoManager.getAccount();
+		Date lastUpdateTime = new Date();
 		String[] answerFileUrls = ossService.saveObject(answerFileNames, answerOssFolder);
-		return new ResponseModel(answerService.selectPreAnswerList());
+		Answer[] answers = new Answer[answerFileNames.length];
+		for(int i=0;i<answerFileNames.length;i++){
+			Answer answer = new Answer();
+			answer.setAnswer(answerFileUrls[i]);
+			answer.setLastUpdater(lastUpdater);
+			answer.setLastUpdateTime(lastUpdateTime);
+			answers[i] = answer;
+		}
+		Integer[] answerIds = answerService.saveAnswers(answers);
+		return new ResponseModel(answerIds);
 	}
 }
