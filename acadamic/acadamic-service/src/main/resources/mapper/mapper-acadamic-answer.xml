@@ -31,15 +31,23 @@
 	</select>
 	
 	<insert id="saveAnswer" parameterType="Answer" keyProperty="id" useGeneratedKeys="true">
-		INSERT INTO Answer(exerciseId,answer,orderIndex,lastUpdater,lastUpdateTime)
+		INSERT INTO Answer(exerciseId,answer,lastUpdater,lastUpdateTime)
 		VALUES(
 			#{exerciseId},
 			#{answer},
-			(
-				SELECT IF(ISNULL(MAX(a.orderIndex)),1,MAX(a.orderIndex) + 1) FROM Answer a WHERE a.exerciseId IN (#{exerciseId})
-			),
 			#{lastUpdater},
 			#{lastUpdateTime}
 		)
 	</insert>
+	
+	<select id="selectMaxOrderIndex" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select MAX(orderIndex) from Answer WHERE exerciseId IS NULL
+		<if test="exerciseId!=null">
+			OR exerciseId = #{exerciseId}
+		</if>
+	</select>
+	
+	<update id="updateOrderIndexById" parameterType="Answer">
+		UPDATE Answer SET orderIndex = #{orderIndex} WHERE id = #{id}
+	</update>
 </mapper>

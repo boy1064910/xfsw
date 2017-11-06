@@ -9,7 +9,7 @@ Ding.ready(function(){
 			'maxFileSize':'2m',
 			'addedCallback':function(uploader,files,fileUploader){
 				for(var f in files){
-					$("#answerDiv").append('<div class="pre_answer_div" id="answer-'+files[f].id+'" ></div>');
+					renderDiv(files[f].id);
 				}
 			},
 			'completeCallback':function(uploader,files,fileUploader){
@@ -24,18 +24,13 @@ Ding.ready(function(){
 			        	'answerFileNames':filePaths
 			        },
 			        'successCallback' : function(result){
-			            var data = result.data;
+			            var dataList = result.data;
 			            for(var f in files){
 							var url = DingUploaderManager.host+'/'+files[f].uploadPath;
-							$("#answer-"+files[f].id).css("background","url("+url+")");
-							$("#answer-"+files[f].id).css({
-								"background":"url("+url+")",
-								"background-repeat":"no-repeat",
-								"background-position":"center",
-								"background-size": "contain"
-							});
+							renderDiv(files[f].id,dataList[f],url);
 						}
 						fileUploader.reset();
+						fileUploader.uploader.files.splice(0,fileUploader.uploader.files.length);
 			        }
 			    });
 			}
@@ -45,85 +40,47 @@ Ding.ready(function(){
 	Ding.ajax({
         'url' : '/acadamic-web-manager/manager/answer/list.shtml',
         'successCallback' : function(result){
-            var data = result.data;
-            console.log(data);
+            var dataList = result.data;
+            for(var i=0;i<dataList.length;i++){
+            	renderDiv(dataList[i].id,dataList[i].id,dataList[i].answer);
+            }
         }
     });
 });
 
-function resetForm(){
-    $("#name").val('');
-    $("#id").val('');
-    $("#index").val('');
-    $("#value").val('');
+function renderDiv(id,dataId,url){
+	if($.isEmpty($("#answer-"+id)[0])){
+		$("#answerDiv").append('<div class="pre_answer_div"><div id="answer-'+id+'" ></div></div>');
+	}
+	if(!Ding.isEmpty(dataId)){
+		$("#answer-"+id).css("background","url("+url+")");
+		$("#answer-"+id).css({
+			"background":"url("+url+")",
+			"background-repeat":"no-repeat",
+			"background-position":"center",
+			"background-size": "contain"
+		});
+		$("#answer-"+id).parent().append('<button class="btn btn-default" onclick="removeDiv(this)">删除</button>');
+		$("#answer-"+id).parent().attr("data-id",dataId);
+	}
 }
 
-function initAdd(){
-    openModal({
-        'title':'添加课程信息',
-        'targetId':'form',
-        'sureBtnText':'保存'
-    });
-}
-
-function initEdit(id,index){
-    $("#index").val(index);
-    $("#id").val(id);
-    Ding.ajax({
-        'url' : projectName + '/manager/acadamic/course/getById.shtml',
-        'params' : {
-            'id' : id
+/**
+ * 删除
+ * @param btn
+ * @returns
+ */
+function removeDiv(btn){
+	var dataId = $(btn).parent().attr("data-id");
+	Ding.ajax({
+        'url' : '/acadamic-web-manager/manager/answer/deleteAnswer.shtml',
+        'method':'post',
+        'params':{
+        	'answerId':dataId
         },
         'successCallback' : function(result){
-            var data = result.data;
-            $("#name").val(data.name);
-            $("#price").val(data.price);
-            openModal({
-                'title':'编辑课程信息',
-                'targetId':'form',
-                'sureBtnText':'保存'
-            });
-        }
-    });
-}   
-
-function saveSuccess(result){
-    if($.isEmpty($("#id").val())){
-        $("#dataTable").bootstrapTable('append',result.data);
-    }
-    else{
-        var index = $("#index").val();
-        $("#dataTable").bootstrapTable('updateRow',{
-            'index' : index,
-            'row' : result.data
-        });
-    }
-    resetForm();
-}
-
-function initDelete(id){
-    $.confirm({
-        backgroundDismiss: true,
-        title:'删除课程信息',
-        content: '是否删除课程信息 ?',
-        confirmButton:'删除',
-        cancelButton:'取消',
-        confirmButtonClass:'btn-success',
-        confirm:function(){
-            Ding.ajax({
-                'url':projectName+'/manager/acadamic/course/deleteCourse.shtml',
-                'params':{
-                    'id' : id
-                },
-                'method':'post',
-                'successCallback':function(result){
-                    $("#dataTable").bootstrapTable('removeByUniqueId',id);
-                }
-            });
+        	$(btn).parent().remove();
         }
     });
 }
 
-function initSettle(id,code){
-    this.location = '/acadamic-web-manager/manager/course/chapter/index.shtml?courseId='+id+"&code="+code+'&breadSequence=1';
-}

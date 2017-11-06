@@ -55,8 +55,19 @@ public class AnswerService {
 		Integer[] ids = new Integer[answers.length];
 		for(int i=0;i<answers.length;i++){
 			commonMapper.insert("Answer.saveAnswer", answers[i]);
+			Integer maxOrderIndex = commonMapper.get("Answer.selectMaxOrderIndex",null);
+			if(maxOrderIndex==null){
+				maxOrderIndex = 0;
+			}
+			maxOrderIndex++;
+			answers[i].setOrderIndex(maxOrderIndex);
+			commonMapper.update("Answer.updateOrderIndexById",answers[i]);
 			ids[i] = answers[i].getId();
 		}
 		return ids;
+	}
+	
+	public void deleteAnswer(Integer id,String operator){
+		commonMapper.deleteAndBak(Answer.class, id, operator);
 	}
 }

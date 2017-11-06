@@ -1,9 +1,12 @@
 .pre_answer_div{
+	margin:12px;
+	float:left;
+}
+.pre_answer_div>div{
 	height: 50px;
 	min-width: 50px;
-	margin:12px;
 	border: 1px solid #000;
-	float:left;
+	margin-bottom: 5px;
 }
 #answerDiv:after{
 	clear: both;

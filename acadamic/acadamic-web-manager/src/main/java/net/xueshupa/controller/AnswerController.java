@@ -75,4 +75,11 @@ public class AnswerController {
 		Integer[] answerIds = answerService.saveAnswers(answers);
 		return new ResponseModel(answerIds);
 	}
+	
+	@RequestMapping(value="/deleteAnswer",method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseModel deleteAnswer(Integer answerId){
+		answerService.deleteAnswer(answerId,ThreadUserInfoManager.getAccount());
+		return new ResponseModel();
+	}
 }
