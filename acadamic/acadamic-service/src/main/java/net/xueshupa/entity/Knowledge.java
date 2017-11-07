@@ -12,9 +12,6 @@ public class Knowledge{
 	private String code;
 	private String name;
 	private Integer orderIndex;
-	private String videoUrl;
-	private Integer exampleCount;
-	private Integer videoSeconds;
 	private String lastUpdater;
 	private Date lastUpdateTime;
 
@@ -41,24 +38,6 @@ public class Knowledge{
 	}
 	public Integer getOrderIndex(){
 		return orderIndex;
-	}
-	public void setVideoUrl(String videoUrl){
-		this.videoUrl=videoUrl;
-	}
-	public String getVideoUrl(){
-		return videoUrl;
-	}
-	public void setExampleCount(Integer exampleCount){
-		this.exampleCount=exampleCount;
-	}
-	public Integer getExampleCount(){
-		return exampleCount;
-	}
-	public void setVideoSeconds(Integer videoSeconds){
-		this.videoSeconds=videoSeconds;
-	}
-	public Integer getVideoSeconds(){
-		return videoSeconds;
 	}
 	public void setLastUpdater(String lastUpdater){
 		this.lastUpdater=lastUpdater;

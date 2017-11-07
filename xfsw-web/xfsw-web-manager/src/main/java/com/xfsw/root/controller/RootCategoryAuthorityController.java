@@ -1,6 +1,7 @@
 package com.xfsw.root.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -13,9 +14,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xfsw.account.entity.CategoryAuthority;
 import com.xfsw.account.entity.LinkAuthority;
+import com.xfsw.account.model.UserAuthorityIdsModel;
 import com.xfsw.account.service.AuthorityCacheService;
 import com.xfsw.account.service.CategoryAuthorityService;
 import com.xfsw.account.service.LinkAuthorityService;
+import com.xfsw.account.service.RoleAuthorityService;
+import com.xfsw.account.service.RoleLinkAuthorityService;
 import com.xfsw.common.classes.ResponseModel;
 import com.xfsw.common.thread.ThreadUserInfoManager;
 import com.xfsw.common.util.DJBHashUtil;
@@ -40,6 +44,12 @@ public class RootCategoryAuthorityController {
 
 	@Resource(name = "authorityCacheService")
 	AuthorityCacheService authorityCacheService;
+	
+	@Resource(name="roleAuthorityService")
+	RoleAuthorityService roleAuthorityService;
+	
+	@Resource(name="roleLinkAuthorityService")
+	RoleLinkAuthorityService roleLinkAuthorityService;
 
 	@RequestMapping(value = "/index")
 	public void index() {
@@ -106,9 +116,17 @@ public class RootCategoryAuthorityController {
 	@ResponseBody
 	public ResponseModel updateLinkAuthority(LinkAuthority linkAuthority) {
 		linkAuthority.setLastUpdater(ThreadUserInfoManager.getAccount());
+		linkAuthority.setLastUpdateTime(new Date());
 		linkAuthority.setOldId(linkAuthority.getId());
 		linkAuthority.setId(this.parseHashId(linkAuthority.getUrl()));
 		linkAuthorityService.updateLinkAuthority(linkAuthority);
+
+		//查询影响的角色
+		List<Integer> roleIdList = roleLinkAuthorityService.selectRoleIdListByLinkAuthorityId(linkAuthority.getId());
+		//查询相关的用户信息
+		List<UserAuthorityIdsModel> userAuthorityIdsModelList = roleAuthorityService.selectAllUserAuthorityByRoleIdList(roleIdList);
+		//刷新登录session
+		userSessionService.refreshUserSessionAuthorityInfo(userAuthorityIdsModelList);
 		return new ResponseModel(linkAuthority);
 	}
 
@@ -118,6 +136,7 @@ public class RootCategoryAuthorityController {
 		CategoryAuthority categoryAuthority = categoryAuthorityService.getById(linkAuthority.getCategoryAuthorityId());
 		linkAuthority.setId(this.parseHashId(linkAuthority.getUrl()));
 		linkAuthority.setLastUpdater(ThreadUserInfoManager.getAccount());
+		linkAuthority.setLastUpdateTime(new Date());
 		linkAuthority.setTenantId(categoryAuthority.getTenantId());
 		linkAuthorityService.insertLinkAuthority(linkAuthority);
 		return new ResponseModel();

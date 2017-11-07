@@ -49,7 +49,7 @@ public class CourseService {
 	
 	@Transactional
 	public void deleteById(String code,String operator){
-		exerciseService.deleteByCourseCode(code, operator);
+//		exerciseService.deleteByCourseCode(code, operator);
 		diffLevelService.deleteByCourseCode(code, operator);
 		knowledgeService.deleteByCourseCode(code, operator);
 		chapterService.deleteByCourseCode(code, operator);

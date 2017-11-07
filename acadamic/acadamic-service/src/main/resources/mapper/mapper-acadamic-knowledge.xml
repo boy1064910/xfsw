@@ -6,16 +6,17 @@
 	</select>
 
 	<insert id="insertKnowledge" parameterType="Knowledge" keyProperty="id" useGeneratedKeys="true">
-		INSERT INTO Knowledge(code,name,orderIndex,videoUrl,lastUpdater,lastUpdateTime)
-		VALUES(#{code},#{name},#{orderIndex},#{videoUrl},#{lastUpdater},NOW())
+		INSERT INTO Knowledge(code,name,orderIndex,lastUpdater,lastUpdateTime)
+		VALUES(#{code},#{name},#{orderIndex},#{lastUpdater},NOW())
 	</insert>
 	
 	<update id="updateKnowledge" parameterType="Knowledge">
-		UPDATE Knowledge SET name = #{name},
-		<if test="videoUrl!=null and ''!=videoUrl">
-			videoUrl=#{videoUrl},
-		</if>
-		lastUpdater=#{lastUpdater},lastUpdateTime = NOW()
+		UPDATE 
+			Knowledge 
+		SET 
+			name = #{name},lastUpdater=#{lastUpdater},lastUpdateTime = NOW()
+		WHERE 
+			id = #{id}
 	</update>
 	
 	<select id="selectListByChapterCode" parameterType="java.lang.String" resultType="Knowledge">

@@ -1,7 +1,6 @@
 package com.xfsw.account.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,9 +29,7 @@ public class LinkAuthorityServiceImpl implements LinkAuthorityService {
 
 	@Override
 	public List<LinkAuthority> selectListByCategoryAuthorityId(Integer categoryAuthorityId) {
-		Map<String,Object> params = new HashMap<String,Object>();
-		params.put("categoryAuthorityId", categoryAuthorityId);
-		return commonMapper.selectList(LinkAuthority.class, params);
+		return commonMapper.selectList("LinkAuthority.selectListByCategoryAuthorityId",categoryAuthorityId);
 	}
 	
 	@Override

@@ -1,6 +1,5 @@
 package net.xueshupa.entity;
 import java.util.Date;
-import java.util.List;
 
 /**
 * Exercise 
@@ -10,25 +9,17 @@ import java.util.List;
 public class Exercise{
 
 	private Integer id;
-	private String code;
-	private String picUrl;
+	private Integer knowledgeInfoId;
+	private String exerciseUrl;
 	private Integer orderIndex;
 	private String lastUpdater;
 	private Date lastUpdateTime;
 	
-	private List<Answer> answerList;
-
 	public void setId(Integer id){
 		this.id=id;
 	}
 	public Integer getId(){
 		return id;
-	}
-	public void setCode(String code){
-		this.code=code;
-	}
-	public String getCode(){
-		return code;
 	}
 	public void setOrderIndex(Integer orderIndex){
 		this.orderIndex=orderIndex;
@@ -48,17 +39,17 @@ public class Exercise{
 	public Date getLastUpdateTime(){
 		return lastUpdateTime;
 	}
-	public String getPicUrl() {
-		return picUrl;
+	public Integer getKnowledgeInfoId() {
+		return knowledgeInfoId;
 	}
-	public void setPicUrl(String picUrl) {
-		this.picUrl = picUrl;
+	public void setKnowledgeInfoId(Integer knowledgeInfoId) {
+		this.knowledgeInfoId = knowledgeInfoId;
 	}
-	public List<Answer> getAnswerList() {
-		return answerList;
+	public String getExerciseUrl() {
+		return exerciseUrl;
 	}
-	public void setAnswerList(List<Answer> answerList) {
-		this.answerList = answerList;
+	public void setExerciseUrl(String exerciseUrl) {
+		this.exerciseUrl = exerciseUrl;
 	}
 }
 

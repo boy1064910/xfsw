@@ -25,25 +25,24 @@ import com.xfsw.common.consts.ErrorConstant;
 public class MapUtil {
 
 	private static Logger logger = LoggerFactory.getLogger(MapUtil.class);
-	
-	public static boolean isEmpty(Map<?,?> map){
-		if(map==null){
+
+	public static boolean isEmpty(Map<?, ?> map) {
+		if (map == null) {
 			return true;
-		}
-		else{
-			return map.size()==0;
+		} else {
+			return map.size() == 0;
 		}
 	}
-	
-	public static Object map2Pojo(Map<?, ?> result,Class<?> clazz){
+
+	public static Object map2Pojo(Map<?, ?> result, Class<?> clazz) {
 		Object entity = ReflectUtil.instance(clazz);
 		Field[] fields = clazz.getDeclaredFields();
-		for(Field field:fields){
+		for (Field field : fields) {
 			ReflectUtil.invokeField(entity, field, result.get(field.getName()), true);
 		}
 		return entity;
 	}
-	
+
 	public static <T> T map2Entity(Map<?, ?> mp, Class<T> clazz) {
 		try {
 			BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
@@ -60,25 +59,27 @@ public class MapUtil {
 			}
 			return entity;
 		} catch (IntrospectionException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException e) {
-			throw new BusinessException(ErrorConstant.ERROR_SYSTEM_KNOWN,"Map transform to entity failed!",e);
+			e.printStackTrace();
+			throw new BusinessException(ErrorConstant.ERROR_SYSTEM_KNOWN, "Map transform to entity failed!", e);
 		}
 	}
-	
-	public static <T> T obj2Entity(Object obj,Class<T> clazz){
+
+	public static <T> T obj2Entity(Object obj, Class<T> clazz) {
 		try {
 			T entity = clazz.newInstance();
 			BeanUtils.copyProperties(entity, obj);
 			return entity;
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException e) {
-			throw new BusinessException(ErrorConstant.ERROR_SYSTEM_KNOWN,"Object transform to entity failed!",e);
+			throw new BusinessException(ErrorConstant.ERROR_SYSTEM_KNOWN, "Object transform to entity failed!", e);
 		}
 	}
-	
+
 	/**
 	 * 将POJO对象转成Map
 	 * @param obj	实体类对象
 	 * @return	map
 	 */
+	@Deprecated
 	public static Map<String, Object> pojoToMap(Object obj) {
 		Map<String, Object> hashMap = new HashMap<String, Object>();
 		Class<? extends Object> c = obj.getClass();
@@ -114,6 +115,7 @@ public class MapUtil {
 	 * @param entity	实体类对象
 	 * @return	map
 	 */
+	@Deprecated
 	public static Map<String, Object> pojoToMapNotNullField(Object entity) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		StringBuffer methodName = null;
@@ -121,8 +123,8 @@ public class MapUtil {
 		Class<? extends Object> clazz = entity.getClass();
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
-			//跳過static類型的變量
-			if(Modifier.isStatic(field.getModifiers()))
+			// 跳過static類型的變量
+			if (Modifier.isStatic(field.getModifiers()))
 				continue;
 			methodName = new StringBuffer();
 			methodName.append("get").append(StringUtil.initialFirstUppercase(field.getName()));
@@ -132,7 +134,7 @@ public class MapUtil {
 		}
 		return map;
 	}
-	
+
 	/**
 	 * 获取entity中不为null的字段名称和字段值
 	 * @param entity	实体类对象
@@ -149,8 +151,8 @@ public class MapUtil {
 			methodName = new StringBuffer();
 			methodName.append("get").append(StringUtil.initialFirstUppercase(field.getName()));
 			val = ReflectUtil.invoke(entity, methodName.toString());
-			if (val != null){
-				logger.debug("字段名称："+field.getName()+",方法名称："+methodName.toString());
+			if (val != null) {
+				logger.debug("字段名称：" + field.getName() + ",方法名称：" + methodName.toString());
 				map.put(field.getName(), val);
 			}
 		}
@@ -224,6 +226,35 @@ public class MapUtil {
 		Map<String, Object> sortMap = new TreeMap<String, Object>(new MapKeyComparator());
 		sortMap.putAll(map);
 		return sortMap;
+	}
+
+	public static Map<String, Object> entityToMap(Object bean) {
+		Class<? extends Object> clazz = bean.getClass();
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		BeanInfo beanInfo = null;
+		try {
+			beanInfo = Introspector.getBeanInfo(clazz);
+			PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+			for (int i = 0; i < propertyDescriptors.length; i++) {
+				PropertyDescriptor descriptor = propertyDescriptors[i];
+				String propertyName = descriptor.getName();
+				if (!propertyName.equals("class")) {
+					Method readMethod = descriptor.getReadMethod();
+					Object result = null;
+					result = readMethod.invoke(bean, new Object[0]);
+					returnMap.put(propertyName, result);
+				}
+			}
+			return returnMap;
+		} catch (IntrospectionException e) {
+			throw new RuntimeException("分析类属性失败 ", e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException("实例化 JavaBean 失败 ", e);
+		} catch (IllegalArgumentException e) {
+			throw new RuntimeException("映射错误 ", e);
+		} catch (InvocationTargetException e) {
+			throw new RuntimeException("调用属性的 setter 方法失败 ", e);
+		}
 	}
 }
 

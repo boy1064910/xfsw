@@ -47,6 +47,7 @@ public class UniverseAuthInterceptor implements HandlerInterceptor {
 		Integer hashId = DJBHashUtil.DJBHashId(uri);
 		UserSessionModel userSessionModel = ThreadUserInfoManager.getUserInfo();
 		if(!CollectionUtils.isEmpty(userSessionModel.getRoleIdList())&&!ArrayUtils.isEmpty(userSessionModel.getAuthorityIds())){
+			logger.debug(JsonUtil.entity2Json(userSessionModel.getAuthorityIds()));
 			int index = ArrayUtils.indexOf(userSessionModel.getAuthorityIds(), hashId);
 			if(index==-1){
 				logger.debug("no auth::"+uri);

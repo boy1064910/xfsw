@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.xfsw.common.mapper.ICommonMapper;
 import com.xfsw.common.util.NumberUtil;
@@ -58,6 +59,19 @@ public class KnowledgeService {
 	
 	public Knowledge getById(Integer id){
 		return (Knowledge) commonMapper.get(Knowledge.class, id);
+	}
+	
+	/**
+	 * 删除知识点信息
+	 * @param id
+	 * @param operator
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	@Transactional(transactionManager="acadamicTxManager")
+	public void deleteById(Integer id,String operator){
+		commonMapper.deleteAndBak(Knowledge.class, id, operator);
+		//TODO 删除相关联的数据
 	}
 	
 	/**

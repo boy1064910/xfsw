@@ -18,6 +18,10 @@
   	<select id="getIdByDefaultLinkeAuthorityIdAndId" parameterType="LinkAuthority" resultType="java.lang.Integer">
 		SELECT id FROM LinkAuthority WHERE defaultLinkeAuthorityId = #{defaultLinkeAuthorityId} AND tenantId = #{tenantId}
 	</select>
+	
+	<select id="selectListByCategoryAuthorityId" parameterType="java.lang.Integer" resultType="LinkAuthority">
+		SELECT * FROM LinkAuthority WHERE categoryAuthorityId = #{categoryAuthorityId} ORDER BY lastUpdateTime ASC
+	</select>
 
 <!--   	<select id="selectListByAuthorityId" parameterType="java.lang.Integer" resultType="LinkAuthority"> -->
 <!-- 	    SELECT * FROM LinkAuthority WHERE authorityId = #{authorityId} -->

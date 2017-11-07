@@ -3,6 +3,7 @@
  */
 package com.xfsw.session.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,19 +58,25 @@ public class UserSessionServiceImpl implements UserSessionService {
 			return;
 		
 		Map<String,UserSessionModel> allUserSessionModel = this.listUserSession();
-		Map<String,InnerUserSessionModel> innerUserSessionModelMap = new HashMap<String,InnerUserSessionModel>(allUserSessionModel.size());
+		Map<String,List<InnerUserSessionModel>> innerUserSessionModelMap = new HashMap<String,List<InnerUserSessionModel>>();
 		for(Entry<String,UserSessionModel> entry:allUserSessionModel.entrySet()){
-			innerUserSessionModelMap.put(entry.getValue().getId()+"-"+entry.getValue().getTenantId(), new InnerUserSessionModel(entry.getKey(), entry.getValue()));
+			String key = entry.getValue().getId()+"-"+entry.getValue().getTenantId();
+			if(!innerUserSessionModelMap.containsKey(key)){
+				innerUserSessionModelMap.put(key, new ArrayList<InnerUserSessionModel>());
+			}
+			innerUserSessionModelMap.get(key).add(new InnerUserSessionModel(entry.getKey(), entry.getValue()));
 		}
 		
 		for(UserAuthorityIdsModel userAuthorityIdsModel:userAuthorityIdsModelList){
-			InnerUserSessionModel innerUserSessionModel = innerUserSessionModelMap.get(userAuthorityIdsModel.getUserId()+"-"+userAuthorityIdsModel.getTenantId());
-			if(innerUserSessionModel!=null){
-				String sessionKey = innerUserSessionModel.getSessionKey();
-				UserSessionModel userSessionModel = innerUserSessionModel.getUserSessionModel();
-				userSessionModel.setAuthorityIds(userAuthorityIdsModel.getAuthorityIds());
-				userSessionModel.setCategoryAuthorityIds(userAuthorityIdsModel.getCategoryAuthorityIds());
-				sessionRedisTemplate.opsForValue().set(sessionKey, JsonUtil.entity2Json(userSessionModel),SessionConstant.XFSW_SESSION_EXPIRE, TimeUnit.MILLISECONDS);
+			List<InnerUserSessionModel> innerUserSessionModelList = innerUserSessionModelMap.get(userAuthorityIdsModel.getUserId()+"-"+userAuthorityIdsModel.getTenantId());
+			if(!CollectionUtils.isEmpty(innerUserSessionModelList)){
+				for(InnerUserSessionModel innerUserSessionModel:innerUserSessionModelList){
+					String sessionKey = innerUserSessionModel.getSessionKey();
+					UserSessionModel userSessionModel = innerUserSessionModel.getUserSessionModel();
+					userSessionModel.setAuthorityIds(userAuthorityIdsModel.getAuthorityIds());
+					userSessionModel.setCategoryAuthorityIds(userAuthorityIdsModel.getCategoryAuthorityIds());
+					sessionRedisTemplate.opsForValue().set(sessionKey, JsonUtil.entity2Json(userSessionModel),SessionConstant.XFSW_SESSION_EXPIRE, TimeUnit.MILLISECONDS);
+				}
 			}
 		}
 	}

@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xfsw.common.classes.ResponseModel;
@@ -44,22 +45,35 @@ public class KnowledgeController {
 		return new ResponseModel(knowledgeService.selectListByChapterCode(chapterCode));
 	}
 	
-	@RequestMapping("/initAddKnowledge")
-	public void initAddKnowledge(Model model,String chapterCode){
-		model.addAttribute("chapterCode", chapterCode);
-	}
-	
-	@RequestMapping("/saveKnowledge")
+	@RequestMapping(value="/saveKnowledge",method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseModel saveKnowledge(Knowledge knowledge,String chapterCode){
-		//设置临时文件的http全路径
-//		knowledge.setVideoUrl(defineDomain+knowledge.getVideoUrl());
-//		String videoUrl = knowledge.getVideoUrl().replaceAll(tmpDir, knowledgeDir);
-//		ossService.copyObject(bucketName, tmpDir, knowledge.getVideoUrl(), bucketName, knowledgeDir, videoUrl);
-//		knowledge.setVideoUrl(videoUrl);//视频路径地址
-		
 		knowledge.setLastUpdater(ThreadUserInfoManager.getAccount());
-		
 		return new ResponseModel(knowledgeService.saveKnowledge(chapterCode, knowledge));
+	}
+	
+	@RequestMapping("/getKnowledgeById")
+	@ResponseBody
+	public ResponseModel getKnowledgeById(Integer knowledgeId){
+		return new ResponseModel(knowledgeService.getById(knowledgeId));
+	}
+	
+	@RequestMapping(value="/deleteKnowledgeById",method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseModel deleteKnowledgeById(Integer knowledgeId){
+		knowledgeService.deleteById(knowledgeId, ThreadUserInfoManager.getAccount());
+		return new ResponseModel();
+	}
+
+	/**
+	 * 进入知识点设置界面
+	 * @param model
+	 * @param knowledgeId
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	@RequestMapping("/initSettle")
+	public void initSettle(Model model,Integer knowledgeId){
+		model.addAttribute("knowledgeId", knowledgeId);
 	}
 }

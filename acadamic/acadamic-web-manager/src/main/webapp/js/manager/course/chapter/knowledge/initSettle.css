@@ -1,6 +1,5 @@
 .add_panel{
 	text-align: center;
-	background-color: #b9bfc1;
 }
 .point_item_div>div:hover{
 	color:#b9bfc1;
@@ -16,6 +15,7 @@
 	width:50px;
 	height:50px;
 	border-radius:10px;
+	border: 1px solid #b9bfc1;
 }
 .point_item_div>div:FIRST-CHILD i{
 	height: 50px;
@@ -179,10 +179,86 @@
 	display: block;
 }
 
-.form-group{
-	padding:8px;
-}
 #questionDiv img{
 	width:100%;
 	margin: 5px 0;
+}
+
+
+
+/**答案行*/
+.answer_row{
+	padding:5px;
+	border: 1px dashed #ccc;
+}
+/*添加答案按钮label*/
+.add_answer_btn_label{
+	padding:0px;
+	text-align: right;
+	font-size: 20px;
+    height: 40px;
+    line-height: 40px;
+    cursor: pointer;
+}
+/*图片答案块*/
+.answer_img_div{
+	height: 34px;
+	line-height:34px;
+	font-size:12px;
+	min-width: 34px;
+	border: 1px solid #ccc;
+	cursor: pointer;
+	padding: 0 5px;
+}
+.answer_img_li{
+	margin:10px;
+	border:1px solid #000;
+	min-width:40px;
+	height:40px;
+}
+
+
+
+
+#pointPanel,
+.exercise_detail_col:after{
+	display: block;
+	clear: both;
+	content: " ";
+}
+/*知识点细节板块*/
+.panel_knowledge{
+	width:400px;
+	float: left;
+	margin:0 8px 8px 0;
+}
+/*练习题行*/
+.exercise_row{
+	border:1px dashed #ccc;
+	padding:8px;
+	margin-bottom: 8px;
+}
+/*添加题目按钮行*/
+.exercise_btn_row{
+	text-align: center;
+	margin: 10px 0;
+}
+.exercise_row>div{
+	border-bottom: 1px dashed #ccc;
+	padding:8px 0;
+}
+.exercise_row>div:LAST-CHILD{
+	border-bottom:none;
+}
+.exercise_col img{
+	width:100%;
+	margin-top:5px;
+}
+.exercise_detail_col{
+	margin:5px 0;
+}
+.exercise_detail_col>select,
+.exercise_detail_col>input{
+	float:left;
+	margin-right:2px;
 }

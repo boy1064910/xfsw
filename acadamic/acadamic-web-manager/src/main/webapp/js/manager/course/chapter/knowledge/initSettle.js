@@ -1,62 +1,136 @@
-var questionUploader;
 Ding.ready(function(){
     DingUploaderManager.loadSign(function() {
-        questionUploader = new Ding.FileUploader({
-    		'id':"questionDiv",
-    		'multiSelection':false,
-    		'selectorTitle':'上传题目',
-    		'limitType':'jpg,jpeg,png',
-    		'maxFileSize':'2m',
-    		'addedCallback':function(uploader,files,fileUploader){
-    			for(var f in files){
-    				var jpreviewDiv = $('<div class="preview-div"></div>');
-    				var jprocessDiv = $('<div class="progress" id="progress'+files[f].id+'"></div>');
-    				var jprocessBar = $('<div class="progress-bar" id="progressBar'+files[f].id+'"></div>');
-    				jprocessDiv.append(jprocessBar);
-    				jpreviewDiv.append(jprocessDiv);
-    				fileUploader.jcontainer.append(jpreviewDiv);
-    			}
-    		},
-    		'completeCallback':function(uploader,files,fileUploader){
-    			fileUploader.reset();
-    			fileUploader.jdom.find("img").remove();
-    			var url = DingUploaderManager.host+'/'+files[0].uploadPath;
-    			$("#questionDiv").append('<img src="'+url+'"></img>');
-    		}
-    	});
+//        questionUploader = new Ding.FileUploader({
+//    		'id':"questionDiv",
+//    		'multiSelection':false,
+//    		'selectorTitle':'上传题目',
+//    		'limitType':'jpg,jpeg,png',
+//    		'maxFileSize':'2m',
+//    		'addedCallback':function(uploader,files,fileUploader){
+//    			for(var f in files){
+//    				var jpreviewDiv = $('<div class="preview-div"></div>');
+//    				var jprocessDiv = $('<div class="progress" id="progress'+files[f].id+'"></div>');
+//    				var jprocessBar = $('<div class="progress-bar" id="progressBar'+files[f].id+'"></div>');
+//    				jprocessDiv.append(jprocessBar);
+//    				jpreviewDiv.append(jprocessDiv);
+//    				fileUploader.jcontainer.append(jpreviewDiv);
+//    			}
+//    		},
+//    		'completeCallback':function(uploader,files,fileUploader){
+//    			fileUploader.reset();
+//    			fileUploader.jdom.find("img").remove();
+//    			var url = DingUploaderManager.host+'/'+files[0].uploadPath;
+//    			$("#questionDiv").append('<img src="'+url+'"></img>');
+//    		}
+//    	});
     });
 });
 
-//初始化添加游戏题目窗口
-function initAddGamePoint(){
-//	openModal({
-//        'title':'添加游戏题目',
-//        'targetId':'form',
-//        'sureBtnText':'保存'
-//    });
-	
-	var outerPanel = $(
-		'<div class="col-md-4">'
-			+'<div class="panel">'
-				+'<div class="panel-body point-panel-body">'
-				+'</div>'
-			+'</div>'
-		+'</div>'
-	);
-	$("#pointPanel").append(outerPanel);
-}
-
-//答案框初始化
-var answerSelector = $(
-		'<select class="form-control form-control-30" onchange="changeAnswerInputType(this)">'
+//初始化答案项
+var answerSelector = 
+		'<select class="form-control" style="width:130px" onchange="changeAnswerInputType(this)">'
 		+'<option value="NUMBER">数字输入框</option>'
 		+'<option value="TEXT">文本输入框</option>'
 		+'<option value="SELECTOR">选择器</option>'
-		+'</select>');
+		+'</select>';
+//初始化正确答案框
+var numberAnswerInput = '<input type="number" class="form-control" style="width:100px" placeholder="正确答案" />';
+var textAnswerInput = '<input type="text" class="form-control" style="width:100px" placeholder="正确答案" />';
+var imgAnswer = '<div class="answer_img_div" onclick="configAnswerImg(this)">点击配置答案</div>';
 
-var numberAnswerInput = $('<input type="number" class="form-control form-control-30" style="margin-left:10px;" placeholder="正确答案" />');
-var textAnswerInput = $('<input type="text" class="form-control form-control-30" style="margin-left:10px;" placeholder="正确答案" />');
-var imgAnswer = $('<div class="answer_img_div" style="margin-left:10px;" onclick="configAnswerImg(this)">点击配置答案</div>');
+//初始化添加游戏题目窗口
+function initAddGamePoint(){
+	Ding.ajax({
+        'url' : '/acadamic-web-manager/manager/course/chapter/knowledge/info/initAddKnowledgeInfo.shtml',
+        'params' : {
+        	'type' : 'GAME',
+        	'knowledgeId' : $("#knowledgeId").val()
+        },
+        'method' : 'POST',
+        'successCallback' : function(result){
+        	var panel1 = $('<div class="panel panel_knowledge"></div>');
+        	$("#pointPanel").append(panel1);
+        	var panelBody = $('<div class="panel-body point-panel-body"></div>');
+        	panel1.append(panelBody);
+        	var addExerciseBtnRow = $('<div class="exercise_btn_row"><button knowledge-info-id="'+result.data+'" class="btn btn-default" onclick="addExercise(this)"><i class="fa fa-plus-square"> 添加题目</i></button></div>');//添加题目按钮行
+        	panelBody.append(addExerciseBtnRow);
+        	
+        }
+    });
+}
+
+//添加题目
+function addExercise(btn){
+	var knowledgeInfoId = $(btn).attr("knowledge-info-id");
+	Ding.ajax({
+        'url' : '/acadamic-web-manager/manager/course/chapter/exersice/initAddExercise.shtml',
+        'params' : {
+        	'type' : 'GAME',
+        	'knowledgeInfoId' : $("#knowledgeId").val()
+        },
+        'method' : 'POST',
+        'successCallback' : function(result){
+        	var exerciseRow = $('<div class="exercise_row"></div>');
+        	$(btn).parent().before(exerciseRow);
+        	
+        	var exerciseId = result.data;
+        	//开始添加单个题目信息
+        	var uploadExerciseBtnCol = $('<div class="exercise_col" data-id="'+exerciseId+'" id="exercise-'+exerciseId+'"></div>');
+        	exerciseRow.append(uploadExerciseBtnCol);
+        	
+        	var exerciseCol = $('<div class="exercise_col"></div>');
+        	exerciseRow.append(exerciseCol);
+        	
+        	var addAnswerBtnCol = $('<div><button class="btn btn-default" onclick="addExerciseDetail(this)"><i class="fa fa-plus-circle"> 新增填空处</i></button></div>');
+        	exerciseCol.append(addAnswerBtnCol);
+        	var exerciseDetailRow = $('<div class="exercise_detail_row"><div>');
+        	exerciseCol.append(exerciseDetailRow);
+        	
+        	//初始化题目上传控件
+        	new Ding.FileUploader({
+        		'id':"exercise-"+exerciseId,
+        		'multiSelection':false,
+        		'selectorTitle':'上传题目',
+        		'limitType':'jpg,jpeg,png',
+        		'maxFileSize':'2m',
+        		'addedCallback':function(uploader,files,fileUploader){
+        			var jpreviewDiv = $('<div class="preview-div"></div>');
+    				var jprocessDiv = $('<div class="progress" id="progress'+files[0].id+'"></div>');
+    				var jprocessBar = $('<div class="progress-bar" id="progressBar'+files[0].id+'"></div>');
+    				jprocessDiv.append(jprocessBar);
+    				jpreviewDiv.append(jprocessDiv);
+    				fileUploader.jcontainer.append(jpreviewDiv);
+        		},
+        		'completeCallback':function(uploader,files,fileUploader){
+        			var filePath = files[0].uploadPath;
+        			//上传练习题图片，并保存到练习题数据中
+        			Ding.ajax({
+        		        'url' : '/acadamic-web-manager/manager/course/chapter/exersice/uploadExercise.shtml',
+        		        'params' : {
+        		        	'exerciseId' : exerciseId,
+        		        	'filePath' : filePath
+        		        },
+        		        'successCallback':function(result){
+        		        	fileUploader.reset();
+                			fileUploader.jdom.find("img").remove();
+                			$("#exercise-"+exerciseId).append('<img src="'+result.data+'"></img>');
+        		        }
+        			});
+        		}
+        	});
+        }
+	});
+	
+}
+
+//添加练习题填空处
+function addExerciseDetail(btn){
+	var exerciseDetailRow = $(btn).parent().next();
+	
+	var exerciseDetailCol = $('<div class="exercise_detail_col">'+answerSelector + numberAnswerInput+'</div>');
+	exerciseDetailRow.append(exerciseDetailCol);
+}
+
 
 //添加答案行
 function addAnswerRow(btn){

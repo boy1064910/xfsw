@@ -21,4 +21,13 @@ public interface RoleLinkAuthorityService {
 	void deleteAndBakByRoleIdAndAuthorityIds(Integer roleId,Integer[] delAuthorityIds);
 	
 	void deleteByRoleId(Integer roleId,String operator);
+	
+	/**
+	 * 根据菜单ID查询关联的角色ID数组
+	 * @param authorityId
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	List<Integer> selectRoleIdListByLinkAuthorityId(Integer linkAuthorityId);
 }

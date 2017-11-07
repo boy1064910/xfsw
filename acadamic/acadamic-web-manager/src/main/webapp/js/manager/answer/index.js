@@ -53,14 +53,13 @@ function renderDiv(id,dataId,url){
 		$("#answerDiv").append('<div class="pre_answer_div"><div id="answer-'+id+'" ></div></div>');
 	}
 	if(!Ding.isEmpty(dataId)){
-		$("#answer-"+id).css("background","url("+url+")");
 		$("#answer-"+id).css({
 			"background":"url("+url+")",
 			"background-repeat":"no-repeat",
 			"background-position":"center",
 			"background-size": "contain"
 		});
-		$("#answer-"+id).parent().append('<button class="btn btn-default" onclick="removeDiv(this)">删除</button>');
+		$("#answer-"+id).parent().append('<button class="btn btn-default" type="button" onclick="removeDiv(this)">删除</button>');
 		$("#answer-"+id).parent().attr("data-id",dataId);
 	}
 }

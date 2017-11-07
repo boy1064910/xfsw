@@ -132,6 +132,27 @@ public class CommonMapper implements ICommonMapper {
 		this.dealDataResultMap(result);
 		return MapUtil.map2Entity(result, targetClazz);
 	}
+	
+	@Override
+	public <T> T getBySql(String sql,Map<String,Object> params,Class<T> clazz){
+		Map<String,Object> queryParams = new HashMap<String,Object>();
+		queryParams.put("sql", sql);
+		queryParams.putAll(params);
+		Map<String,Object> result = sqlSessionTemplate.selectOne("Common.queryOperation",queryParams);
+		if(result==null||result.size()==0){
+			return null;
+		}
+		this.dealDataResultMap(result);
+		if(result.size()==1){
+			Object[] values = result.values().toArray();
+			@SuppressWarnings("unchecked")
+			T value = (T) values[0];
+			return value;
+		}
+		else{
+			return MapUtil.map2Entity(result, clazz);
+		}
+	}
 
 	public <T> List<T> selectList(String sqlId) {
 		return this.sqlSessionTemplate.selectList(sqlId);
@@ -323,6 +344,18 @@ public class CommonMapper implements ICommonMapper {
 	
 	public void update(String sqlId,Map<String,Object> params){
 		this.sqlSessionTemplate.update(sqlId, params);
+	}
+	
+	@Override
+	public void updateBySql(String sql,Map<String,Object> params){
+		params.put("sql", sql);
+		this.sqlSessionTemplate.update("Common.updateOperation", params);
+	}
+	
+	@Override
+	public void updateBySql(String sql,Object entity){
+		Map<String,Object> params = MapUtil.entityToMap(entity);
+		this.updateBySql(sql, params);
 	}
 	
 	public void delete(String sqlId, Object obj) {
@@ -545,7 +578,15 @@ public class CommonMapper implements ICommonMapper {
 		}
 		List<T> resultList = new ArrayList<T>();
 		for(int i=0;i<list.size();i++){
-			resultList.add(MapUtil.map2Entity(list.get(i), clazz));
+			if(list.get(i).size()==1){
+				Object[] values = list.get(i).values().toArray();
+				@SuppressWarnings("unchecked")
+				T value = (T) values[0];
+				resultList.add(value);
+			}
+			else{
+				resultList.add(MapUtil.map2Entity(list.get(i), clazz));
+			}
 		}
 		return resultList;
 	}

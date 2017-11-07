@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import com.xfsw.account.entity.UserTenantRole;
@@ -33,4 +34,11 @@ public class UserTenantRoleServiceImpl implements UserTenantRoleService {
 		return commonMapper.selectListBySql(sql, params, UserTenantRole.class);
 	}
 
+	@Override
+	public List<UserTenantRole> selectListByRoleIdList(List<Integer> roleIdList){
+		if(CollectionUtils.isEmpty(roleIdList)){
+			return null;
+		}
+		return commonMapper.selectList("UserTenantRole.selectListByRoleIds", roleIdList);
+	}
 }

@@ -61,6 +61,22 @@ public class RoleAuthorityServiceImpl implements RoleAuthorityService {
 	}
 	
 	@Override
+	public List<UserAuthorityIdsModel> selectAllUserAuthorityByRoleIdList(List<Integer> roleIdList){
+		if(CollectionUtils.isEmpty(roleIdList)){
+			return null;
+		}
+		List<UserTenantRole> userTenantRoleList = userTenantRoleService.selectListByRoleIdList(roleIdList);
+		if(CollectionUtils.isEmpty(userTenantRoleList)){
+			return null;
+		}
+		List<UserAuthorityIdsModel> userAuthorityIdsModelList = new ArrayList<UserAuthorityIdsModel>();
+		for(UserTenantRole userTenantRole:userTenantRoleList){
+			userAuthorityIdsModelList.add(this.selectAllAuthorityHashIdsByUserInfo(userTenantRole.getUserId(), userTenantRole.getTenantId()));
+		}
+		return userAuthorityIdsModelList;
+	}
+	
+	@Override
 	public List<Integer> selectUnionAuthorityIdListByRoleId(Integer roleId){
 		return commonMapper.selectList("RoleAuthority.selectUnionAuthorityIdListByRoleId",roleId);
 	}

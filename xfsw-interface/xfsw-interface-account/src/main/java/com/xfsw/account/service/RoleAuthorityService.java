@@ -32,6 +32,15 @@ public interface RoleAuthorityService {
 	List<UserAuthorityIdsModel> selectAllUserAuthorityByRoleId(Integer roleId);
 	
 	/**
+	 * 根据角色ID数组查询相关用户权限信息
+	 * @param roleIdList
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	List<UserAuthorityIdsModel> selectAllUserAuthorityByRoleIdList(List<Integer> roleIdList);
+	
+	/**
 	 * 查询角色的权限集合ID
 	 * @param roleId
 	 * @return

@@ -73,6 +73,16 @@ public interface ICommonMapper {
 	
 	Object get(Class<? extends Object> clazz,Object entity);
 	
+	/**
+	 * 通过SQL获取单个数据
+	 * @param sql
+	 * @param params
+	 * @param clazz
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	<T> T getBySql(String sql,Map<String,Object> params,Class<T> clazz);
 	
 	/**
 	 * 通过mybatis定义的sqlId关联语句查询多条数据
@@ -174,6 +184,24 @@ public interface ICommonMapper {
 	void update(String sqlId,Object entity);
 	
 	void update(String sqlId,Map<String,Object> params);
+	
+	/**
+	 * 通过SQL语句更新数据
+	 * @param sql
+	 * @param params
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	void updateBySql(String sql,Map<String,Object> params);
+	
+	/**
+	 * 通过SQL语句更新数据
+	 * @param sql
+	 * @param entity
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	void updateBySql(String sql,Object entity);
 	
 	void delete(String sqlId, Object obj);
 	

@@ -1,18 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title></title>
 
 <link rel="stylesheet" type="text/css" href="/widgets/dingui/Ding.FileUploader.css" />
 <script type="text/javascript" src="/widgets/plupload-2.1.2/js/plupload.full.min.js"></script>
 <script type="text/javascript" src="/widgets/dingui/Ding.FileUploader.js"></script>
 
-<script type="text/javascript" src="/acadamic-web-manager/js/manager/course/chapter/knowledge/initAddKnowledge.js"></script>
-<link href="/acadamic-web-manager/js/manager/course/chapter/knowledge/initAddKnowledge.css" rel="stylesheet">
+<script type="text/javascript" src="/acadamic-web-manager/js/manager/course/chapter/knowledge/initSettle.js"></script>
+<link href="/acadamic-web-manager/js/manager/course/chapter/knowledge/initSettle.css" rel="stylesheet">
 </head>
 <body>
+	<input type="hidden" id="knowledgeId" value="${knowledgeId }" />
 	<div class="row">
 		<div class="col-md-12">
 			<div class="panel">
@@ -50,46 +49,10 @@
 			</div>
 		</div>
 	</div>
+	
 	<div id="pointPanel">
 		
 	</div>
-	
-	<form class="Ding-Form modal-form" id="form" 
-		action="<%=request.getContextPath() %>/manager/acadamic/course/chapter/knowledge/saveKnowledge.shtml" 
-		submitValidation="submitValidation"
-		successCallback="saveSuccess">
-		<div class="form-group">
-			<label class="col-lg-1 col-sm-1 control-label"></label>
-			<div class="col-md-11">
-				<div id="questionDiv"></div>
-			</div>
-        </div>
-        <div class="form-group" id="addAnswerRowBtnDiv">
-			<label class="col-lg-1 col-sm-1 control-label"></label>
-			<div class="col-md-11">
-				<div>
-					<button class="btn btn-default" type="button" onclick="addAnswerRow()">
-						<i class="fa fa-plus"> 添加答案行</i>
-					</button>
-				</div>
-			</div>
-        </div>
-        <div class="form-group">
-        	<div id="answerDiv"></div>
-        </div>
-        <div class="form-group">
-			<label class="col-lg-2 col-sm-2 control-label">知识点视频</label>
-			<div class="col-md-8">
-				<div id="video"></div>
-			</div>
-		</div>
-	</form>
-	
-	<!-- 配置答案弹窗表单 -->
-	<form class="modal-form" id="configAnswerForm">
-		<div class="form-group" id="answerGroup">
-			
-		</div>
-	</form>
+	<div id="11"></div>
 </body>
 </html>

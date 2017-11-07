@@ -1,11 +1,7 @@
 package net.xueshupa.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.xfsw.common.util.ListUtil;
-
-import net.xueshupa.entity.Answer;
 import net.xueshupa.entity.Exercise;
 
 public class MiniExerciseListModel {
@@ -17,14 +13,14 @@ public class MiniExerciseListModel {
 	
 	public MiniExerciseListModel(Exercise exercise){
 		this.id = exercise.getId();
-		this.code = exercise.getCode();
-		this.picUrl = exercise.getPicUrl();
-		if(!ListUtil.isEmpty(exercise.getAnswerList())){
-			this.answers = new ArrayList<String>(exercise.getAnswerList().size());
-			for(Answer answer:exercise.getAnswerList()){
-				this.answers.add(answer.getAnswer());
-			}
-		}
+//		this.code = exercise.getCode();
+//		this.picUrl = exercise.getPicUrl();
+//		if(!ListUtil.isEmpty(exercise.getAnswerList())){
+//			this.answers = new ArrayList<String>(exercise.getAnswerList().size());
+//			for(Answer answer:exercise.getAnswerList()){
+//				this.answers.add(answer.getAnswer());
+//			}
+//		}
 	}
 	
 	public Integer getId() {

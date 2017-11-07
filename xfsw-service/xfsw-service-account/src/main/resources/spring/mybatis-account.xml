@@ -23,6 +23,7 @@
 		<typeAlias type="com.xfsw.account.entity.RoleAuthoritySql" alias="RoleAuthoritySql" />
 		<typeAlias type="com.xfsw.account.entity.RoleAuthoritySqlParam" alias="RoleAuthoritySqlParam" />
 		<typeAlias type="com.xfsw.account.entity.RoleLinkAuthority" alias="RoleLinkAuthority" />
+		<typeAlias type="com.xfsw.account.entity.UserTenantRole" alias="UserTenantRole" />
 		
 		<!-- model -->
 		<typeAlias type="com.xfsw.account.model.UserTenantModel" alias="UserTenantModel" />

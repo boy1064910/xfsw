@@ -6,4 +6,10 @@
 		SELECT roleId FROM UserTenantRole WHERE userId = #{userId} AND tenantId = #{tenantId}
 	</select>
 
+	<select id="selectListByRoleIds" resultType="UserTenantRole">
+		SELECT * FROM UserTenantRole WHERE roleId IN 
+		<foreach collection="list" item="roleId" open="(" close=")" separator=",">
+			#{roleId}
+		</foreach>
+	</select>
 </mapper>

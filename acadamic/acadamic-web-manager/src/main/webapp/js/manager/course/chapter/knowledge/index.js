@@ -11,16 +11,8 @@ columns.push({
 });
 columns.push({
     field: 'name',
-    title: '知识点名称',
+    title: '知识点标题',
     align: 'center'
-});
-columns.push({
-    field: 'videoUrl',
-    title: '知识点视频链接',
-    align: 'center',
-    formatter:function(value,row,index){
-        return '<a href="'+value+'" target="_blank">'+value+'</a>';
-    }
 });
 columns.push({
     field: 'id',
@@ -29,13 +21,12 @@ columns.push({
     formatter:function(value,row,index){
         var result ;
         result = '<a href="javascript:void(0)" onclick="initEdit('+row.id+','+index+')" title="编辑">编辑</a>';
-        result += '<a href="javascript:void(0)" onclick="initSettle('+row.id+',\''+row.code+'\')" title="设置习题难度">设置习题难度</a>';
+        result += '<a href="javascript:void(0)" onclick="initSettle('+row.id+',\''+row.code+'\')" title="设置知识点内容">内容设置</a>';
         result +='<a href="javascript:void(0)" onclick="initDelete('+row.id+')" title="删除">删除</a>';
         return result;
     }
 });
 
-var videoUploader;
 Ding.ready(function(){
     $("#dataTable").bootstrapTable({
         method: 'get',
@@ -55,15 +46,6 @@ Ding.ready(function(){
         columns: columns
     });
 
-    DingUploaderManager.loadSign(function() {
-        videoUploader = new Ding.FileUploader({
-            'id' : 'video',
-            'limitType' : 'mp4,rmvb,rm,hlv,flv',
-            'preventDuplicate' : false,
-            'needPreview' : false
-        });
-    });
-
     Ding.ajax({
         'url' : "/acadamic-web-manager/manager/course/chapter/knowledge/list.shtml?chapterCode="+Ding.getQueryParameterByName("chapterCode"),
         'successCallback' : function(result){
@@ -71,56 +53,42 @@ Ding.ready(function(){
             data.rows = result.data;
             $("#dataTable").bootstrapTable('load',data);
         }
-    })
+    });
 });
-
+//弹出窗口，添加知识点
+function initAdd(){
+	openModal({
+		'title' : '添加知识点',
+		'targetId' : 'form',
+		'sureBtnText' : '保存'
+	});
+}
+//重置弹出窗口表单内容
 function resetForm(){
     $("#name").val('');
-    $("#info").val('');
     $("#id").val('');
     $("#index").val('');
-    $("#value").val('');
-}
-
-function initAdd(){
-    this.location = '/acadamic-web-manager/manager/course/chapter/knowledge/initAddKnowledge.shtml?breadSequence=1&chapterCode='+Ding.getQueryParameterByName("chapterCode");
 }
 
 function initEdit(id,index){
     $("#index").val(index);
     $("#id").val(id);
     Ding.ajax({
-        'url' : projectName + '/manager/acadamic/course/chapter/getById.shtml',
+        'url' : '/acadamic-web-manager/manager/course/chapter/knowledge/getKnowledgeById.shtml',
         'params' : {
-            'id' : id
+            'knowledgeId' : id
         },
         'successCallback' : function(result){
             var data = result.data;
             $("#name").val(data.name);
-            $("#price").val(data.price);
             openModal({
-                'title':'编辑章节信息',
+                'title':'编辑知识点',
                 'targetId':'form',
                 'sureBtnText':'保存'
             });
         }
     });
 }   
-
-function submitValidation(){
-    if(Ding.isEmpty($("#id").val())){
-        if(videoUploader.uploader.files.length<1){
-            $.alert({
-                title:'温馨提示',
-                content: '请先上传知识点教学视频！',
-                confirmButton:'确定'
-            });
-            return false;
-        }
-        D("#form").submitParams['videoUrl'] = videoUploader.uploader.files[0].uploadPath;
-    }
-    return true;
-}
 
 function saveSuccess(result){
     if($.isEmpty($("#id").val())){
@@ -139,16 +107,16 @@ function saveSuccess(result){
 function initDelete(id){
     $.confirm({
         backgroundDismiss: true,
-        title:'删除章节信息',
-        content: '是否删除章节信息 ?',
+        title:'删除知识点',
+        content: '是否删除知识点 ?',
         confirmButton:'删除',
         cancelButton:'取消',
         confirmButtonClass:'btn-success',
         confirm:function(){
             Ding.ajax({
-                'url':projectName+'/manager/acadamic/course/chapter/deleteChapter.shtml',
+                'url':'/acadamic-web-manager/manager/course/chapter/knowledge/deleteKnowledgeById.shtml',
                 'params':{
-                    'id' : id
+                    'knowledgeId' : id
                 },
                 'method':'post',
                 'successCallback':function(result){
@@ -160,5 +128,5 @@ function initDelete(id){
 }
 
 function initSettle(id,code){
-    this.location = projectName + '/manager/acadamic/course/chapter/knowledge/diff/level/index.shtml?knowledgeId='+id+'&knowledgeCode='+code+'&breadSequence=1';
+    this.location = '/acadamic-web-manager/manager/course/chapter/knowledge/initSettle.shtml?knowledgeId='+id+'&breadSequence=1';
 }

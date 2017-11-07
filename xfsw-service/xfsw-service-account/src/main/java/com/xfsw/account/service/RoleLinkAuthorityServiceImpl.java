@@ -59,4 +59,12 @@ public class RoleLinkAuthorityServiceImpl implements RoleLinkAuthorityService {
 		params.put("roleId", roleId);
 		commonMapper.deleteAndBak(RoleLinkAuthority.class, params, operator);
 	}
+	
+	@Override
+	public List<Integer> selectRoleIdListByLinkAuthorityId(Integer linkAuthorityId){
+		String sql = "SELECT roleId FROM RoleLinkAuthority WHERE authorityId = #{authorityId}";
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("authorityId", linkAuthorityId);
+		return commonMapper.selectListBySql(sql, params, Integer.class);
+	}
 }

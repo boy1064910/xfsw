@@ -26,9 +26,8 @@
 		</div>
 	</div>
 	
-	<form class="Ding-Form modal-form form-horizontal" id="form" 
-		action="<%=request.getContextPath() %>/manager/acadamic/course/chapter/knowledge/saveKnowledge.shtml" 
-		submitValidation="submitValidation"
+	<form class="Ding-Form modal-form" id="form" 
+		action="/acadamic-web-manager/manager/course/chapter/knowledge/saveKnowledge.shtml" 
 		successCallback="saveSuccess">
 		<div class="form-group">
 			<input type="hidden" id="id" name="id" />
@@ -36,17 +35,11 @@
         	<input type="hidden" name="chapterCode" id="chapterCode" value="${chapterCode }" />
 		</div>
 		<div class="form-group">
-            <label class="col-lg-2 col-sm-2 control-label">知识点名称</label>
+            <label class="col-lg-2 col-sm-2 control-label">标题</label>
             <div class="col-lg-8">
             	<input class="form-control" type="text" id="name" name="name" validations="required&&vComplexMaxLength=40" validationTips="名称不能为空&&长度不能超过20个中文字符或者40个英文字符"  />
             </div>
         </div>
-        <div class="form-group">
-			<label class="col-lg-2 col-sm-2 control-label">知识点视频</label>
-			<div class="col-md-8">
-				<div id="video"></div>
-			</div>
-		</div>
 	</form>
 	
 </body>

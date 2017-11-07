@@ -22,4 +22,13 @@ public interface UserTenantRoleService {
 	 * @version 0.0.1
 	 */
 	List<UserTenantRole> selectListByRoleId(Integer roleId);
+	
+	/**
+	 * 根据角色ID数组查询用户和空间信息
+	 * @param roleIds
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	List<UserTenantRole> selectListByRoleIdList(List<Integer> roleIdList);
 }
