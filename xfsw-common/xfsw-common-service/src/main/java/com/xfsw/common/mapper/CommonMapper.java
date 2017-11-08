@@ -274,7 +274,7 @@ public class CommonMapper implements ICommonMapper {
 		if(entity==null){
 			throw new RuntimeException("保存数据参数为空！");
 		}	
-		Map<String,Object> params = MapUtil.pojoToMapNotNullField(entity);
+		Map<String,Object> params = MapUtil.entityToMapInNotNullField(entity);
 		StringBuffer fieldSql = new StringBuffer();
 		StringBuffer valueSql = new StringBuffer();
 		fieldSql.append("(");

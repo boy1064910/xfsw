@@ -3,8 +3,8 @@
 <mapper namespace="LinkAuthority">
 
   	<insert id="insertLinkAuthority" parameterType="LinkAuthority" >
-  		INSERT INTO LinkAuthority(id,authorityId,name,url,lastUpdater,lastUpdateTime)
-  		VALUES(#{id},#{authorityId},#{name},#{url},#{lastUpdater},NOW())
+  		INSERT INTO LinkAuthority(id,categoryAuthorityId,name,url,lastUpdater,lastUpdateTime,tenantId,defaultLinkeAuthorityId)
+  		VALUES(#{id},#{categoryAuthorityId},#{name},#{url},#{lastUpdater},NOW(),#{tenantId},#{defaultLinkeAuthorityId})
   	</insert>
 
 	<update id="updateLinkAuthority" parameterType="LinkAuthority">

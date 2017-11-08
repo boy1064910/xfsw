@@ -13,6 +13,7 @@ import com.xfsw.common.classes.ResponseModel;
 import com.xfsw.common.thread.ThreadUserInfoManager;
 
 import net.xueshupa.entity.Exercise;
+import net.xueshupa.entity.ExerciseDetail;
 import net.xueshupa.service.ExerciseService;
 
 @Controller
@@ -111,5 +112,33 @@ public class ExerciseController {
 		return new ResponseModel(exerciseUrl);
 	}
 	
+	@RequestMapping("/insertExerciseDetail")
+	@ResponseBody
+	public ResponseModel insertExerciseDetail(Integer exerciseId){
+		ExerciseDetail exerciseDetail = new ExerciseDetail();
+		exerciseDetail.setExerciseId(exerciseId);
+		exerciseDetail.setLastUpdater(ThreadUserInfoManager.getAccount());
+		exerciseDetail.setLastUpdateTime(new Date());
+		Integer exerciseDetailId = exerciseService.insertExerciseDetail(exerciseDetail);
+		return new ResponseModel(exerciseDetailId);
+	}
+	
+	@RequestMapping("/updateExerciseDetail")
+	@ResponseBody
+	public ResponseModel updateExerciseDetail(Integer exerciseDetailId,String type,String answer){
+		ExerciseDetail exerciseDetail = new ExerciseDetail();
+		exerciseDetail.setType(type);
+		exerciseDetail.setAnswer(answer);
+		exerciseDetail.setId(exerciseDetailId);
+		exerciseService.updateExerciseDetail(exerciseDetail);
+		return new ResponseModel();
+	}
+	
+	@RequestMapping("/delteExerciseDetail")
+	@ResponseBody
+	public ResponseModel delteExerciseDetail(Integer exerciseDetailId){
+		exerciseService.deleteExerciseDetail(exerciseDetailId,ThreadUserInfoManager.getAccount());
+		return new ResponseModel();
+	}
 	
 }

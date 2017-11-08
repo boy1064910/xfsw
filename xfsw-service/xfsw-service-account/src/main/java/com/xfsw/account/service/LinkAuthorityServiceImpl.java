@@ -52,7 +52,7 @@ public class LinkAuthorityServiceImpl implements LinkAuthorityService {
 	
 	@Override
 	public void insertLinkAuthority(LinkAuthority linkAuthority){
-		commonMapper.insert(LinkAuthority.class, linkAuthority);
+		commonMapper.insert("LinkAuthority.insertLinkAuthority", linkAuthority);
 		//刷新缓存
 		authorityCacheService.reloadLinkAuthorityIntoAuthorityCache();
 	}

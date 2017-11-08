@@ -258,7 +258,8 @@
 	margin:5px 0;
 }
 .exercise_detail_col>select,
-.exercise_detail_col>input{
+.exercise_detail_col>input,
+.exercise_detail_col>button{
 	float:left;
 	margin-right:2px;
 }

@@ -1,5 +1,8 @@
 package net.xueshupa.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -7,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.xfsw.common.mapper.ICommonMapper;
 
 import net.xueshupa.entity.Exercise;
+import net.xueshupa.entity.ExerciseDetail;
 
 @Service("exerciseService")
 public class ExerciseService {
@@ -18,6 +22,17 @@ public class ExerciseService {
 	AnswerService answerService;
 	
 	public Integer insertExercise(Exercise exercise){
+		String sql = "SELECT MAX(orderIndex) FROM Exercise WHERE knowledgeInfoId = #{knowledgeInfoId}";
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("knowledgeInfoId", exercise.getKnowledgeInfoId());
+		Integer orderIndex = commonMapper.getBySql(sql, params, Integer.class);
+		if(orderIndex==null){
+			orderIndex = 1;
+		}
+		else{
+			orderIndex++;
+		}
+		exercise.setOrderIndex(orderIndex);
 		commonMapper.insert(Exercise.class, exercise);
 		return exercise.getId();
 	}
@@ -25,6 +40,35 @@ public class ExerciseService {
 	public void uploadExerciseUrl(Exercise exercise){
 		String sql = "UPDATE Exercise SET exerciseUrl = #{exerciseUrl},lastUpdater = #{lastUpdater},lastUpdateTime=#{lastUpdateTime} WHERE id = #{id}";
 		commonMapper.updateBySql(sql, exercise);
+	}
+	
+	public Integer insertExerciseDetail(ExerciseDetail exerciseDetail){
+		String sql = "SELECT MAX(orderIndex) FROM ExerciseDetail WHERE exerciseId = #{exerciseId}";
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("exerciseId", exerciseDetail.getExerciseId());
+		Integer orderIndex = commonMapper.getBySql(sql, params, Integer.class);
+		if(orderIndex==null){
+			orderIndex = 1;
+		}
+		else{
+			orderIndex++;
+		}
+		exerciseDetail.setOrderIndex(orderIndex);
+		commonMapper.insert(ExerciseDetail.class, exerciseDetail);
+		return exerciseDetail.getId();
+	}
+	
+	public void updateExerciseDetail(ExerciseDetail exerciseDetail){
+		String sql = "UPDATE ExerciseDetail SET type = #{type},answer = #{answer} WHERE id = #{id}";
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("type", exerciseDetail.getType());
+		params.put("answer", exerciseDetail.getAnswer());
+		params.put("id", exerciseDetail.getId());
+		commonMapper.updateBySql(sql,params);
+	}
+	
+	public void deleteExerciseDetail(Integer exerciseDetailId,String operator){
+		commonMapper.deleteAndBak(ExerciseDetail.class, exerciseDetailId, operator);
 	}
 	
 //	public void deleteByCourseCode(String code,String operator){

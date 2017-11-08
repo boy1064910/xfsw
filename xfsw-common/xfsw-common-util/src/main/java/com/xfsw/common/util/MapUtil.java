@@ -256,6 +256,36 @@ public class MapUtil {
 			throw new RuntimeException("调用属性的 setter 方法失败 ", e);
 		}
 	}
+	
+	public static Map<String, Object> entityToMapInNotNullField(Object bean) {
+		Class<? extends Object> clazz = bean.getClass();
+		Map<String, Object> returnMap = new HashMap<String, Object>();
+		BeanInfo beanInfo = null;
+		try {
+			beanInfo = Introspector.getBeanInfo(clazz);
+			PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+			for (int i = 0; i < propertyDescriptors.length; i++) {
+				PropertyDescriptor descriptor = propertyDescriptors[i];
+				String propertyName = descriptor.getName();
+				if (!propertyName.equals("class")) {
+					Method readMethod = descriptor.getReadMethod();
+					Object result = null;
+					result = readMethod.invoke(bean, new Object[0]);
+					if(result!=null)
+						returnMap.put(propertyName, result);
+				}
+			}
+			return returnMap;
+		} catch (IntrospectionException e) {
+			throw new RuntimeException("分析类属性失败 ", e);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException("实例化 JavaBean 失败 ", e);
+		} catch (IllegalArgumentException e) {
+			throw new RuntimeException("映射错误 ", e);
+		} catch (InvocationTargetException e) {
+			throw new RuntimeException("调用属性的 setter 方法失败 ", e);
+		}
+	}
 }
 
 // 比较器类
