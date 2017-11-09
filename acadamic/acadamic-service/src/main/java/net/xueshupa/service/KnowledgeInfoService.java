@@ -8,11 +8,13 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.stereotype.Service;
 
 import com.xfsw.common.mapper.ICommonMapper;
 
 import net.xueshupa.entity.KnowledgeInfo;
+import net.xueshupa.entity.KnowledgeInfoDetail;
 import net.xueshupa.model.ExerciseModel;
 import net.xueshupa.model.KnowledgeInfoModel;
 
@@ -68,14 +70,55 @@ public class KnowledgeInfoService {
 			}
 		}
 		
+		List<KnowledgeInfoDetail> knowledgeInfoDetailList = this.selectKnowledgeInfoDetailListByKnowledgeInfoIds(knowledgeInfoIds);
+		Map<Integer,List<KnowledgeInfoDetail>> knowledgeInfoDetailMap = new HashMap<Integer,List<KnowledgeInfoDetail>>();
+		if(!CollectionUtils.isEmpty(knowledgeInfoDetailList)) {
+			for(KnowledgeInfoDetail knowledgeInfoDetail:knowledgeInfoDetailList) {
+				if(!knowledgeInfoDetailMap.containsKey(knowledgeInfoDetail.getKnowledgeInfoId())) {
+					knowledgeInfoDetailMap.put(knowledgeInfoDetail.getKnowledgeInfoId(), new ArrayList<KnowledgeInfoDetail>());
+				}
+				knowledgeInfoDetailMap.get(knowledgeInfoDetail.getKnowledgeInfoId()).add(knowledgeInfoDetail);
+			}
+		}
+		
 		List<KnowledgeInfoModel> knowledgeInfoModelList = new ArrayList<KnowledgeInfoModel>(knowledgeInfoList.size());
 		for(KnowledgeInfo knowledgeInfo:knowledgeInfoList) {
 			KnowledgeInfoModel knowledgeInfoModel = new KnowledgeInfoModel(knowledgeInfo);
+			if(knowledgeInfoDetailMap.containsKey(knowledgeInfoModel.getId())) {
+				knowledgeInfoModel.setKnowledgeInfoDetailList(knowledgeInfoDetailMap.get(knowledgeInfoModel.getId()));
+			}
 			if(exerciseModelMap.containsKey(knowledgeInfoModel.getId())) {
 				knowledgeInfoModel.setExerciseList(exerciseModelMap.get(knowledgeInfoModel.getId()));
 			}
 			knowledgeInfoModelList.add(knowledgeInfoModel);
 		}
 		return knowledgeInfoModelList;
+	}
+	
+	public Integer saveKnowledgeInfoDetail(KnowledgeInfoDetail knowledgeInfoDetail){
+		String sql = "SELECT MAX(orderIndex) FROM KnowledgeInfoDetail WHERE knowledgeInfoId = #{knowledgeInfoId}";
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("knowledgeInfoId", knowledgeInfoDetail.getKnowledgeInfoId());
+		Integer orderIndex = commonMapper.getBySql(sql, params, Integer.class);
+		if(orderIndex==null){
+			orderIndex = 1;
+		}
+		else{
+			orderIndex++;
+		}
+		knowledgeInfoDetail.setOrderIndex(orderIndex);
+		commonMapper.insert(KnowledgeInfoDetail.class, knowledgeInfoDetail);
+		return knowledgeInfoDetail.getId();
+	}
+	
+	public void deleteKnowledgeInfoDetail(Integer knowledgeInfoDetailId,String operator){
+		commonMapper.deleteAndBak(KnowledgeInfoDetail.class, knowledgeInfoDetailId, operator);
+	}
+	
+	public List<KnowledgeInfoDetail> selectKnowledgeInfoDetailListByKnowledgeInfoIds(Integer[] knowledgeInfoIds){
+		if(ArrayUtils.isEmpty(knowledgeInfoIds)) {
+			return null;
+		}
+		return commonMapper.selectList("KnowledgeInfoDetail.selectKnowledgeInfoDetailListByKnowledgeInfoIds", knowledgeInfoIds);
 	}
 }

@@ -41,57 +41,7 @@
 	padding-right:10px;
 }
 
-.btn-form-group{
-	height: 50px;
-	margin:0;
-	text-align: center;
-}
-.add_btn_panel,
-.add_info_btn_panel{
-	text-align: center;
-	transition: all 0.4s;
-}
-.add_btn_panel{
-	transform: translateY(0);
-}
-.add_info_btn_panel{
-	transform: translateY(20px);
-}
-.add_btn_panel i,
-.add_info_btn_panel>div{
-	cursor: pointer;
-}
-.add_btn_panel{
-	height: 50px;
-    line-height: 50px;
-}
-.add_btn_panel i{
-	font-size:30px;
-}
-.add_info_btn_panel{
-	margin:0 auto;
-	display: inline-block;
-}
-.add_info_btn_panel>div{
-	float:left;
-	width:60px;
-}
-.add_info_btn_panel>div>p:FIRST-CHILD{
-	height: 24px;
-	line-height: 24px;
-}
-.add_info_btn_panel>div>p{
-	margin:0;
-}
-.add_info_btn_panel .add_info_text{
-	font-size:12px;
-}
-.add_info_btn_panel i{
-	font-size:20px;
-}
-.add_info_btn_panel i:hover{
-	font-size:24px;
-}
+
 
 .point_div{
 }
@@ -103,14 +53,7 @@
 	float: none;
 	margin:0;
 }
-.point_div video,
-.point_div textarea{
-	width:100%;
-	border-radius: 5px;
-}
-.point_div textarea{
-	height:80px;
-}
+
 .delete_point_mask_div{
 	position: absolute;
 	z-index:1;
@@ -163,13 +106,6 @@
 	border: 2px solid #00D604;
 }
 
-.move_hide{
-	transform: translateY(70px);
-}
-.move_show{
-	transform: translateY(-50px);
-}
-
 /*统一clear*/
 .point_item_div:after,
 .add_info_btn_panel:after,
@@ -220,7 +156,8 @@
 
 
 
-#pointPanel,
+#pointPanel:after,
+.point_panel_clear,
 .exercise_detail_col:after{
 	display: block;
 	clear: both;
@@ -228,7 +165,7 @@
 }
 /*知识点细节板块*/
 .panel_knowledge{
-	width:400px;
+	width:350px;
 	float: left;
 	margin:0 8px 8px 0;
 }
@@ -263,3 +200,81 @@
 	float:left;
 	margin-right:2px;
 }
+
+
+/*知识点按钮板块样式-start*/
+.btn-form-group{
+	height: 50px;
+	margin:0;
+	text-align: center;
+}
+.add_btn_panel,
+.add_info_btn_panel{
+	text-align: center;
+	transition: all 0.4s;
+}
+.add_btn_panel{
+	transform: translateY(0);
+}
+.add_info_btn_panel{
+	transform: translateY(20px);
+}
+.add_btn_panel i,
+.add_info_btn_panel>div{
+	cursor: pointer;
+}
+.add_btn_panel{
+	height: 50px;
+    line-height: 50px;
+}
+.add_btn_panel i{
+	font-size:30px;
+}
+.add_info_btn_panel{
+	margin:0 auto;
+	display: inline-block;
+}
+.add_info_btn_panel>div{
+	float:left;
+	width:60px;
+}
+.add_info_btn_panel>div>p:FIRST-CHILD{
+	height: 24px;
+	line-height: 24px;
+}
+.add_info_btn_panel>div>p{
+	margin:0;
+}
+.add_info_btn_panel .add_info_text{
+	font-size:12px;
+}
+.add_info_btn_panel i{
+	font-size:20px;
+}
+.add_info_btn_panel i:hover{
+	font-size:24px;
+}
+.move_hide{
+	transform: translateY(70px);
+}
+.move_show{
+	transform: translateY(-50px);
+}
+/*知识点按钮板块样式-end*/
+
+/*知识点内容样式-start*/
+.knowledge_detail_col{
+	text-align: center;
+	margin: 10px 0;
+	position: relative;
+}
+.knowledge_detail_col video,
+.knowledge_detail_col img,
+.knowledge_detail_col textarea{
+	width:100%;
+	border-radius: 5px;
+}
+.knowledge_detail_col textarea{
+	height:80px;
+}
+/*知识点内容样式-end*/

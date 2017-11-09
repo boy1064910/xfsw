@@ -87,17 +87,7 @@ public class ExerciseService {
 		if(ArrayUtils.isEmpty(knowledgeInfoIds)) {
 			return null;
 		}
-		String sql = "SELECT * FROM Exercise WHERE knowledgeInfoId IN (#{knowledgeInfoIds})";
-		StringBuffer knowledgeInfoSB = new StringBuffer();
-		for(int i=0;i<knowledgeInfoIds.length;i++) {
-			if(i!=0) {
-				knowledgeInfoSB.append(",");
-			}
-			knowledgeInfoSB.append(knowledgeInfoIds[i]);
-		}
-		Map<String,Object> params = new HashMap<String,Object>();
-		params.put("knowledgeInfoIds", knowledgeInfoSB.toString());
-		List<Exercise> exerciseList = commonMapper.selectListBySql(sql, params, Exercise.class);
+		List<Exercise> exerciseList = commonMapper.selectList("Exercise.selectListByKnowledgeInfoIds", knowledgeInfoIds);
 		if(CollectionUtils.isEmpty(exerciseList)) {
 			return null;
 		}

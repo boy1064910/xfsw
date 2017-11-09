@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="KnowledgeInfoDetail">
+
+	<select id="selectKnowledgeInfoDetailListByKnowledgeInfoIds" resultType="KnowledgeInfoDetail">
+		SELECT * FROM KnowledgeInfoDetail WHERE knowledgeInfoId IN 
+		<foreach collection="array" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</select>
+
+	<select id="selectMaxOrderIndexByCode" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT MAX(orderIndex) FROM Knowledge WHERE code LIKE CONCAT(#{code},'%')
+	</select>
+
+	<insert id="insertKnowledge" parameterType="Knowledge" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO Knowledge(code,name,orderIndex,lastUpdater,lastUpdateTime)
+		VALUES(#{code},#{name},#{orderIndex},#{lastUpdater},NOW())
+	</insert>
+	
+	<update id="updateKnowledge" parameterType="Knowledge">
+		UPDATE 
+			Knowledge 
+		SET 
+			name = #{name},lastUpdater=#{lastUpdater},lastUpdateTime = NOW()
+		WHERE 
+			id = #{id}
+	</update>
+	
+	<select id="selectListByChapterCode" parameterType="java.lang.String" resultType="Knowledge">
+		SELECT * FROM Knowledge WHERE code LIKE CONCAT(#{chapterCode},'%') ORDER BY orderIndex ASC 
+	</select>
+	
+	<!-- 前端接口调用 -->
+	<select id="selectMiniKnowledgeList" parameterType="java.lang.String" resultType="MiniKnowledgeListModel">
+		SELECT id,code,name,exampleCount,videoSeconds 
+		FROM Knowledge WHERE code LIKE CONCAT(#{chapterCode},'%') ORDER BY orderIndex ASC
+	</select>
+	<!-- 前端接口调用 -->
+	<select id="getMiniInfoById" parameterType="java.lang.Integer" resultType="MiniKnowledgeInfoModel">
+		SELECT id,code,name,videoUrl
+		FROM Knowledge WHERE id = #{id}
+	</select>
+</mapper>

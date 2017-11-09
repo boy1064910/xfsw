@@ -5,6 +5,13 @@
 		INSERT INTO Exercise(code,picUrl,orderIndex,lastUpdater,lastUpdateTime)
 		VALUES(#{code},#{picUrl},#{orderIndex},#{lastUpdater},NOW())
 	</insert>
+	
+	<select id="selectListByKnowledgeInfoIds" resultType="Exercise">
+		SELECT * FROM Exercise WHERE knowledgeInfoId IN 
+		<foreach collection="array" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</select>
 
 	<select id="selectListByDiffLevelCode" parameterType="java.lang.String" resultType="Exercise">
 		SELECT * FROM Exercise WHERE code LIKE CONCAT(#{code},'%') ORDER BY orderIndex ASC 

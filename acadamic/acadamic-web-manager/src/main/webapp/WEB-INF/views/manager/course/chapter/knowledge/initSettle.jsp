@@ -53,6 +53,5 @@
 	<div id="pointPanel">
 		
 	</div>
-	<div id="11"></div>
 </body>
 </html>

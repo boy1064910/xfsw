@@ -6,6 +6,7 @@ package net.xueshupa.model;
 import java.util.List;
 
 import net.xueshupa.entity.KnowledgeInfo;
+import net.xueshupa.entity.KnowledgeInfoDetail;
 
 /**
  * 
@@ -14,6 +15,9 @@ import net.xueshupa.entity.KnowledgeInfo;
  */
 public class KnowledgeInfoModel extends KnowledgeInfo {
 
+	private List<ExerciseModel> exerciseList;
+	private List<KnowledgeInfoDetail> knowledgeInfoDetailList;
+	
 	public KnowledgeInfoModel(KnowledgeInfo knowledgeInfo) {
 		this.setId(knowledgeInfo.getId());
 		this.setKnowledgeId(knowledgeInfo.getKnowledgeId());
@@ -23,13 +27,19 @@ public class KnowledgeInfoModel extends KnowledgeInfo {
 		this.setType(knowledgeInfo.getType());
 	}
 	
-	private List<ExerciseModel> exerciseList;
-
 	public List<ExerciseModel> getExerciseList() {
 		return exerciseList;
 	}
 
 	public void setExerciseList(List<ExerciseModel> exerciseList) {
 		this.exerciseList = exerciseList;
+	}
+
+	public List<KnowledgeInfoDetail> getKnowledgeInfoDetailList() {
+		return knowledgeInfoDetailList;
+	}
+
+	public void setKnowledgeInfoDetailList(List<KnowledgeInfoDetail> knowledgeInfoDetailList) {
+		this.knowledgeInfoDetailList = knowledgeInfoDetailList;
 	}
 }
