@@ -13,6 +13,7 @@ import com.xfsw.common.mapper.ICommonMapper;
 import com.xfsw.common.util.NumberUtil;
 
 import net.xueshupa.entity.Knowledge;
+import net.xueshupa.model.KnowledgeModel;
 import net.xueshupa.model.MiniKnowledgeInfoModel;
 import net.xueshupa.model.MiniKnowledgeListModel;
 
@@ -24,6 +25,9 @@ public class KnowledgeService {
 	
 	@Resource(name="diffLevelService")
 	DiffLevelService diffLevelService;
+	
+	@Resource(name="knowledgeInfoService")
+	KnowledgeInfoService knowledgeInfoService;
 	
 	public void deleteByCourseCode(String code,String operator){
 		String sql = "DELETE FROM Knowledge WHERE code LIKE CONCAT('#{code}','%')";
@@ -57,8 +61,11 @@ public class KnowledgeService {
 		}
 	}
 	
-	public Knowledge getById(Integer id){
-		return (Knowledge) commonMapper.get(Knowledge.class, id);
+	public KnowledgeModel getById(Integer id){
+		Knowledge knowledge = commonMapper.get(Knowledge.class, id);
+		KnowledgeModel knowledgeModel = new KnowledgeModel(knowledge);
+		knowledgeModel.setKnowledgeInfoList(knowledgeInfoService.selectModelListByKnowledge(knowledge.getId()));
+		return knowledgeModel;
 	}
 	
 	/**

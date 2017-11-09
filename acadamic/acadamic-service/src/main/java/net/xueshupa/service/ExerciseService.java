@@ -1,16 +1,21 @@
 package net.xueshupa.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.stereotype.Service;
 
 import com.xfsw.common.mapper.ICommonMapper;
 
 import net.xueshupa.entity.Exercise;
 import net.xueshupa.entity.ExerciseDetail;
+import net.xueshupa.model.ExerciseModel;
 
 @Service("exerciseService")
 public class ExerciseService {
@@ -69,6 +74,38 @@ public class ExerciseService {
 	
 	public void deleteExerciseDetail(Integer exerciseDetailId,String operator){
 		commonMapper.deleteAndBak(ExerciseDetail.class, exerciseDetailId, operator);
+	}
+	
+	/**
+	 * 根据知识点内容ID数组查询习题数据
+	 * @param knowledgeInfoIds
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	public List<ExerciseModel> selectModelListByKnowledgeInfoIds(Integer[] knowledgeInfoIds){
+		if(ArrayUtils.isEmpty(knowledgeInfoIds)) {
+			return null;
+		}
+		String sql = "SELECT * FROM Exercise WHERE knowledgeInfoId IN (#{knowledgeInfoIds})";
+		StringBuffer knowledgeInfoSB = new StringBuffer();
+		for(int i=0;i<knowledgeInfoIds.length;i++) {
+			if(i!=0) {
+				knowledgeInfoSB.append(",");
+			}
+			knowledgeInfoSB.append(knowledgeInfoIds[i]);
+		}
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("knowledgeInfoIds", knowledgeInfoSB.toString());
+		List<Exercise> exerciseList = commonMapper.selectListBySql(sql, params, Exercise.class);
+		if(CollectionUtils.isEmpty(exerciseList)) {
+			return null;
+		}
+		List<ExerciseModel> exerciseModelList = new ArrayList<ExerciseModel>();
+		for(Exercise exercise:exerciseList) {
+			exerciseModelList.add(new ExerciseModel(exercise));
+		}
+		return exerciseModelList;
 	}
 	
 //	public void deleteByCourseCode(String code,String operator){

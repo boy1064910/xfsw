@@ -24,8 +24,43 @@ Ding.ready(function(){
 //    		}
 //    	});
     });
+    
+    //请求知识点详情
+    Ding.ajax({
+        'url' : '/acadamic-web-manager/manager/course/chapter/knowledge/getKnowledgeById.shtml',
+        'params' : {
+        	'knowledgeId' : $("#knowledgeId").val()
+        },
+        'method' : 'GET',
+        'successCallback' : function(result){
+        	var knowledge = result.data;
+        	var knowledgeInfoList = knowledge.knowledgeInfoList;
+        	for(var i=0;i<knowledgeInfoList.length;i++){
+        		switch(knowledgeInfoList[i].type){
+	        		case 'GAME':{
+	        			renderGamePoint(knowledgeInfoList[i]);
+	        			break;
+	        		}
+	        		default:{
+	        			renderPoint(knowledgeInfoList[i]);
+	        		}
+        		}
+        	}
+        }
+    });
 });
 
+//渲染发现、探索、总结、套路panel
+function renderPoint(knowledgeInfo){
+	var panel1 = $('<div class="panel panel_knowledge" data-id="'+knowledgeInfo.id+'"></div>');
+	$("#pointPanel").append(panel1);
+	var panelBody = $('<div class="panel-body point-panel-body"></div>');
+	panel1.append(panelBody);
+	var headerPanel = $('<header class="panel-heading"><label>'+knowledgeInfo.type+'</label></header>');
+	panelBody.append(headerPanel);
+}
+
+//添加发现、探索、总结、套路panel
 function initAddPoint(type){
 	Ding.ajax({
         'url' : '/acadamic-web-manager/manager/course/chapter/knowledge/info/initAddKnowledgeInfo.shtml',
@@ -35,13 +70,11 @@ function initAddPoint(type){
         },
         'method' : 'POST',
         'successCallback' : function(result){
-        	var panel1 = $('<div class="panel panel_knowledge"></div>');
-        	$("#pointPanel").append(panel1);
-        	var panelBody = $('<div class="panel-body point-panel-body"></div>');
-        	panel1.append(panelBody);
-        	var addExerciseBtnRow = $('<div class="exercise_btn_row"><button knowledge-info-id="'+result.data+'" class="btn btn-default" onclick="addExercise(this)"><i class="fa fa-plus-square"> 添加题目</i></button></div>');//添加题目按钮行
-        	panelBody.append(addExerciseBtnRow);
-        	
+        	var knowledgeInfo = {
+        		'id' : result.data,
+        		'type' : type
+        	};
+        	renderPoint(knowledgeInfo);
         }
     });
 	
@@ -172,15 +205,21 @@ function initAddGamePoint(){
         },
         'method' : 'POST',
         'successCallback' : function(result){
-        	var panel1 = $('<div class="panel panel_knowledge"></div>');
-        	$("#pointPanel").append(panel1);
-        	var panelBody = $('<div class="panel-body point-panel-body"></div>');
-        	panel1.append(panelBody);
-        	var addExerciseBtnRow = $('<div class="exercise_btn_row"><button knowledge-info-id="'+result.data+'" class="btn btn-default" onclick="addExercise(this)"><i class="fa fa-plus-square"> 添加题目</i></button></div>');//添加题目按钮行
-        	panelBody.append(addExerciseBtnRow);
-        	
+        	renderGamePoint({
+        		'id' : result.data,
+        		'type' : 'GAME'
+        	});
         }
     });
+}
+
+function renderGamePoint(knowledgeInfo){
+	var panel1 = $('<div class="panel panel_knowledge"></div>');
+	$("#pointPanel").append(panel1);
+	var panelBody = $('<div class="panel-body point-panel-body"></div>');
+	panel1.append(panelBody);
+	var addExerciseBtnRow = $('<div class="exercise_btn_row"><button knowledge-info-id="'+result.data+'" class="btn btn-default" onclick="addExercise(this)"><i class="fa fa-plus-square"> 添加题目</i></button></div>');//添加题目按钮行
+	panelBody.append(addExerciseBtnRow);
 }
 
 //初始化答案项
