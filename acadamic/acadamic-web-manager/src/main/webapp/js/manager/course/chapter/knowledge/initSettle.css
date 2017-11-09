@@ -174,18 +174,24 @@
 	border:1px dashed #ccc;
 	padding:8px;
 	margin-bottom: 8px;
+	position: relative;
 }
 /*添加题目按钮行*/
 .exercise_btn_row{
 	text-align: center;
 	margin: 10px 0;
 }
-.exercise_row>div{
+.exercise_col{
 	border-bottom: 1px dashed #ccc;
 	padding:8px 0;
 }
-.exercise_row>div:LAST-CHILD{
+.exercise_col:LAST-CHILD{
 	border-bottom:none;
+}
+.exercise_col_del_btn{
+	position: absolute;
+	top: 16px;
+	right: 8px;
 }
 .exercise_col img{
 	width:100%;

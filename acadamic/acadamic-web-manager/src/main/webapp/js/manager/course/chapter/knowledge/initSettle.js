@@ -309,25 +309,13 @@ function renderGamePoint(knowledgeInfo){
 	var addExerciseBtnRow = $('<div class="exercise_btn_row"><button class="btn btn-default" onclick="addExercise(this)"><i class="fa fa-plus-square"> 添加题目</i></button></div>');//添加题目按钮行
 	panelBody.append(addExerciseBtnRow);
 	
-	console.log(knowledgeInfo);
 	var exerciseList = knowledgeInfo.exerciseList;
 	if(!Ding.isEmpty(exerciseList)){
-		console.log(exerciseList);
-//		for(var i=0;i<knowledgeInfoDetailList.length;i++){
-//			var knowledgeDetailCol = $('<div class="knowledge_detail_col"></div>');
-//			btnFormGroup.before(knowledgeDetailCol);
-//			switch(knowledgeInfoDetailList[i].knowledgeInfoDetailType){
-//				case "video":{
-//					//渲染视频
-//					renderVideoDetail(knowledgeDetailCol,knowledgeInfoDetailList[i]);
-//					break;
-//				}
-//				case "pic":{
-//					renderPicDetail(knowledgeDetailCol,knowledgeInfoDetailList[i]);
-//					break;
-//				}
-//			}
-//		}
+		for(var i=0;i<exerciseList.length;i++){
+			var exerciseRow = $('<div class="exercise_row" data-id="'+exerciseList[i].id+'"></div>');
+			addExerciseBtnRow.before(exerciseRow);
+			renderExercise(exerciseRow,exerciseList[i]);
+		}
 	}
 }
 
@@ -358,50 +346,8 @@ function addExercise(btn){
         	var exerciseRow = $('<div class="exercise_row" data-id="'+result.data+'"></div>');
         	$(btn).parent().before(exerciseRow);
         	
-        	var exerciseId = result.data;
-        	//开始添加单个题目信息
-        	var uploadExerciseBtnCol = $('<div class="exercise_col" id="exercise-'+exerciseId+'"></div>');
-        	exerciseRow.append(uploadExerciseBtnCol);
-        	
-        	var exerciseCol = $('<div class="exercise_col"></div>');
-        	exerciseRow.append(exerciseCol);
-        	
-        	var addAnswerBtnCol = $('<div><button class="btn btn-default" onclick="addExerciseDetail(this)"><i class="fa fa-plus-circle"> 新增填空处</i></button></div>');
-        	exerciseCol.append(addAnswerBtnCol);
-        	var exerciseDetailRow = $('<div class="exercise_detail_row"></div>');
-        	exerciseCol.append(exerciseDetailRow);
-        	
-        	//初始化题目上传控件
-        	new Ding.FileUploader({
-        		'id':"exercise-"+exerciseId,
-        		'multiSelection':false,
-        		'selectorTitle':'上传题目',
-        		'limitType':'jpg,jpeg,png',
-        		'maxFileSize':'2m',
-        		'addedCallback':function(uploader,files,fileUploader){
-        			var jpreviewDiv = $('<div class="preview-div"></div>');
-    				var jprocessDiv = $('<div class="progress" id="progress'+files[0].id+'"></div>');
-    				var jprocessBar = $('<div class="progress-bar" id="progressBar'+files[0].id+'"></div>');
-    				jprocessDiv.append(jprocessBar);
-    				jpreviewDiv.append(jprocessDiv);
-    				fileUploader.jcontainer.append(jpreviewDiv);
-        		},
-        		'completeCallback':function(uploader,files,fileUploader){
-        			var filePath = files[0].uploadPath;
-        			//上传练习题图片，并保存到练习题数据中
-        			Ding.ajax({
-        		        'url' : '/acadamic-web-manager/manager/course/chapter/exersice/uploadExercise.shtml',
-        		        'params' : {
-        		        	'exerciseId' : exerciseId,
-        		        	'filePath' : filePath
-        		        },
-        		        'successCallback':function(result){
-        		        	fileUploader.reset();
-                			fileUploader.jdom.find("img").remove();
-                			$("#exercise-"+exerciseId).append('<img src="'+result.data+'"></img>');
-        		        }
-        			});
-        		}
+        	renderExercise(exerciseRow,{
+        		'id' : result.data
         	});
         }
 	});
@@ -420,6 +366,76 @@ function addExerciseDetail(btn){
         	var exerciseDetailCol = $('<div class="exercise_detail_col" data-id="'+result.data+'"></div>');
         	exerciseDetailRow.append(exerciseDetailCol);
         	exerciseDetailCol.append(answerSelector.clone()).append(numberAnswerInput.clone()).append(deleteAnswerBtn.clone());
+        }
+	});
+}
+
+//渲染练习题和练习题填空处
+function renderExercise(exerciseRow,exercise){
+	//开始添加单个题目信息
+	var uploadExerciseBtnCol = $('<div class="exercise_col" id="exercise-'+exercise.id+'"></div>');
+	exerciseRow.append(uploadExerciseBtnCol);
+	
+	var exerciseCol = $('<div class="exercise_col"></div>');
+	exerciseRow.append(exerciseCol);
+	
+	var addAnswerBtnCol = $('<div><button class="btn btn-default" onclick="addExerciseDetail(this)"><i class="fa fa-plus-circle"> 新增填空处</i></button></div>');
+	exerciseCol.append(addAnswerBtnCol);
+	var exerciseDetailRow = $('<div class="exercise_detail_row"></div>');
+	exerciseCol.append(exerciseDetailRow);
+	//初始化题目上传控件
+	new Ding.FileUploader({
+		'id':"exercise-"+exercise.id,
+		'multiSelection':false,
+		'selectorTitle':'上传题目',
+		'limitType':'jpg,jpeg,png',
+		'maxFileSize':'2m',
+		'addedCallback':function(uploader,files,fileUploader){
+			var jpreviewDiv = $('<div class="preview-div"></div>');
+			var jprocessDiv = $('<div class="progress" id="progress'+files[0].id+'"></div>');
+			var jprocessBar = $('<div class="progress-bar" id="progressBar'+files[0].id+'"></div>');
+			jprocessDiv.append(jprocessBar);
+			jpreviewDiv.append(jprocessDiv);
+			fileUploader.jcontainer.append(jpreviewDiv);
+		},
+		'completeCallback':function(uploader,files,fileUploader){
+			var filePath = files[0].uploadPath;
+			//上传练习题图片，并保存到练习题数据中
+			Ding.ajax({
+		        'url' : '/acadamic-web-manager/manager/course/chapter/exersice/uploadExercise.shtml',
+		        'params' : {
+		        	'exerciseId' : exercise.id,
+		        	'filePath' : filePath
+		        },
+		        'successCallback':function(result){
+		        	fileUploader.reset();
+        			fileUploader.jdom.find("img").remove();
+        			$("#exercise-"+exercise.id).append('<img src="'+result.data+'"></img>');
+		        }
+			});
+		}
+	});
+	
+	//添加删除按钮
+	var deleteExerciseBtn = $('<button type="button" onclick="deleteExercise(this)" title="删除练习题" class="btn btn-default exercise_col_del_btn"><i class="fa fa-times"></i></button>');
+	exerciseRow.append(deleteExerciseBtn);
+	
+	if(!Ding.isEmpty(exercise.exerciseUrl)){
+		$("#exercise-"+exercise.id).append('<img src="'+exercise.exerciseUrl+'" />');
+	}
+}
+
+//删除练习题
+function deleteExercise(btn){
+	var exerciseRow = $($(btn).parents("[data-id]")[0]);
+	Ding.ajax({
+        'url' : '/acadamic-web-manager/manager/course/chapter/exersice/deleteExercise.shtml',
+        'method' : 'post',
+        'params' : {
+        	'exerciseId' : exerciseRow.attr("data-id")
+        },
+        'successCallback':function(result){
+        	exerciseRow.remove();
         }
 	});
 }

@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.xfsw.common.mapper.ICommonMapper;
 
@@ -45,6 +46,14 @@ public class ExerciseService {
 	public void uploadExerciseUrl(Exercise exercise){
 		String sql = "UPDATE Exercise SET exerciseUrl = #{exerciseUrl},lastUpdater = #{lastUpdater},lastUpdateTime=#{lastUpdateTime} WHERE id = #{id}";
 		commonMapper.updateBySql(sql, exercise);
+	}
+	
+	@Transactional(transactionManager="acadamicTxManager")
+	public void deleteExercise(Integer exerciseId,String operator){
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("exerciseId", exerciseId);
+		commonMapper.deleteAndBak(ExerciseDetail.class, params, operator);
+		commonMapper.deleteAndBak(Exercise.class, exerciseId, operator);
 	}
 	
 	public Integer insertExerciseDetail(ExerciseDetail exerciseDetail){

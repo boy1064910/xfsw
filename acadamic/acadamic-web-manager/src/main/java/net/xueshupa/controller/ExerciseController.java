@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xfsw.business.service.OssService;
@@ -110,6 +111,13 @@ public class ExerciseController {
 		
 		exerciseService.uploadExerciseUrl(exercise);
 		return new ResponseModel(exerciseUrl);
+	}
+	
+	@RequestMapping(value = "/deleteExercise",method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseModel deleteExercise(Integer exerciseId){
+		exerciseService.deleteExercise(exerciseId,ThreadUserInfoManager.getAccount());
+		return new ResponseModel();
 	}
 	
 	@RequestMapping("/insertExerciseDetail")
