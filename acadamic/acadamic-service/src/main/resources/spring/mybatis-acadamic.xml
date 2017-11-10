@@ -17,6 +17,7 @@
 		<typeAlias type="net.xueshupa.entity.KnowledgeInfoDetail" alias="KnowledgeInfoDetail"/>
 		<typeAlias type="net.xueshupa.entity.DiffLevel" alias="DiffLevel"/>
 		<typeAlias type="net.xueshupa.entity.Exercise" alias="Exercise"/>
+		<typeAlias type="net.xueshupa.entity.ExerciseDetail" alias="ExerciseDetail"/>
 		<typeAlias type="net.xueshupa.entity.Answer" alias="Answer"/>
 		<!-- model -->
 		<typeAlias type="net.xueshupa.model.MiniCourseListModel" alias="MiniCourseListModel"/>

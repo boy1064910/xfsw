@@ -306,6 +306,8 @@ function renderGamePoint(knowledgeInfo){
 	$("#pointPanel").append(panel1);
 	var panelBody = $('<div class="panel-body point-panel-body"></div>');
 	panel1.append(panelBody);
+	var headerPanel = $('<header class="panel-heading"><label>'+knowledgeInfo.type+'</label></header>');
+	panelBody.append(headerPanel);
 	var addExerciseBtnRow = $('<div class="exercise_btn_row"><button class="btn btn-default" onclick="addExercise(this)"><i class="fa fa-plus-square"> 添加题目</i></button></div>');//添加题目按钮行
 	panelBody.append(addExerciseBtnRow);
 	
@@ -349,23 +351,6 @@ function addExercise(btn){
         	renderExercise(exerciseRow,{
         		'id' : result.data
         	});
-        }
-	});
-}
-
-//添加练习题填空处
-function addExerciseDetail(btn){
-	var exerciseId = $(btn).parent().parent().parent().attr("data-id");
-	Ding.ajax({
-        'url' : '/acadamic-web-manager/manager/course/chapter/exersice/insertExerciseDetail.shtml',
-        'params' : {
-        	'exerciseId' : exerciseId
-        },
-        'successCallback':function(result){
-        	var exerciseDetailRow = $(btn).parent().next();
-        	var exerciseDetailCol = $('<div class="exercise_detail_col" data-id="'+result.data+'"></div>');
-        	exerciseDetailRow.append(exerciseDetailCol);
-        	exerciseDetailCol.append(answerSelector.clone()).append(numberAnswerInput.clone()).append(deleteAnswerBtn.clone());
         }
 	});
 }
@@ -423,6 +408,11 @@ function renderExercise(exerciseRow,exercise){
 	if(!Ding.isEmpty(exercise.exerciseUrl)){
 		$("#exercise-"+exercise.id).append('<img src="'+exercise.exerciseUrl+'" />');
 	}
+	if(!Ding.isEmpty(exercise.exerciseDetailList)){
+		for(var i=0;i<exercise.exerciseDetailList.length;i++){
+			renderExerciseDetail(exerciseDetailRow,exercise.exerciseDetailList[i]);
+		}
+	}
 }
 
 //删除练习题
@@ -440,6 +430,57 @@ function deleteExercise(btn){
 	});
 }
 
+function renderExerciseDetail(exerciseDetailRow,exerciseDetail){
+	var exerciseDetailCol = $('<div class="exercise_detail_col" data-id="'+exerciseDetail.id+'"></div>');
+	exerciseDetailRow.append(exerciseDetailCol);
+	var newAnswerSelector = answerSelector.clone();
+	var newNumberAnswerInput = numberAnswerInput.clone();
+	exerciseDetailCol.append(newAnswerSelector);
+	
+	newAnswerSelector.val(exerciseDetail.type);
+	switch(exerciseDetail.type){
+		case "NUMBER":{
+			var newNumberAnswerInput = numberAnswerInput.clone();
+			if(!Ding.isEmpty(exerciseDetail.answer)){
+				newNumberAnswerInput.val(exerciseDetail.answer);
+			}
+			exerciseDetailCol.append(newNumberAnswerInput);
+			break;
+		}
+		case "TEXT":{
+			var newTextAnswerInput = textAnswerInput.clone();
+			if(!Ding.isEmpty(exerciseDetail.answer)){
+				newTextAnswerInput.val(exerciseDetail.answer);
+			}
+			exerciseDetailCol.append(newTextAnswerInput);
+			break;
+		}
+		case "SELECTOR":{
+			break;
+		}
+	}
+	
+	exerciseDetailCol.append(deleteAnswerBtn.clone());//拼接删除按钮
+}
+
+//添加练习题填空处
+function addExerciseDetail(btn){
+	var exerciseRow = $($(btn).parents("[data-id]")[0]);
+	Ding.ajax({
+        'url' : '/acadamic-web-manager/manager/course/chapter/exersice/insertExerciseDetail.shtml',
+        'params' : {
+        	'exerciseId' : exerciseRow.attr("data-id")
+        },
+        'successCallback':function(result){
+        	var exerciseDetailRow = $(btn).parent().next();
+        	renderExerciseDetail(exerciseDetailRow,{
+        		'id' : result.data,
+        		'type' : 'NUMBER'//初始化默认为数字输入框
+        	});
+        }
+	});
+}
+
 //更改答案输入框类型
 function changeAnswerInputType(selector){
 	var exerciseDetailId = $(selector).parent().attr("data-id");
@@ -451,7 +492,7 @@ function changeAnswerInputType(selector){
         	'type' : value
         },
         'successCallback':function(result){
-        	$(selector).nextAll().remove();
+        	$(selector).next().remove();
         	switch(value){
         		case "NUMBER":{
         			$(selector).after(numberAnswerInput.clone());

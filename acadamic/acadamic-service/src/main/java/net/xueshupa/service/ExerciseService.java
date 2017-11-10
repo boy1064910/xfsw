@@ -100,11 +100,38 @@ public class ExerciseService {
 		if(CollectionUtils.isEmpty(exerciseList)) {
 			return null;
 		}
+		
+		Integer[] exerciseIds = new Integer[exerciseList.size()];
+		int index = 0;
+		for(Exercise exercise:exerciseList) {
+			exerciseIds[index] = exercise.getId();
+			index++;
+		}
+		List<ExerciseDetail> exerciseDetailList = this.selectExerciseDetailListByExerciseIds(exerciseIds);
+		Map<Integer,List<ExerciseDetail>> exerciseDetailMap = new HashMap<Integer,List<ExerciseDetail>>();
+		if(!CollectionUtils.isEmpty(exerciseDetailList)) {
+			for(ExerciseDetail exerciseDetail:exerciseDetailList) {
+				if(!exerciseDetailMap.containsKey(exerciseDetail.getExerciseId())) {
+					exerciseDetailMap.put(exerciseDetail.getExerciseId(), new ArrayList<ExerciseDetail>());
+				}
+				exerciseDetailMap.get(exerciseDetail.getExerciseId()).add(exerciseDetail);
+			}
+		}
+		
 		List<ExerciseModel> exerciseModelList = new ArrayList<ExerciseModel>();
 		for(Exercise exercise:exerciseList) {
-			exerciseModelList.add(new ExerciseModel(exercise));
+			ExerciseModel exerciseModel = new ExerciseModel(exercise);
+			exerciseModel.setExerciseDetailList(exerciseDetailMap.get(exercise.getId()));
+			exerciseModelList.add(exerciseModel);
 		}
 		return exerciseModelList;
+	}
+	
+	public List<ExerciseDetail> selectExerciseDetailListByExerciseIds(Integer[] exerciseIds){
+		if(ArrayUtils.isEmpty(exerciseIds)) {
+			return null;
+		}
+		return commonMapper.selectList("ExerciseDetail.selectExerciseDetailListByExerciseIds", exerciseIds);
 	}
 	
 //	public void deleteByCourseCode(String code,String operator){
