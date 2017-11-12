@@ -3,6 +3,8 @@
  */
 package com.xfsw.common.enums;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * 
  * @author xiaopeng.liu
@@ -23,9 +25,13 @@ public enum RequestClient {
 	 * @version
 	 */
 	public static RequestClient valuesOf(String arg) {
-		RequestClient requestClient = RequestClient.valueOf(arg);
+		RequestClient requestClient = null;
+		if(StringUtils.isEmpty(arg)){
+			return RequestClient.Default;
+		}
+		requestClient = RequestClient.valueOf(arg);
 		if(requestClient==null) {
-			requestClient = RequestClient.Default;
+			return RequestClient.Default;
 		}
 		return requestClient;
 	}

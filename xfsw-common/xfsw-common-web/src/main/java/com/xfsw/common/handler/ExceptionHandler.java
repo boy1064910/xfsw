@@ -54,7 +54,7 @@ public class ExceptionHandler implements HandlerExceptionResolver {
 		ModelAndView mav = new ModelAndView();
 		if (HttpServletRequestUtil.isAjaxRequest(request)) {// ajax请求
 			MappingJackson2JsonView view = new MappingJackson2JsonView();
-			Map<String, Object> resultModelMap = MapUtil.pojoToMap(resultModel);
+			Map<String, Object> resultModelMap = MapUtil.entityToMap(resultModel);
 			view.setAttributesMap(resultModelMap);
 			mav.setView(view);
 		} else {// html请求,重定向

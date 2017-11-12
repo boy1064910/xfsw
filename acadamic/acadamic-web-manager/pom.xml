@@ -120,7 +120,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>net.xueshupa.Application</mainClass>
+							<mainClass>net.xueshupa.AcadamicWebManagerApplication</mainClass>
 						</manifest>
 					</archive>
 					<outputDirectory>/server/service/${project.artifactId}</outputDirectory>

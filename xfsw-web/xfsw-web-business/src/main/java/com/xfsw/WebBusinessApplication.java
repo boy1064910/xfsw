@@ -25,7 +25,7 @@ public class WebBusinessApplication {
 	public static void main(String[] args) {
 		String env = System.getProperty("env");//加载spring配置文件
 		if (StringUtils.isEmpty(env)){
-			System.setProperty("env", "dev");
+			System.setProperty("env", "online");
 		}
 		SpringApplication.run(WebBusinessApplication.class, args);
 	}

@@ -242,7 +242,7 @@ function addPic(btn){
 		'id':randomId,
 		'multiSelection':false,
 		'selectorTitle':'请选择图片文件',
-		'limitType':'jpg,jpeg',
+		'limitType':'jpg,jpeg,png',
 		'maxFileSize':'2m',
 		'addedCallback':function(uploader,files,fileUploader){
 			for(var f in files){
