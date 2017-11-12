@@ -1,10 +1,13 @@
 package net.xueshupa.controller;
 
+import java.util.Date;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xfsw.common.classes.DataTablePageInfo;
@@ -28,13 +31,15 @@ public class CourseController {
 		
 	}
 	
-	@RequestMapping("/saveCourse")
+	@RequestMapping(value = "/saveCourse",method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseModel saveCourse(Course course){
 		UserSessionModel user = ThreadUserInfoManager.getUserInfo();
 		course.setLastUpdater(user.getAccount());
+		course.setLastUpdateTime(new Date());
 		course.setUserId(user.getId());
-		return new ResponseModel();
+		course = courseService.saveCourse(course);
+		return new ResponseModel(course);
 	}
 	
 	@RequestMapping("/pageInfo")
@@ -42,4 +47,18 @@ public class CourseController {
 	public DataTableResponseModel pageInfo(DataTablePageInfo pageInfo){
 		return courseService.selectPageInfo(pageInfo);
 	}
+	
+	@RequestMapping("/getById")
+	@ResponseBody
+	public ResponseModel getById(Integer id){
+		return new ResponseModel(courseService.getById(id));
+	}
+	
+	@RequestMapping("/deleteCourse")
+	@ResponseBody
+	public ResponseModel deleteCourse(Integer id){
+		courseService.deleteById(id,ThreadUserInfoManager.getAccount());
+		return new ResponseModel();
+	}
+	
 }

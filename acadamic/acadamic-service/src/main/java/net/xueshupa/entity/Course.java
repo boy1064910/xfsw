@@ -12,10 +12,6 @@ public class Course{
 	private Integer userId;
 	private String code;
 	private String name;
-	private Integer chapterCount;
-	private Integer knowledgeCount;
-	private Integer exampleCount;
-	private Integer videoSeconds;
 	private Double originPrice;
 	private Double price;
 	private Integer buyCount;
@@ -46,30 +42,6 @@ public class Course{
 	}
 	public String getName(){
 		return name;
-	}
-	public void setChapterCount(Integer chapterCount){
-		this.chapterCount=chapterCount;
-	}
-	public Integer getChapterCount(){
-		return chapterCount;
-	}
-	public void setKnowledgeCount(Integer knowledgeCount){
-		this.knowledgeCount=knowledgeCount;
-	}
-	public Integer getKnowledgeCount(){
-		return knowledgeCount;
-	}
-	public void setExampleCount(Integer exampleCount){
-		this.exampleCount=exampleCount;
-	}
-	public Integer getExampleCount(){
-		return exampleCount;
-	}
-	public void setVideoSeconds(Integer videoSeconds){
-		this.videoSeconds=videoSeconds;
-	}
-	public Integer getVideoSeconds(){
-		return videoSeconds;
 	}
 	public void setOriginPrice(Double originPrice){
 		this.originPrice=originPrice;

@@ -5,11 +5,6 @@ columns.push({
     align: 'center'
 });
 columns.push({
-    field: 'sequence',
-    title: '章节序号',
-    align: 'center'
-});
-columns.push({
     field: 'code',
     title: '章节编号',
     align: 'center'
@@ -73,10 +68,10 @@ Ding.ready(function(){
 
 function resetForm(){
     $("#name").val('');
+    $("#price").val('');
     $("#info").val('');
     $("#id").val('');
     $("#index").val('');
-    $("#value").val('');
 }
 
 function initAdd(){
@@ -91,7 +86,7 @@ function initEdit(id,index){
     $("#index").val(index);
     $("#id").val(id);
     Ding.ajax({
-        'url' : projectName + '/manager/acadamic/course/chapter/getById.shtml',
+        'url' :  '/acadamic-web-manager/manager/course/chapter/getById.shtml',
         'params' : {
             'id' : id
         },
@@ -99,6 +94,7 @@ function initEdit(id,index){
             var data = result.data;
             $("#name").val(data.name);
             $("#price").val(data.price);
+            $("#info").val(data.info);
             openModal({
                 'title':'编辑章节信息',
                 'targetId':'form',
@@ -132,7 +128,7 @@ function initDelete(id){
         confirmButtonClass:'btn-success',
         confirm:function(){
             Ding.ajax({
-                'url':projectName+'/manager/acadamic/course/chapter/deleteChapter.shtml',
+                'url':'/acadamic-web-manager/manager/course/chapter/deleteChapter.shtml',
                 'params':{
                     'id' : id
                 },

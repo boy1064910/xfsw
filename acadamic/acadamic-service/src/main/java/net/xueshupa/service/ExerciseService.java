@@ -14,8 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.xfsw.common.mapper.ICommonMapper;
 
+import net.xueshupa.entity.Answer;
 import net.xueshupa.entity.Exercise;
 import net.xueshupa.entity.ExerciseDetail;
+import net.xueshupa.enums.ExerciseDetailType;
+import net.xueshupa.model.ExerciseDetailModel;
 import net.xueshupa.model.ExerciseModel;
 
 @Service("exerciseService")
@@ -108,20 +111,49 @@ public class ExerciseService {
 			index++;
 		}
 		List<ExerciseDetail> exerciseDetailList = this.selectExerciseDetailListByExerciseIds(exerciseIds);
-		Map<Integer,List<ExerciseDetail>> exerciseDetailMap = new HashMap<Integer,List<ExerciseDetail>>();
+		List<Integer> answerIdList = new ArrayList<Integer>();
+		List<ExerciseDetailModel> exerciseDetailModelList = new ArrayList<ExerciseDetailModel>();
 		if(!CollectionUtils.isEmpty(exerciseDetailList)) {
 			for(ExerciseDetail exerciseDetail:exerciseDetailList) {
-				if(!exerciseDetailMap.containsKey(exerciseDetail.getExerciseId())) {
-					exerciseDetailMap.put(exerciseDetail.getExerciseId(), new ArrayList<ExerciseDetail>());
+				exerciseDetailModelList.add(new ExerciseDetailModel(exerciseDetail));
+				if(exerciseDetail.getExerciseDetailType()==ExerciseDetailType.SELECTOR) {
+					answerIdList.add(Integer.valueOf(exerciseDetail.getAnswer()));
 				}
-				exerciseDetailMap.get(exerciseDetail.getExerciseId()).add(exerciseDetail);
+			}
+		}
+		
+		List<Answer> answerList = answerService.selectListByIdList(answerIdList);
+		Map<Integer,String> answerMap = new HashMap<Integer,String>();
+		if(!CollectionUtils.isEmpty(answerList)) {
+			for(Answer answer:answerList) {
+				answerMap.put(answer.getId(), answer.getAnswer());
+			}
+		}
+		
+		for(ExerciseDetailModel exerciseDetailModel:exerciseDetailModelList) {
+			if(exerciseDetailModel.getExerciseDetailType()==ExerciseDetailType.SELECTOR) {
+				Integer answerId = Integer.valueOf(exerciseDetailModel.getAnswer());
+				if(answerMap.containsKey(answerId)) {
+					exerciseDetailModel.setAnswerUrl(answerMap.get(answerId));
+				}
+			}
+		}
+		
+		Map<Integer,List<ExerciseDetailModel>> exerciseDetailMap = new HashMap<Integer,List<ExerciseDetailModel>>();
+		if(!CollectionUtils.isEmpty(exerciseDetailList)) {
+			for(ExerciseDetailModel exerciseDetailModel:exerciseDetailModelList) {
+				if(!exerciseDetailMap.containsKey(exerciseDetailModel.getExerciseId())) {
+					exerciseDetailMap.put(exerciseDetailModel.getExerciseId(), new ArrayList<ExerciseDetailModel>());
+				}
+				exerciseDetailMap.get(exerciseDetailModel.getExerciseId()).add(exerciseDetailModel);
+				
 			}
 		}
 		
 		List<ExerciseModel> exerciseModelList = new ArrayList<ExerciseModel>();
 		for(Exercise exercise:exerciseList) {
 			ExerciseModel exerciseModel = new ExerciseModel(exercise);
-			exerciseModel.setExerciseDetailList(exerciseDetailMap.get(exercise.getId()));
+			exerciseModel.setExerciseDetailModelList(exerciseDetailMap.get(exercise.getId()));
 			exerciseModelList.add(exerciseModel);
 		}
 		return exerciseModelList;

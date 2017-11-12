@@ -22,12 +22,12 @@
 		</div>
 	</div>
 	
-	<form class="Ding-Form modal-form form-horizontal" id="form" 
-		action="<%=request.getContextPath() %>/manager/acadamic/course/saveCourse.shtml" 
+	<form class="Ding-Form modal-form form-horizontal" id="form" method="post"
+		action="/acadamic-web-manager/manager/course/saveCourse.shtml" 
 		successCallback="saveSuccess">
 		<div class="form-group">
 			<input type="hidden" id="id" name="id" />
-        	<input type="hidden" id="index" />
+        		<input type="hidden" id="index" />
 		</div>
 		<div class="form-group">
             <label class="col-lg-2 col-sm-2 control-label">课程名称</label>

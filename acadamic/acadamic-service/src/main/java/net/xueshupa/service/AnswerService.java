@@ -1,12 +1,15 @@
 package net.xueshupa.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.xfsw.common.mapper.ICommonMapper;
 
@@ -18,16 +21,8 @@ public class AnswerService {
 	@Resource(name="acadamicCommonMapper")
 	ICommonMapper commonMapper;
 	
-	public List<Answer> selectListByExerciseIds(Integer[] exerciseIds){
-		return commonMapper.selectList("Answer.selectListByExerciseIds",exerciseIds);
-	}
-	
 	public void deleteByExerciseId(Integer exerciseId,String operator){
 		commonMapper.deleteAndBak(Answer.class, "exerciseId", exerciseId, operator);
-	}
-	
-	public List<Answer> selectListByExerciseId(Integer exerciseId){
-		return commonMapper.selectList("Answer.selectListByExerciseId",exerciseId);
 	}
 	
 	/**
@@ -38,6 +33,13 @@ public class AnswerService {
 	 */
 	public List<Answer> selectPreAnswerList(){
 		return commonMapper.selectList("Answer.selectPreAnswerList");
+	}
+	
+	public List<Answer> selectAnswerListByExerciseDetailId(Integer exerciseDetailId){
+		String sql = "SELECT * FROM Answer WHERE exerciseDetailId = #{exerciseDetailId} OR exerciseDetailId IS NULL";
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("exerciseDetailId", exerciseDetailId);
+		return commonMapper.selectListBySql(sql, params, Answer.class);
 	}
 	
 	/**
@@ -55,7 +57,7 @@ public class AnswerService {
 		Integer[] ids = new Integer[answers.length];
 		for(int i=0;i<answers.length;i++){
 			commonMapper.insert("Answer.saveAnswer", answers[i]);
-			Integer maxOrderIndex = commonMapper.get("Answer.selectMaxOrderIndex",null);
+			Integer maxOrderIndex = commonMapper.get("Answer.selectMaxOrderIndex",answers[i]);
 			if(maxOrderIndex==null){
 				maxOrderIndex = 0;
 			}
@@ -69,5 +71,12 @@ public class AnswerService {
 	
 	public void deleteAnswer(Integer id,String operator){
 		commonMapper.deleteAndBak(Answer.class, id, operator);
+	}
+	
+	public List<Answer> selectListByIdList(List<Integer> answerIdList){
+		if(CollectionUtils.isEmpty(answerIdList)) {
+			return null;
+		}
+		return commonMapper.selectList("Answer.selectListByIdList", answerIdList);
 	}
 }

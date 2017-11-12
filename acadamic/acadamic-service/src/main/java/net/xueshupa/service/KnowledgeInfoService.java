@@ -43,6 +43,10 @@ public class KnowledgeInfoService {
 		return knowledgeInfo.getId();
 	}
 	
+	public void deleteKnowledgeInfo(Integer knowledgeInfoId,String operator) {
+		commonMapper.deleteAndBak(KnowledgeInfo.class, knowledgeInfoId, operator);
+	}
+	
 	public List<KnowledgeInfoModel> selectModelListByKnowledge(Integer knowledgeId){
 		String sql = "SELECT * FROM KnowledgeInfo WHERE knowledgeId = #{knowledgeId} ORDER BY orderIndex ASC";
 		Map<String,Object> params = new HashMap<String,Object>();
@@ -109,6 +113,11 @@ public class KnowledgeInfoService {
 		knowledgeInfoDetail.setOrderIndex(orderIndex);
 		commonMapper.insert(KnowledgeInfoDetail.class, knowledgeInfoDetail);
 		return knowledgeInfoDetail.getId();
+	}
+	
+	public void updateKnowledgeInfoDetail(KnowledgeInfoDetail knowledgeInfoDetail) {
+		String sql = "UPDATE KnowledgeInfoDetail SET info = #{info},lastUpdater = #{lastUpdater},lastUpdateTime = #{lastUpdateTime} WHERE id = #{id}";
+		commonMapper.updateBySql(sql, knowledgeInfoDetail);
 	}
 	
 	public void deleteKnowledgeInfoDetail(Integer knowledgeInfoDetailId,String operator){

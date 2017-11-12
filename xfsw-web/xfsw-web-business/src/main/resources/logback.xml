@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
 
-	<property name="logDir" value="/server/logs/xfsw-web-business" />
+	<property name="logDir" value="/Users/lxp/server/logs/xfsw-web-business" />
 
 	<appender name="xfsw_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">

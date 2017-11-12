@@ -12,7 +12,6 @@ import com.xfsw.common.mapper.ICommonMapper;
 import com.xfsw.common.util.NumberUtil;
 
 import net.xueshupa.entity.Chapter;
-import net.xueshupa.model.MiniChapterListModel;
 
 @Service("chapterService")
 public class ChapterService {
@@ -40,8 +39,6 @@ public class ChapterService {
 			else{
 				orderIndex++;
 			}
-			String sequence = "第"+NumberUtil.ToCH(orderIndex)+"章";
-			chapter.setSequence(sequence);
 			chapter.setOrderIndex(orderIndex);
 			String code = courseCode + NumberUtil.toZeroCode(orderIndex, 3);
 			chapter.setCode(code);
@@ -55,14 +52,14 @@ public class ChapterService {
 	}
 	
 	public Chapter getByCode(String code){
-		return (Chapter)commonMapper.get(Chapter.class, "code", code);
+		return commonMapper.get(Chapter.class, "code", code);
 	}
 	
-	/**
-	 * 前端接口
-	 * @return	
-	 */
-	public List<MiniChapterListModel> selectMiniChapterList(String courseCode){
-		return commonMapper.selectList("Chapter.selectMiniChapterList",courseCode);
+	public Chapter getById(Integer id) {
+		return commonMapper.get(Chapter.class, id);
+	}
+	
+	public void deleteChapter(Integer id,String operator) {
+		commonMapper.deleteAndBak(Chapter.class, id, operator);
 	}
 }

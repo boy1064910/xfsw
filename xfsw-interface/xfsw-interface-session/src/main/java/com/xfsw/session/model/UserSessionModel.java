@@ -18,6 +18,7 @@ public class UserSessionModel implements Serializable {
 
 	private Integer id;
 	private String account;
+	private String authCode;//授权登录码，后期后台服务修改为有效期的登录服务
 	private String nickName;
 	private String head;
 	private String email;
@@ -140,6 +141,26 @@ public class UserSessionModel implements Serializable {
 
 	public void setRoleIdList(List<Integer> roleIdList) {
 		this.roleIdList = roleIdList;
+	}
+
+	/**
+	 * 
+	 * @return the authCode
+	 * @author xiaopeng.liu
+	 * @version 
+	 */
+	public String getAuthCode() {
+		return authCode;
+	}
+
+	/**
+	 * 
+	 * @param authCode the authCode to set
+	 * @author xiaopeng.liu
+	 * @version 
+	 */
+	public void setAuthCode(String authCode) {
+		this.authCode = authCode;
 	}
 
 }

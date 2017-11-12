@@ -9,7 +9,7 @@ import java.util.Date;
 public class Answer{
 
 	private Integer id;
-	private Integer exerciseId;
+	private Integer exerciseDetailId;
 	private String answer;
 	private Integer orderIndex;
 	private String lastUpdater;
@@ -21,11 +21,11 @@ public class Answer{
 	public Integer getId(){
 		return id;
 	}
-	public void setExerciseId(Integer exerciseId){
-		this.exerciseId=exerciseId;
+	public Integer getExerciseDetailId() {
+		return exerciseDetailId;
 	}
-	public Integer getExerciseId(){
-		return exerciseId;
+	public void setExerciseDetailId(Integer exerciseDetailId) {
+		this.exerciseDetailId = exerciseDetailId;
 	}
 	public void setAnswer(String answer){
 		this.answer=answer;

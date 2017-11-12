@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xfsw.common.classes.ResponseModel;
@@ -32,10 +33,23 @@ public class ChapterController {
 		return new ResponseModel(chapterService.selectListByCourseCode(courseCode));
 	}
 	
-	@RequestMapping("/saveChapter")
+	@RequestMapping(value = "/saveChapter",method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseModel saveChapter(Chapter chapter,String courseCode){
 		chapter.setLastUpdater(ThreadUserInfoManager.getAccount());
 		return new ResponseModel(chapterService.saveChapter(chapter, courseCode));
+	}
+	
+	@RequestMapping("/getById")
+	@ResponseBody
+	public ResponseModel getById(Integer id){
+		return new ResponseModel(chapterService.getById(id));
+	}
+	
+	@RequestMapping(value = "/deleteChapter",method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseModel deleteChapter(Integer id){
+		chapterService.deleteChapter(id, ThreadUserInfoManager.getAccount());
+		return new ResponseModel();
 	}
 }

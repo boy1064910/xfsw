@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
 
-	<property name="logDir" value="/Users/lxp/server/logs/xfsw-web/xfsw-web-manager" />
+	<property name="logDir" value="/Users/lxp/server/logs/acadamic-web-program" />
 
 	<appender name="xfsw_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -86,7 +86,7 @@
 		<appender-ref ref="xfsw_info"/>
 		<appender-ref ref="xfsw_warn" />
 		<appender-ref ref="xfsw_debug" />
-		<appender-ref ref="xfsw_console"></appender-ref>
+		<appender-ref ref="xfsw_console"/>
 	</root>
 
 	<logger name="java.sql.*" level="debug" />

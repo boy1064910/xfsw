@@ -6,7 +6,6 @@ package net.xueshupa.model;
 import java.util.List;
 
 import net.xueshupa.entity.Exercise;
-import net.xueshupa.entity.ExerciseDetail;
 
 /**
  * 
@@ -24,13 +23,14 @@ public class ExerciseModel extends Exercise {
 		this.setOrderIndex(exercise.getOrderIndex());
 	}
 	
-	private List<ExerciseDetail> exerciseDetailList;
+	private List<ExerciseDetailModel> exerciseDetailModelList;
 
-	public List<ExerciseDetail> getExerciseDetailList() {
-		return exerciseDetailList;
+	public List<ExerciseDetailModel> getExerciseDetailModelList() {
+		return exerciseDetailModelList;
 	}
 
-	public void setExerciseDetailList(List<ExerciseDetail> exerciseDetailList) {
-		this.exerciseDetailList = exerciseDetailList;
+	public void setExerciseDetailModelList(List<ExerciseDetailModel> exerciseDetailModelList) {
+		this.exerciseDetailModelList = exerciseDetailModelList;
 	}
+
 }

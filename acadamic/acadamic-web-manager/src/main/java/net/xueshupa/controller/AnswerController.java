@@ -49,6 +49,19 @@ public class AnswerController {
 	}
 	
 	/**
+	 * 查询预设答案和习题答案
+	 * @param exerciseDetailId
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version
+	 */
+	@RequestMapping("/exercise/detail/list")
+	@ResponseBody
+	public ResponseModel list(Integer exerciseDetailId){
+		return new ResponseModel(answerService.selectAnswerListByExerciseDetailId(exerciseDetailId));
+	}
+	
+	/**
 	 * 保存答案信息
 	 * @param answerFileNames	答案文件名称数组
 	 * @return
@@ -57,7 +70,7 @@ public class AnswerController {
 	 */
 	@RequestMapping(value="/saveAnswers",method=RequestMethod.POST)
 	@ResponseBody
-	public ResponseModel saveAnswers(String[] answerFileNames){
+	public ResponseModel saveAnswers(String[] answerFileNames,Integer exerciseDetailId){
 		if(ArrayUtils.isEmpty(answerFileNames)){
 			return new ResponseModel();
 		}
@@ -68,12 +81,16 @@ public class AnswerController {
 		for(int i=0;i<answerFileNames.length;i++){
 			Answer answer = new Answer();
 			answer.setAnswer(answerFileUrls[i]);
+			answer.setExerciseDetailId(exerciseDetailId);
 			answer.setLastUpdater(lastUpdater);
 			answer.setLastUpdateTime(lastUpdateTime);
 			answers[i] = answer;
 		}
 		Integer[] answerIds = answerService.saveAnswers(answers);
-		return new ResponseModel(answerIds);
+		for(int i=0;i<answers.length;i++) {
+			answers[i].setId(answerIds[i]);
+		}
+		return new ResponseModel(answers);
 	}
 	
 	@RequestMapping(value="/deleteAnswer",method=RequestMethod.POST)

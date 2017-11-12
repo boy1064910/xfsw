@@ -16,6 +16,7 @@ public class UserModel implements Serializable {
 
 	private Integer id;
 	private String account;
+	private String authCode;
 	private String nickName;
 	private String head;
 	private String email;
@@ -26,6 +27,7 @@ public class UserModel implements Serializable {
 	public UserModel(User user) {
 		this.id = user.getId();
 		this.account = user.getAccount();
+		this.authCode = user.getPwd();
 		this.nickName = user.getNickName();
 		this.head = user.getHead();
 		this.email = user.getEmail();
@@ -66,6 +68,26 @@ public class UserModel implements Serializable {
 	}
 	public void setUserTenantRoleList(List<UserTenantModel> userTenantRoleList) {
 		this.userTenantRoleList = userTenantRoleList;
+	}
+
+	/**
+	 * 
+	 * @return the authCode
+	 * @author xiaopeng.liu
+	 * @version 
+	 */
+	public String getAuthCode() {
+		return authCode;
+	}
+
+	/**
+	 * 
+	 * @param authCode the authCode to set
+	 * @author xiaopeng.liu
+	 * @version 
+	 */
+	public void setAuthCode(String authCode) {
+		this.authCode = authCode;
 	}
 
 }

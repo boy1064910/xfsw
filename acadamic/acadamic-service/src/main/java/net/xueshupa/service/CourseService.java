@@ -5,11 +5,11 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.xfsw.common.classes.DataTablePageInfo;
 import com.xfsw.common.classes.DataTableResponseModel;
 import com.xfsw.common.mapper.ICommonMapper;
+import com.xfsw.common.util.NumberUtil;
 
 import net.xueshupa.entity.Course;
 import net.xueshupa.model.MiniCourseListModel;
@@ -34,27 +34,24 @@ public class CourseService {
 	
 	public Course saveCourse(Course course){
 		//TODO 后期需要考虑编号的同步锁，前期先使用spring的线程安全解决，后期分布式采用redis分布式锁解决
-//		String code = increaseCacheService.generateCourseCode();
-		String code = "";
-		course.setCode(code);
 		if(course.getId()!=null){
-			commonMapper.insert("Course.insertCourse", course);
-			return (Course) commonMapper.get(Course.class, course.getId());
+			String sql = "UPDATE Course SET name = #{name},price = #{price},lastUpdater=#{lastUpdater},lastUpdateTime = NOW() WHERE id = #{id}";
+			commonMapper.updateBySql(sql, course);
+			return commonMapper.get(Course.class, course.getId());
 		}
 		else{
-			commonMapper.insert("Course.updateCourse", course);
+			commonMapper.insert(Course.class, course);
+			Integer id = course.getId();
+			String code = NumberUtil.toZeroCode(id, 6);
+			course.setCode(code);
+			String sql = "UPDATE Course SET code = #{code} WHERE id = #{id}";
+			commonMapper.updateBySql(sql, course);
 			return course;
 		}
 	}
 	
-	@Transactional
-	public void deleteById(String code,String operator){
-//		exerciseService.deleteByCourseCode(code, operator);
-		diffLevelService.deleteByCourseCode(code, operator);
-		knowledgeService.deleteByCourseCode(code, operator);
-		chapterService.deleteByCourseCode(code, operator);
-		Course course = new Course(code);
-		commonMapper.deleteAndBak(Course.class, course, operator);
+	public void deleteById(Integer id,String operator){
+		commonMapper.deleteAndBak(Course.class, id, operator);
 	}
 	
 	public Course getByCode(String code){
@@ -73,5 +70,9 @@ public class CourseService {
 		String countSql = "SELECT COUNT(id) FROM Course";
 		String dataSql = "SELECT * FROM Course";
 		return commonMapper.selectPageBySql(countSql, dataSql, pageInfo, null);
+	}
+	
+	public Course getById(Integer id) {
+		return commonMapper.get(Course.class, id);
 	}
 }

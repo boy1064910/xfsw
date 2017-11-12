@@ -28,7 +28,7 @@
 							<i class="fa fa-magnet"></i>
 							<p>探索</p>
 						</div>
-						<div onclick="initAddGamePoint()">
+						<div onclick="initAddGamePoint('GAME')">
 							<i class="fa fa-meh-o"></i>
 							<p>游戏</p>
 						</div>
@@ -40,7 +40,7 @@
 							<i class="fa fa-puzzle-piece"></i>
 							<p>套路</p>
 						</div>
-						<div onclick="initAddPoint('EXERCISE')">
+						<div onclick="initAddGamePoint('EXERCISE')">
 							<i class="fa fa-road"></i>
 							<p>练习</p>
 						</div>
@@ -53,5 +53,14 @@
 	<div id="pointPanel">
 		
 	</div>
+	
+	<!-- 配置答案弹窗表单 -->
+	<form class="modal-form" id="configAnswerForm">
+		<input type="hidden" id="exerciseDetailId" />
+		<div class="form-group" id="answerGroup">
+			
+		</div>
+		<div id="exerciseDetailAnswerUploader"></div>
+	</form>
 </body>
 </html>

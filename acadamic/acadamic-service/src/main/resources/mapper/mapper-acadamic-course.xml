@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Course">
-	<insert id="insertCourse" parameterType="Course" keyProperty="id" useGeneratedKeys="true">
-		INSERT INTO Course(userId,code,name,price,lastUpdater,lastUpdateTime)
-		VALUES(#{userId},#{code},#{name},#{price},#{lastUpdater},NOW())
-	</insert>
-	
-	<update id="updateCourse" parameterType="Course">
-		UPDATE Course SET name = #{name},price = #{price},lastUpdater=#{lastUpdater},lastUpdateTime = NOW() WHERE id = #{id}
-	</update>
-	
 	<!-- 前端接口调用 -->
 	<select id="selectMiniCourseList" resultType="MiniCourseListModel">
 		SELECT id,code,name,chapterCount,knowledgeCount,exampleCount,videoSeconds,buyCount FROM Course ORDER BY lastUpdateTime DESC

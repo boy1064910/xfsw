@@ -9,5 +9,6 @@
 		<module>../xfsw-common</module>
 		<module>../xfsw-interface</module>
 		<module>../xfsw-service</module>
+		<module>../xfsw-web</module>
 	</modules>
 </project>

@@ -81,7 +81,7 @@ function resetForm(){
     $("#name").val('');
     $("#id").val('');
     $("#index").val('');
-    $("#value").val('');
+    $("#price").val('');
 }
 
 function initAdd(){
@@ -96,7 +96,7 @@ function initEdit(id,index){
     $("#index").val(index);
     $("#id").val(id);
     Ding.ajax({
-        'url' : projectName + '/manager/acadamic/course/getById.shtml',
+        'url' :  '/acadamic-web-manager/manager/course/getById.shtml',
         'params' : {
             'id' : id
         },
@@ -137,7 +137,7 @@ function initDelete(id){
         confirmButtonClass:'btn-success',
         confirm:function(){
             Ding.ajax({
-                'url':projectName+'/manager/acadamic/course/deleteCourse.shtml',
+                'url':'/acadamic-web-manager/manager/course/deleteCourse.shtml',
                 'params':{
                     'id' : id
                 },

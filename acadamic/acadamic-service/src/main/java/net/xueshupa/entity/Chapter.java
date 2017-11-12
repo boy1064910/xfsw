@@ -9,14 +9,10 @@ import java.util.Date;
 public class Chapter{
 
 	private Integer id;
-	private String sequence;
 	private String code;
 	private String name;
 	private String info;
 	private Integer orderIndex;
-	private Integer knowledgeCount;
-	private Integer exampleCount;
-	private Integer videoSeconds;
 	private Double originPrice;
 	private Double price;
 	private Integer buyCount;
@@ -46,24 +42,6 @@ public class Chapter{
 	}
 	public Integer getOrderIndex(){
 		return orderIndex;
-	}
-	public void setKnowledgeCount(Integer knowledgeCount){
-		this.knowledgeCount=knowledgeCount;
-	}
-	public Integer getKnowledgeCount(){
-		return knowledgeCount;
-	}
-	public void setExampleCount(Integer exampleCount){
-		this.exampleCount=exampleCount;
-	}
-	public Integer getExampleCount(){
-		return exampleCount;
-	}
-	public void setVideoSeconds(Integer videoSeconds){
-		this.videoSeconds=videoSeconds;
-	}
-	public Integer getVideoSeconds(){
-		return videoSeconds;
 	}
 	public void setOriginPrice(Double originPrice){
 		this.originPrice=originPrice;
@@ -100,12 +78,6 @@ public class Chapter{
 	}
 	public void setInfo(String info) {
 		this.info = info;
-	}
-	public String getSequence() {
-		return sequence;
-	}
-	public void setSequence(String sequence) {
-		this.sequence = sequence;
 	}
 }
 

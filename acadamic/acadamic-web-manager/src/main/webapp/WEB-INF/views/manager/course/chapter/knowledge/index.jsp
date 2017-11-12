@@ -31,8 +31,8 @@
 		successCallback="saveSuccess">
 		<div class="form-group">
 			<input type="hidden" id="id" name="id" />
-        	<input type="hidden" id="index" />
-        	<input type="hidden" name="chapterCode" id="chapterCode" value="${chapterCode }" />
+	        	<input type="hidden" id="index" />
+	        	<input type="hidden" name="chapterCode" id="chapterCode" value="${chapterCode }" />
 		</div>
 		<div class="form-group">
             <label class="col-lg-2 col-sm-2 control-label">标题</label>

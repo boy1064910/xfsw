@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.druid.util.StringUtils;
 import com.xfsw.account.model.UserModel;
 import com.xfsw.account.service.RoleAuthorityService;
 import com.xfsw.account.service.UserService;
 import com.xfsw.common.classes.ResponseModel;
+import com.xfsw.common.enums.RequestClient;
 import com.xfsw.common.util.CookieUtil;
 import com.xfsw.common.util.HttpServletRequestUtil;
 import com.xfsw.common.util.RandomUtil;
@@ -225,12 +227,38 @@ public class EntryController {
 	@PostMapping("/login")
 	public ResponseModel login(String account, String pwd, HttpServletRequest request, HttpServletResponse response) {
 		UserSessionModel userSessionModel = null;
-		String sessionidValue = CookieUtil.getCookie(SessionConstant.XFSW_SESSION_ID, request);
-		if (sessionidValue != null) {// 如果cookie-dpsessionid不为空，并且cookie-dpsessionid值存在redis中
-			userSessionModel = userSessionService.getUserSession(sessionidValue);
+		
+		//获取请求来源客户端
+		RequestClient requestClient = RequestClient.valuesOf(request.getHeader("X-REQUESTED-CLIENT"));
+		//session id信息
+		String sessionId = null;
+		switch(requestClient) {
+			//默认为浏览器，从cookie中获取sessionId相关信息
+			case Default:{
+				sessionId = CookieUtil.getCookie(SessionConstant.XFSW_SESSION_ID, request);
+				break;
+			}
+			//微信小程序
+			case WxMiniProgram:{
+				sessionId = request.getHeader(SessionConstant.XFSW_SESSION_ID);
+				break;
+			}
+		}
+		
+		if (!StringUtils.isEmpty(sessionId)) {// 如果cookie-dpsessionid不为空，并且cookie-dpsessionid值存在redis中
+			userSessionModel = userSessionService.getUserSession(sessionId);
 			if(userSessionModel!=null){ 
-				//刷新cookie过期时间
-				CookieUtil.refreshCookie(request, response, SessionConstant.XFSW_SESSION_ID, SessionConstant.XFSW_SESSION_EXPIRE, HttpServletRequestUtil.getDomain(request), "/");
+				switch(requestClient) {
+					//默认为浏览器，从cookie中获取sessionId相关信息
+					case Default:{
+						//刷新cookie过期时间
+						CookieUtil.refreshCookie(request, response, SessionConstant.XFSW_SESSION_ID, SessionConstant.XFSW_SESSION_EXPIRE, HttpServletRequestUtil.getDomain(request), "/");
+						break;
+					}
+					default:{
+						break;
+					}
+				}
 				new ResponseModel(userSessionModel);
 			}
 		}
@@ -242,7 +270,17 @@ public class EntryController {
 		String sessionIdValue = System.nanoTime() + RandomUtil.getCharAndNumr(8);
 		userSessionModel = new UserSessionModel(userModel);
 		userSessionService.addUserSession(sessionIdValue, userSessionModel);
-		CookieUtil.setCookie(response, SessionConstant.XFSW_SESSION_ID, sessionIdValue, SessionConstant.XFSW_SESSION_EXPIRE, HttpServletRequestUtil.getDomain(request), "/");
+		switch(requestClient) {
+			//默认为浏览器，从cookie中获取sessionId相关信息
+			case Default:{
+				//设置cookie
+				CookieUtil.setCookie(response, SessionConstant.XFSW_SESSION_ID, sessionIdValue, SessionConstant.XFSW_SESSION_EXPIRE, HttpServletRequestUtil.getDomain(request), "/");
+				break;
+			}
+			default:{
+				break;
+			}
+		}
 		return new ResponseModel(userSessionModel);
 	}
 

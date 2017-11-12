@@ -37,6 +37,9 @@ public class ExerciseDetail {
 	public String getType(){
 		return this.type == null? null : this.type.toString();
 	}
+	public ExerciseDetailType getExerciseDetailType() {
+		return this.type;
+	}
 	public void setType(ExerciseDetailType type) {
 		this.type = type;
 	}

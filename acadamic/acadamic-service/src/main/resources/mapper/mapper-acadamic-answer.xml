@@ -9,45 +9,35 @@
 		WHERE id = #{id}
 	</update>
 	
-	<select id="selectListByExerciseIds" resultType="Answer">
-		SELECT * FROM Answer WHERE exerciseId IN
-		<foreach collection="array" item="exerciseId" open="(" close=")" separator=",">
-			#{exerciseId}
-		</foreach>
-		ORDER BY FIELD(
-			exerciseId,
-			<foreach collection="array" item="exerciseId" open="" close="" separator=",">
-				#{exerciseId}
-			</foreach>
-		), orderIndex ASC
-	</select>
-	
-	<select id="selectListByExerciseId" parameterType="java.lang.Integer" resultType="Answer">
-		SELECT * FROM Answer WHERE exerciseId = #{exerciseId}
-	</select>
-	
 	<select id="selectPreAnswerList" resultType="Answer">
 		SELECT * FROM Answer WHERE exerciseId IS NULL
 	</select>
 	
 	<insert id="saveAnswer" parameterType="Answer" keyProperty="id" useGeneratedKeys="true">
-		INSERT INTO Answer(exerciseId,answer,lastUpdater,lastUpdateTime)
+		INSERT INTO Answer(exerciseDetailId,answer,lastUpdater,lastUpdateTime)
 		VALUES(
-			#{exerciseId},
+			#{exerciseDetailId},
 			#{answer},
 			#{lastUpdater},
 			#{lastUpdateTime}
 		)
 	</insert>
 	
-	<select id="selectMaxOrderIndex" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-		select MAX(orderIndex) from Answer WHERE exerciseId IS NULL
-		<if test="exerciseId!=null">
-			OR exerciseId = #{exerciseId}
+	<select id="selectMaxOrderIndex" parameterType="Answer" resultType="java.lang.Integer">
+		select MAX(orderIndex) from Answer WHERE exerciseDetailId IS NULL
+		<if test="exerciseDetailId!=null">
+			OR exerciseDetailId = #{exerciseDetailId}
 		</if>
 	</select>
 	
 	<update id="updateOrderIndexById" parameterType="Answer">
 		UPDATE Answer SET orderIndex = #{orderIndex} WHERE id = #{id}
 	</update>
+	
+	<select id="selectListByIdList" resultType="Answer">
+		SELECT * FROM Answer WHERE id IN 
+		<foreach collection="list" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</select>
 </mapper>

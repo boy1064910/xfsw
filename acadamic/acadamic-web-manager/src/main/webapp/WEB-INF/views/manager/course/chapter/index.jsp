@@ -22,13 +22,13 @@
 		</div>
 	</div>
 	
-	<form class="Ding-Form modal-form form-horizontal" id="form" 
-		action="<%=request.getContextPath() %>/manager/acadamic/course/chapter/saveChapter.shtml" 
+	<form class="Ding-Form modal-form form-horizontal" id="form" method="post"
+		action="/acadamic-web-manager/manager/course/chapter/saveChapter.shtml" 
 		successCallback="saveSuccess">
 		<div class="form-group">
 			<input type="hidden" id="id" name="id" />
-        	<input type="hidden" id="index" />
-        	<input type="hidden" name="courseCode" id="courseCode" value="${courseCode }" />
+	        	<input type="hidden" id="index" />
+	        	<input type="hidden" name="courseCode" id="courseCode" value="${courseCode }" />
 		</div>
 		<div class="form-group">
             <label class="col-lg-2 col-sm-2 control-label">章节名称</label>
@@ -45,7 +45,7 @@
         <div class="form-group">
             <label class="col-lg-2 col-sm-2 control-label">章节介绍</label>
             <div class="col-lg-8">
-            	<textarea name="info" rows="6" class="form-control" validations="vComplexMaxLength=100" validationTips="长度不能超过100个中文字符或者200个英文字符" ></textarea>
+            	<textarea id="info" name="info" rows="6" class="form-control" validations="vComplexMaxLength=100" validationTips="长度不能超过100个中文字符或者200个英文字符" ></textarea>
             </div>
         </div>
 	</form>

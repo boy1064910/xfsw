@@ -101,6 +101,13 @@ public class KnowledgeController {
 		return new ResponseModel(knowledgeId);
 	}
 	
+	@RequestMapping(value="/deleteKnowledgeInfo",method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseModel deleteKnowledgeInfo(Integer knowledgeInfoId){
+		knowledgeInfoService.deleteKnowledgeInfo(knowledgeInfoId,ThreadUserInfoManager.getAccount());
+		return new ResponseModel();
+	}
+	
 	@RequestMapping(value="/insertKnowledgeInfoDetail",method=RequestMethod.POST)
 	@ResponseBody
 	public ResponseModel insertKnowledgeInfoDetail(KnowledgeInfoDetail knowledgeInfoDetail){
@@ -111,6 +118,15 @@ public class KnowledgeController {
 		Integer knowledgeDetailId = knowledgeInfoService.saveKnowledgeInfoDetail(knowledgeInfoDetail);
 		knowledgeInfoDetail.setId(knowledgeDetailId);
 		return new ResponseModel(knowledgeInfoDetail);
+	}
+	
+	@RequestMapping(value="/updateKnowledgeInfoDetail",method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseModel updateKnowledgeInfoDetail(KnowledgeInfoDetail knowledgeInfoDetail){
+		knowledgeInfoDetail.setLastUpdater(ThreadUserInfoManager.getAccount());
+		knowledgeInfoDetail.setLastUpdateTime(new Date());
+		knowledgeInfoService.updateKnowledgeInfoDetail(knowledgeInfoDetail);
+		return new ResponseModel();
 	}
 	
 	@RequestMapping(value="/deleteKnowledgeInfoDetail",method=RequestMethod.POST)
