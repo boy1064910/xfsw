@@ -32,7 +32,8 @@ public class AnswerService {
 	 * @version 0.0.1
 	 */
 	public List<Answer> selectPreAnswerList(){
-		return commonMapper.selectList("Answer.selectPreAnswerList");
+		String sql = "SELECT * FROM Answer WHERE exerciseDetailId IS NULL";
+		return commonMapper.selectListBySql(sql, Answer.class);
 	}
 	
 	public List<Answer> selectAnswerListByExerciseDetailId(Integer exerciseDetailId){

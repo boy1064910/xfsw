@@ -9,10 +9,6 @@
 		WHERE id = #{id}
 	</update>
 	
-	<select id="selectPreAnswerList" resultType="Answer">
-		SELECT * FROM Answer WHERE exerciseId IS NULL
-	</select>
-	
 	<insert id="saveAnswer" parameterType="Answer" keyProperty="id" useGeneratedKeys="true">
 		INSERT INTO Answer(exerciseDetailId,answer,lastUpdater,lastUpdateTime)
 		VALUES(
