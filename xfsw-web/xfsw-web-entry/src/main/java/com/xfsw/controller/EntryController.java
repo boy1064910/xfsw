@@ -9,6 +9,8 @@ import java.security.NoSuchProviderException;
 import java.security.Security;
 import java.security.spec.InvalidParameterSpecException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.crypto.BadPaddingException;
@@ -145,7 +147,11 @@ public class EntryController {
  		String sessionId = System.nanoTime() + RandomUtil.getCharAndNumr(8);
  		UserSessionModel userSessionModel = new UserSessionModel(userModel);
  		userSessionService.addUserSession(sessionId, userSessionModel);
- 		return new ResponseModel(userSessionService.getUserPublicInfo(sessionId));
+ 		
+ 		Map<String,Object> result = new HashMap<String,Object>();
+ 		result.put("sessionId", sessionId);
+ 		result.put("userInfo", userSessionService.getUserPublicInfo(sessionId));
+ 		return new ResponseModel(result);
 	}
 	
 	@PostMapping("/login")

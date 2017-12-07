@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import com.xfsw.account.model.UserModel;
 import com.xfsw.account.model.UserTenantModel;
 
@@ -47,17 +49,19 @@ public class UserSessionModel implements Serializable {
 		this.registeTime = userModel.getRegisteTime();
 		this.status = userModel.getStatus();
 		
-		this.userTenantList = new ArrayList<UserTenantSessionModel>(userModel.getUserTenantRoleList().size());
-		userModel.getUserTenantRoleList().forEach((u)->{
-			this.userTenantList.add(new UserTenantSessionModel(u));
-		});
-		
-		this.tenantId = this.userTenantList.get(0).getTenantId();
-		this.tenantName = this.userTenantList.get(0).getTenantName();
-		this.tenantCode = this.userTenantList.get(0).getTenantCode();
-		this.roleIdList = this.userTenantList.get(0).getRoleIdList();
-		this.categoryAuthorityIds = this.userTenantList.get(0).getCategoryAuthorityIds();
-		this.authorityIds = this.userTenantList.get(0).getAuthorityIds();
+		if(!CollectionUtils.isEmpty(userModel.getUserTenantRoleList())){
+			this.userTenantList = new ArrayList<UserTenantSessionModel>(userModel.getUserTenantRoleList().size());
+			userModel.getUserTenantRoleList().forEach((u)->{
+				this.userTenantList.add(new UserTenantSessionModel(u));
+			});
+			
+			this.tenantId = this.userTenantList.get(0).getTenantId();
+			this.tenantName = this.userTenantList.get(0).getTenantName();
+			this.tenantCode = this.userTenantList.get(0).getTenantCode();
+			this.roleIdList = this.userTenantList.get(0).getRoleIdList();
+			this.categoryAuthorityIds = this.userTenantList.get(0).getCategoryAuthorityIds();
+			this.authorityIds = this.userTenantList.get(0).getAuthorityIds();
+		}
 	}
 
 	public Integer getId() {

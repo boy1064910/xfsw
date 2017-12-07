@@ -184,18 +184,17 @@ public class UserServiceImpl implements UserService {
 				UserModel userModel = new UserModel(user);
 				//读取空间信息
 				List<UserTenantModel> userTenantModelList = commonMapper.selectList("UserTenant.selectListByUserId", userModel.getId());
-				if(CollectionUtils.isEmpty(userTenantModelList)) {
-					throw new BusinessException(ErrorConstant.ACCOUNT_NOT_BIND_TENANT,"账号尚未开通使用空间，请联系平台客服！");
+				if(!CollectionUtils.isEmpty(userTenantModelList)) {
+					userTenantModelList.forEach((tenant) -> {
+						//读取空间角色信息
+						tenant.setRoleIdList(commonMapper.selectList("UserTenantRole.selectRoleIdListByUserIdAndTenantId",tenant));
+						//读取用户空间角色下的权限信息
+						UserAuthorityIdsModel userAuthorityIdsModel = roleAuthorityService.selectAllAuthorityHashIdsByUserInfo(tenant.getUserId(), tenant.getTenantId());
+						tenant.setAuthorityIds(userAuthorityIdsModel.getAuthorityIds());
+						tenant.setCategoryAuthorityIds(userAuthorityIdsModel.getCategoryAuthorityIds());
+					});
+					userModel.setUserTenantRoleList(userTenantModelList);
 				}
-				userTenantModelList.forEach((tenant) -> {
-					//读取空间角色信息
-					tenant.setRoleIdList(commonMapper.selectList("UserTenantRole.selectRoleIdListByUserIdAndTenantId",tenant));
-					//读取用户空间角色下的权限信息
-					UserAuthorityIdsModel userAuthorityIdsModel = roleAuthorityService.selectAllAuthorityHashIdsByUserInfo(tenant.getUserId(), tenant.getTenantId());
-					tenant.setAuthorityIds(userAuthorityIdsModel.getAuthorityIds());
-					tenant.setCategoryAuthorityIds(userAuthorityIdsModel.getCategoryAuthorityIds());
-				});
-				userModel.setUserTenantRoleList(userTenantModelList);
 				
 				//记录登录日志
 				userLoginRecordService.record(user.getId(),ip);

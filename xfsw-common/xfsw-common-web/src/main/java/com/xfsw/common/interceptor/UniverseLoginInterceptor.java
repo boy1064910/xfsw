@@ -12,9 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.xfsw.common.classes.ResponseModel;
 import com.xfsw.common.consts.ErrorConstant;
-import com.xfsw.common.enums.RequestClient;
 import com.xfsw.common.thread.ThreadUserInfoManager;
-import com.xfsw.common.util.CookieUtil;
 import com.xfsw.common.util.HttpServletRequestUtil;
 import com.xfsw.common.util.JsonUtil;
 import com.xfsw.common.util.StringUtil;
@@ -37,22 +35,8 @@ public class UniverseLoginInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		logger.info("请求的url:"+request.getRequestURI());
-		//获取请求来源客户端
-		RequestClient requestClient = RequestClient.valuesOf(request.getHeader("X-REQUESTED-CLIENT"));
 		//session id信息
-		String sessionId = null;
-		switch(requestClient) {
-			//默认为浏览器，从cookie中获取sessionId相关信息
-			case Default:{
-				sessionId = CookieUtil.getCookie(SessionConstant.XFSW_SESSION_ID, request);
-				break;
-			}
-			//微信小程序
-			case WxMiniProgram:{
-				sessionId = request.getHeader(SessionConstant.XFSW_SESSION_ID);
-				break;
-			}
-		}
+		String sessionId = request.getHeader(SessionConstant.XFSW_SESSION_ID);
 		
 		if(StringUtil.isEmpty(sessionId)){
 			loginTimeout(request,response,sessionId);
@@ -65,16 +49,6 @@ public class UniverseLoginInterceptor implements HandlerInterceptor {
 			return false;
 		}
 		
-		switch(requestClient) {
-			case Default:{
-				//刷新cookie过期时间
-				CookieUtil.refreshCookie(request, response, SessionConstant.XFSW_SESSION_ID, SessionConstant.XFSW_SESSION_EXPIRE, HttpServletRequestUtil.getDomain(request), "/");
-				break;
-			}
-			default:{
-				break;
-			}
-		}
 		//为当前线程保存用户信息
 		ThreadUserInfoManager.setUserInfo(userSessionModel);
 		return true;
