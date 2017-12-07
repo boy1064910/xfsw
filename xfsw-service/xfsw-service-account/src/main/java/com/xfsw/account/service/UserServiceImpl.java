@@ -35,11 +35,18 @@ public class UserServiceImpl implements UserService {
 	UserLoginRecordService userLoginRecordService;
 		
 	@Override
-	public UserModel login(String account, String pwd,String ip) throws BusinessException {
+	public UserModel login(String account, String pwd,String ip){
 		User queryUser = new User();
 		queryUser.setAccount(account);
 		queryUser.setPwd(pwd);
 		return this.login(queryUser, ip);
+	}
+	
+	@Override
+	public UserModel login(String unionId,String ip) {
+		User user = new User(); 
+		user.setUnionId(unionId);
+		return this.login(user, ip);
 	}
 	
 	public void switchTenant(Integer userTenantId) {
@@ -75,6 +82,7 @@ public class UserServiceImpl implements UserService {
 		userTenantRole.setRoleId(roleId);
 		commonMapper.insert(UserTenantRole.class, userTenantRole);
 	}
+	
 	
 //	public UserModel wxLogin(String unionId,String ip) {
 //		User queryUser = new User();

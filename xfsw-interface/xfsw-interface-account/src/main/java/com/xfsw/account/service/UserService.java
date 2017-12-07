@@ -13,7 +13,7 @@ import com.xfsw.common.classes.BusinessException;
 public interface UserService {
 
 	/**
-	 * 用户登录
+	 * 账号密码登录
 	 * @param account
 	 * @param pwd
 	 * @param ip
@@ -22,7 +22,17 @@ public interface UserService {
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
-	UserModel login(String account,String pwd,String ip) throws BusinessException;
+	UserModel login(String account,String pwd,String ip);
+	
+	/**
+	 * 微信UnionId登录（调用之前请先进行相关校验）
+	 * @param unionId
+	 * @param ip
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	UserModel login(String unionId,String ip);
 	
 	/**
 	 * 用户切换使用空间

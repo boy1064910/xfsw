@@ -1,6 +1,7 @@
 package com.xfsw.account.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import com.xfsw.account.entity.User;
@@ -20,6 +21,8 @@ public class UserModel implements Serializable {
 	private String nickName;
 	private String head;
 	private String email;
+	private Date registeTime;
+	private Integer status;
 	private List<UserTenantModel> userTenantRoleList;
 	
 	public UserModel() {}
@@ -31,6 +34,8 @@ public class UserModel implements Serializable {
 		this.nickName = user.getNickName();
 		this.head = user.getHead();
 		this.email = user.getEmail();
+		this.registeTime = user.getRegisteTime();
+		this.status = user.getStatus();
 	}
 	
 	public Integer getId() {
@@ -88,6 +93,22 @@ public class UserModel implements Serializable {
 	 */
 	public void setAuthCode(String authCode) {
 		this.authCode = authCode;
+	}
+
+	public Date getRegisteTime() {
+		return registeTime;
+	}
+
+	public void setRegisteTime(Date registeTime) {
+		this.registeTime = registeTime;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 }

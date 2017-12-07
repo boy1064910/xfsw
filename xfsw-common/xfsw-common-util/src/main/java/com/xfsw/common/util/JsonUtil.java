@@ -137,5 +137,72 @@ class ResultNode{
 	public void setChildren(List<ResultNode> children) {
 		this.children = children;
 	}
+	
 }
 
+class Response{
+	String code;
+	String msg;
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+
+	Data data;
+
+	public Data getData() {
+		return data;
+	}
+
+	public void setData(Data data) {
+		this.data = data;
+	}
+}
+class Data{
+	List<String> deprels;
+	List<Integer> heads;
+	List<String> ners;
+	List<String> words;
+	List<String> postags;
+	public List<String> getPostags() {
+		return postags;
+	}
+	public void setPostags(List<String> postags) {
+		this.postags = postags;
+	}
+	public List<String> getDeprels() {
+		return deprels;
+	}
+	public void setDeprels(List<String> deprels) {
+		this.deprels = deprels;
+	}
+	public List<Integer> getHeads() {
+		return heads;
+	}
+	public void setHeads(List<Integer> heads) {
+		this.heads = heads;
+	}
+	public List<String> getNers() {
+		return ners;
+	}
+	public void setNers(List<String> ners) {
+		this.ners = ners;
+	}
+	public List<String> getWords() {
+		return words;
+	}
+	public void setWords(List<String> words) {
+		this.words = words;
+	}
+}

@@ -31,6 +31,8 @@
 		<typeAlias type="com.xfsw.account.model.AuthorityModel" alias="AuthorityModel" />
 		<typeAlias type="com.xfsw.account.model.RoleAuthoritySqlModel" alias="RoleAuthoritySqlModel" />
 		
+		<typeAlias type="com.xfsw.account.model.UserPublicInfo" alias="UserPublicInfo"/>
+		
 	</typeAliases>
 
 </configuration>

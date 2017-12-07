@@ -14,10 +14,13 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.xfsw.account.model.UserAuthorityIdsModel;
+import com.xfsw.account.model.UserPublicInfo;
 import com.xfsw.common.classes.BusinessException;
 import com.xfsw.common.util.JsonUtil;
 import com.xfsw.common.util.StringUtil;
@@ -27,13 +30,14 @@ import com.xfsw.session.model.UserSessionModel;
 @Service("userSessionService")
 public class UserSessionServiceImpl implements UserSessionService {
 
-//	private static Logger logger = LoggerFactory.getLogger(UserSessionServiceImpl.class);
+	private static Logger logger = LoggerFactory.getLogger(UserSessionServiceImpl.class);
 	
 	@Resource(name="sessionRedisTemplate")
 	RedisTemplate<String, String> sessionRedisTemplate;
 	
 	@Override
 	public void addUserSession(String sessionIdValue,UserSessionModel userSessionModel){
+		logger.info("创建用户缓存信息："+sessionIdValue);
 		sessionRedisTemplate.opsForValue().set(SessionConstant.XFSW_SESSION_REDIS_PREFIX + sessionIdValue, JsonUtil.entity2Json(userSessionModel),SessionConstant.XFSW_SESSION_EXPIRE, TimeUnit.MILLISECONDS);
 	}
 	
@@ -43,10 +47,6 @@ public class UserSessionServiceImpl implements UserSessionService {
 		return this.getUserSessionByKey(key);
 	}
 	
-//	public void addUserSessionByKey(String key,UserSessionModel user){
-//		sessionRedisTemplate.opsForValue().set(key, JsonUtil.entity2Json(user),CommonConstant.XFSW_PLATFORM_SESSION_EXPIRE, TimeUnit.MILLISECONDS);
-//	}
-//
 	public void deleteUserSession(String sessionIdValue){
 		sessionRedisTemplate.delete(SessionConstant.XFSW_SESSION_REDIS_PREFIX + sessionIdValue);
 	}
@@ -79,6 +79,24 @@ public class UserSessionServiceImpl implements UserSessionService {
 				}
 			}
 		}
+	}
+	
+	@Override
+	public UserPublicInfo getUserPublicInfo(String sessionId) {
+		String key = SessionConstant.XFSW_SESSION_REDIS_PREFIX + sessionId;
+		UserSessionModel u = this.getUserSessionByKey(key);
+		UserPublicInfo userPublicInfo = new UserPublicInfo() {
+			{
+				setId(u.getId());
+				setAccount(u.getAccount());
+				setEmail(u.getEmail());
+				setHead(u.getHead());
+				setNickName(u.getNickName());
+				setRegisteTime(u.getRegisteTime());
+				setStatus(u.getStatus());
+			}
+		};
+		return userPublicInfo;
 	}
 	
 //	public void refreshUserSessionAuthorityInfo(){

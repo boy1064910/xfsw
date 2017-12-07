@@ -2,6 +2,7 @@ package com.xfsw.session.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.xfsw.account.model.UserModel;
@@ -22,6 +23,8 @@ public class UserSessionModel implements Serializable {
 	private String nickName;
 	private String head;
 	private String email;
+	private Date registeTime;
+	private Integer status;
 	private List<UserTenantSessionModel> userTenantList;
 	
 	//当前空间下的相关数据信息
@@ -41,6 +44,8 @@ public class UserSessionModel implements Serializable {
 		this.nickName = userModel.getNickName();
 		this.head = userModel.getHead();
 		this.email = userModel.getEmail();
+		this.registeTime = userModel.getRegisteTime();
+		this.status = userModel.getStatus();
 		
 		this.userTenantList = new ArrayList<UserTenantSessionModel>(userModel.getUserTenantRoleList().size());
 		userModel.getUserTenantRoleList().forEach((u)->{
@@ -161,6 +166,22 @@ public class UserSessionModel implements Serializable {
 	 */
 	public void setAuthCode(String authCode) {
 		this.authCode = authCode;
+	}
+
+	public Date getRegisteTime() {
+		return registeTime;
+	}
+
+	public void setRegisteTime(Date registeTime) {
+		this.registeTime = registeTime;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 }

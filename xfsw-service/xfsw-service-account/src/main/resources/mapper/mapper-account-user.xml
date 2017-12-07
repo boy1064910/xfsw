@@ -6,11 +6,14 @@
 	<select id="login" parameterType="User" resultType="User">
 		SELECT * FROM User WHERE
 		<choose>
+			<!-- 账号密码登录 -->
 			<when test="account != null and '' != account and pwd != null and '' != pwd">
 				account = #{account} AND pwd = #{pwd}
 			</when>
 			<!-- 微信登录 -->
-			<otherwise>1 != 1</otherwise>
+			<otherwise>
+				unionId = #{unionId}
+			</otherwise>
 		</choose>
 	</select>
 
