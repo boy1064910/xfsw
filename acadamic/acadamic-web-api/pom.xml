@@ -1,13 +1,12 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.xueshupa</groupId>
 		<artifactId>acadamic</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>acadamic-web-program</artifactId>
-
+	<artifactId>acadamic-web-api</artifactId>
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.xfsw</groupId>
@@ -17,6 +16,21 @@
 		<dependency>
 			<groupId>com.xfsw</groupId>
 			<artifactId>xfsw-common-web</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.xfsw</groupId>
+			<artifactId>xfsw-service-session</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.xfsw</groupId>
+			<artifactId>xfsw-service-account</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.xfsw</groupId>
+			<artifactId>xfsw-service-business</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
@@ -106,7 +120,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>net.xueshupa.Application</mainClass>
+							<mainClass>net.xueshupa.AcadamicWebManagerApplication</mainClass>
 						</manifest>
 					</archive>
 					<outputDirectory>/server/service/${project.artifactId}</outputDirectory>

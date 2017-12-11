@@ -12,7 +12,6 @@ import com.xfsw.common.mapper.ICommonMapper;
 import com.xfsw.common.util.NumberUtil;
 
 import net.xueshupa.entity.Course;
-import net.xueshupa.model.MiniCourseListModel;
 
 @Service("courseService")
 public class CourseService {
@@ -58,14 +57,6 @@ public class CourseService {
 		return commonMapper.get(Course.class, "code", code);
 	}
 	
-	/**
-	 * 前端接口
-	 * @return	
-	 */
-	public List<MiniCourseListModel> selectMiniCourseList(){
-		return commonMapper.selectList("Course.selectMiniCourseList");
-	}
-	
 	public DataTableResponseModel selectPageInfo(DataTablePageInfo pageInfo){
 		String countSql = "SELECT COUNT(id) FROM Course";
 		String dataSql = "SELECT * FROM Course";
@@ -74,5 +65,9 @@ public class CourseService {
 	
 	public Course getById(Integer id) {
 		return commonMapper.get(Course.class, id);
+	}
+	
+	public List<Course> selectAll(){
+		return commonMapper.selectAll(Course.class);
 	}
 }

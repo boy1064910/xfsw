@@ -61,6 +61,5 @@ public class ResponseModel implements Serializable {
 	public void setData(Object data) {
 		this.data = data;
 	}
-
 	
 }

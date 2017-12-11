@@ -17,6 +17,7 @@
 		
 		<module>acadamic-service</module>
 		<module>acadamic-web-program</module>
+		<module>acadamic-web-api</module>
 	</modules>
 	
 	<!--依赖管理，用于管理spring-cloud的依赖 -->

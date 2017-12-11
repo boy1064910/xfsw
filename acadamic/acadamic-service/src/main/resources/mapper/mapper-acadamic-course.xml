@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Course">
-	<!-- 前端接口调用 -->
-	<select id="selectMiniCourseList" resultType="MiniCourseListModel">
-		SELECT id,code,name,chapterCount,knowledgeCount,exampleCount,videoSeconds,buyCount FROM Course ORDER BY lastUpdateTime DESC
-	</select>
+	
 </mapper>
