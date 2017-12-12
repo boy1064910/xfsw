@@ -44,24 +44,40 @@ public class MapUtil {
 	}
 
 	public static <T> T map2Entity(Map<?, ?> mp, Class<T> clazz) {
-		try {
-			BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
-			PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
-			T entity = clazz.newInstance();
-			for (PropertyDescriptor property : propertyDescriptors) {
-				String key = property.getName();
-				if (mp.containsKey(key)) {
-					Object value = mp.get(key);
-					// Java中提供了用来访问某个属性的getter/setter方法
-					Method setter = property.getWriteMethod();
-					setter.invoke(entity, value);
-				}
-			}
-			return entity;
-		} catch (IntrospectionException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException e) {
-			e.printStackTrace();
-			throw new BusinessException(ErrorConstant.ERROR_SYSTEM_KNOWN, "Map transform to entity failed!", e);
-		}
+		String json = JsonUtil.entity2Json(mp);
+		return JsonUtil.json2Entity(json, clazz);
+//			BeanInfo beanInfo = null;
+//			try {
+//				beanInfo = Introspector.getBeanInfo(clazz);
+//			} catch (IntrospectionException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+//			T entity = null;
+//			try {
+//				entity = clazz.newInstance();
+//			} catch (InstantiationException | IllegalAccessException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			for (PropertyDescriptor property : propertyDescriptors) {
+//				String key = property.getName();
+//				if (mp.containsKey(key)) {
+//					Object value = mp.get(key);
+//					// Java中提供了用来访问某个属性的getter/setter方法
+//					Method setter = property.getWriteMethod();
+//					try {
+//						setter.invoke(entity, value);
+//					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+//						logger.debug(setter.getName());
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				}
+//			}
+//			return entity;
+////			throw new BusinessException(ErrorConstant.ERROR_SYSTEM_KNOWN, "Map transform to entity failed!", e);
 	}
 
 	public static <T> T obj2Entity(Object obj, Class<T> clazz) {

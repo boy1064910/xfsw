@@ -20,7 +20,6 @@
 		<typeAlias type="net.xueshupa.entity.ExerciseDetail" alias="ExerciseDetail"/>
 		<typeAlias type="net.xueshupa.entity.Answer" alias="Answer"/>
 		<!-- model -->
-		<typeAlias type="net.xueshupa.model.MiniCourseListModel" alias="MiniCourseListModel"/>
 		<typeAlias type="net.xueshupa.model.MiniChapterListModel" alias="MiniChapterListModel"/>
 		<typeAlias type="net.xueshupa.model.MiniKnowledgeListModel" alias="MiniKnowledgeListModel"/>
 		<typeAlias type="net.xueshupa.model.MiniKnowledgeInfoModel" alias="MiniKnowledgeInfoModel"/>

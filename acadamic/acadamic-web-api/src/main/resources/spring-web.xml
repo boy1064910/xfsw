@@ -31,4 +31,8 @@
 	
 	<!-- 导入服务spring配置文件 -->
 	<import resource="classpath*:spring/spring-service-*.xml" />
+	
+	<!-- 扫描包 -->
+	<context:annotation-config />
+	<context:component-scan base-package="com.xfsw.common" />
 </beans>
