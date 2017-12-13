@@ -1,5 +1,8 @@
 package net.xueshupa.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +24,9 @@ public class CourseController {
 	@ResponseFilterRetention(ignores = { "userId","state","lastUpdater","lastUpdateTime" })
 	@GetMapping(value = "/list")
 	public ResponseModel list(){
-		return new ResponseModel(courseService.selectAll());
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		resultMap.put("courseList", courseService.selectAll());
+		return new ResponseModel(resultMap);
 	}
 	
 }
