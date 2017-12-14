@@ -39,7 +39,7 @@ public class CourseController {
 	@Resource
 	ProgressCourseService progressCourseService;
 	
-	@ResponseFilterRetention(ignores = { "userId","state","lastUpdater","lastUpdateTime" })
+	@ResponseFilterRetention(ignores = { "userId","code","state","lastUpdater","lastUpdateTime" })
 	@GetMapping(value = "/list")
 	public ResponseModel list(){
 		Map<String,Object> resultMap = new HashMap<String,Object>();
