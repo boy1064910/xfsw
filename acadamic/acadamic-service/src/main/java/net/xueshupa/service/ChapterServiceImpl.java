@@ -14,18 +14,20 @@ import com.xfsw.common.util.NumberUtil;
 import net.xueshupa.entity.Chapter;
 
 @Service("chapterService")
-public class ChapterService {
+public class ChapterServiceImpl implements ChapterService {
 
 	@Resource(name="acadamicCommonMapper")
 	ICommonMapper commonMapper;
-	
+
+	@Override
 	public void deleteByCourseCode(String code,String operator){
 		String sql = "DELETE FROM Chapter WHERE code LIKE CONCAT('#{code}','%')";
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("code", code);
 		commonMapper.deleteAndBak(sql, Chapter.class, params, operator);
 	}
-	
+
+	@Override
 	public Chapter saveChapter(Chapter chapter,String courseCode){
 		if(chapter.getId()!=null){
 			commonMapper.insert("Chapter.updateChapter", chapter);
@@ -46,20 +48,29 @@ public class ChapterService {
 			return chapter;
 		}
 	}
-	
+
+	@Override
 	public List<Chapter> selectListByCourseCode(String courseCode){
 		return commonMapper.selectList("Chapter.selectListByCourseCode", courseCode);
 	}
-	
+
+	@Override
 	public Chapter getByCode(String code){
 		return commonMapper.get(Chapter.class, "code", code);
 	}
 	
+	@Override
 	public Chapter getById(Integer id) {
 		return commonMapper.get(Chapter.class, id);
 	}
 	
+	@Override
 	public void deleteChapter(Integer id,String operator) {
 		commonMapper.deleteAndBak(Chapter.class, id, operator);
+	}
+	
+	@Override
+	public List<Chapter> selectListByIdList(List<Integer> chapterIdList){
+		return commonMapper.selectList("Chapter.selectListByIdList",chapterIdList);
 	}
 }

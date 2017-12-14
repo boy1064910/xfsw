@@ -19,7 +19,7 @@ import net.xueshupa.model.ExerciseModel;
 import net.xueshupa.model.KnowledgeInfoModel;
 
 @Service("knowledgeInfoService")
-public class KnowledgeInfoService {
+public class KnowledgeInfoServiceImpl implements KnowledgeInfoService {
 
 	@Resource(name="acadamicCommonMapper")
 	ICommonMapper commonMapper;

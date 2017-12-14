@@ -16,11 +16,12 @@ import com.xfsw.common.mapper.ICommonMapper;
 import net.xueshupa.entity.Answer;
 
 @Service("answerService")
-public class AnswerService {
+public class AnswerServiceImpl implements AnswerService {
 
 	@Resource(name="acadamicCommonMapper")
 	ICommonMapper commonMapper;
 	
+	@Override
 	public void deleteByExerciseId(Integer exerciseId,String operator){
 		commonMapper.deleteAndBak(Answer.class, "exerciseId", exerciseId, operator);
 	}
@@ -31,11 +32,13 @@ public class AnswerService {
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
+	@Override
 	public List<Answer> selectPreAnswerList(){
 		String sql = "SELECT * FROM Answer WHERE exerciseDetailId IS NULL";
 		return commonMapper.selectListBySql(sql, Answer.class);
 	}
 	
+	@Override
 	public List<Answer> selectAnswerListByExerciseDetailId(Integer exerciseDetailId){
 		String sql = "SELECT * FROM Answer WHERE exerciseDetailId = #{exerciseDetailId} OR exerciseDetailId IS NULL";
 		Map<String,Object> params = new HashMap<String,Object>();
@@ -50,6 +53,7 @@ public class AnswerService {
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
+	@Override
 	@Transactional(transactionManager="acadamicTxManager")
 	public Integer[] saveAnswers(Answer[] answers){
 		if(ArrayUtils.isEmpty(answers)){
@@ -70,10 +74,12 @@ public class AnswerService {
 		return ids;
 	}
 	
+	@Override
 	public void deleteAnswer(Integer id,String operator){
 		commonMapper.deleteAndBak(Answer.class, id, operator);
 	}
 	
+	@Override
 	public List<Answer> selectListByIdList(List<Integer> answerIdList){
 		if(CollectionUtils.isEmpty(answerIdList)) {
 			return null;

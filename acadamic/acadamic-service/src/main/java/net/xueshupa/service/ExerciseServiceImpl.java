@@ -22,7 +22,7 @@ import net.xueshupa.model.ExerciseDetailModel;
 import net.xueshupa.model.ExerciseModel;
 
 @Service("exerciseService")
-public class ExerciseService {
+public class ExerciseServiceImpl implements ExerciseService {
 
 	@Resource(name="acadamicCommonMapper")
 	ICommonMapper commonMapper;

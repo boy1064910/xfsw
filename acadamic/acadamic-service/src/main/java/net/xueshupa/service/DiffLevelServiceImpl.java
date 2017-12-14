@@ -15,7 +15,7 @@ import net.xueshupa.entity.DiffLevel;
 import net.xueshupa.model.MiniDiffLevelListModel;
 
 @Service("diffLevelService")
-public class DiffLevelService {
+public class DiffLevelServiceImpl implements DiffLevelService {
 
 	@Resource(name="acadamicCommonMapper")
 	ICommonMapper commonMapper;

@@ -18,7 +18,7 @@ import net.xueshupa.model.MiniKnowledgeInfoModel;
 import net.xueshupa.model.MiniKnowledgeListModel;
 
 @Service("knowledgeService")
-public class KnowledgeService {
+public class KnowledgeServiceImpl implements KnowledgeService {
 
 	@Resource(name="acadamicCommonMapper")
 	ICommonMapper commonMapper;

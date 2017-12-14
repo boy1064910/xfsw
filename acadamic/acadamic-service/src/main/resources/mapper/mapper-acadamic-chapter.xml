@@ -18,6 +18,13 @@
 		SELECT * FROM Chapter WHERE code LIKE CONCAT(#{courseCode},'%') ORDER BY orderIndex ASC 
 	</select>
 	
+	<select id="selectListByIdList" resultType="Chapter">
+		SELECT * FROM Chapter WHERE id IN
+		<foreach collection="list" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach> 
+	</select>
+	
 	<!-- 前端接口调用 -->
 	<select id="selectMiniChapterList" parameterType="java.lang.String" resultType="MiniChapterListModel">
 		SELECT id,code,sequence,name,knowledgeCount,exampleCount,videoSeconds,buyCount,price FROM Chapter WHERE code LIKE CONCAT(#{courseCode},'%') ORDER BY orderIndex ASC

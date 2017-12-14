@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import com.xfsw.common.mapper.ICommonMapper;
 import com.xfsw.common.service.CommonService;
 
+import net.xueshupa.service.AcadamicService;
+
 @Service("acadamicService")
-public class AcadamicService extends CommonService {
+public class AcadamicServiceImpl extends CommonService implements AcadamicService{
 
 	@Resource(name="acadamicCommonMapper")
 	ICommonMapper commonMapper;

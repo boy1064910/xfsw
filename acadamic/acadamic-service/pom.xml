@@ -13,5 +13,10 @@
 			<artifactId>xfsw-common-service</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>net.xueshupa</groupId>
+			<artifactId>acadamic-interface</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

@@ -14,7 +14,7 @@ import com.xfsw.common.util.NumberUtil;
 import net.xueshupa.entity.Course;
 
 @Service("courseService")
-public class CourseService {
+public class CourseServiceImpl implements CourseService {
 
 	@Resource(name="acadamicCommonMapper")
 	ICommonMapper commonMapper;
