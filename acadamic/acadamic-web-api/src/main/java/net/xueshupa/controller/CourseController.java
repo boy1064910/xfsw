@@ -21,9 +21,11 @@ import com.xfsw.common.thread.ThreadUserInfoManager;
 
 import net.xueshupa.entity.Chapter;
 import net.xueshupa.entity.Course;
+import net.xueshupa.entity.ProgressChapter;
 import net.xueshupa.entity.ProgressCourse;
 import net.xueshupa.service.ChapterService;
 import net.xueshupa.service.CourseService;
+import net.xueshupa.service.ProgressChapterService;
 import net.xueshupa.service.ProgressCourseService;
 
 @RestController
@@ -38,6 +40,8 @@ public class CourseController {
 	
 	@Resource
 	ProgressCourseService progressCourseService;
+	@Resource
+	ProgressChapterService progressChapterService;
 	
 	@ResponseFilterRetention(ignores = { "userId","code","state","lastUpdater","lastUpdateTime" })
 	@GetMapping(value = "/list")
@@ -81,11 +85,35 @@ public class CourseController {
 		return new ResponseModel(resultMap);
 	}
 	
+	@ResponseFilterRetention(ignores = { "userId","code","lastUpdater","lastUpdateTime" })
 	@GetMapping(value = "/chapter/list")
 	public ResponseModel chapterList(Integer courseId){
 		Map<String,Object> resultMap = new HashMap<String,Object>();
+		Course course = courseService.getById(courseId);
+		resultMap.put("course", course);
 		
-		resultMap.put("courseList", courseService.selectAll());
+		List<Chapter> chapterList = chapterService.selectListByCourseId(courseId);
+		if(CollectionUtils.isEmpty(chapterList)) {
+			return new ResponseModel(resultMap);
+		}
+		
+		List<ChapterModel> chapterModelList = null;
+		List<ProgressChapter> progressChapterList = progressChapterService.selectListByInfo(ThreadUserInfoManager.getUserId(), courseId);
+		if(!CollectionUtils.isEmpty(progressChapterList)) {
+			Set<Integer> buyedChapterIdSet = progressChapterList.stream().map(x->x.getChapterId()).collect(Collectors.toSet());
+			chapterModelList = chapterList.stream().map(x->{
+				ChapterModel chapterModel = new ChapterModel(x);
+				if(buyedChapterIdSet.contains(x.getId())) {
+					chapterModel.setBuyed(true);
+				}
+				return chapterModel;
+			}).collect(Collectors.toList());
+		}
+		else {
+			 chapterModelList = chapterList.stream().map(x->{return new ChapterModel(x);}).collect(Collectors.toList());
+		}
+		
+		resultMap.put("chapterList", chapterModelList);
 		return new ResponseModel(resultMap);
 	}
 }
@@ -132,6 +160,30 @@ class BuyedCourseModel{
 	}
 	public void setChapterOrderIndex(Integer chapterOrderIndex) {
 		this.chapterOrderIndex = chapterOrderIndex;
+	}
+}
+
+class ChapterModel{
+	Chapter chapter;
+	boolean isBuyed;
+	
+	public ChapterModel(Chapter chapter) {
+		super();
+		this.chapter = chapter;
+		this.isBuyed = false;
+	}
+	
+	public Chapter getChapter() {
+		return chapter;
+	}
+	public void setChapter(Chapter chapter) {
+		this.chapter = chapter;
+	}
+	public boolean isBuyed() {
+		return isBuyed;
+	}
+	public void setBuyed(boolean isBuyed) {
+		this.isBuyed = isBuyed;
 	}
 }
 

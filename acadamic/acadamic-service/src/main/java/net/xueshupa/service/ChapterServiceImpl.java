@@ -48,6 +48,13 @@ public class ChapterServiceImpl implements ChapterService {
 			return chapter;
 		}
 	}
+	
+	@Override
+	public List<Chapter> selectListByCourseId(Integer courseId){
+		Chapter chapter = new Chapter();
+		chapter.setCourseId(courseId);
+		return commonMapper.selectList(Chapter.class, chapter);
+	}
 
 	@Override
 	public List<Chapter> selectListByCourseCode(String courseCode){

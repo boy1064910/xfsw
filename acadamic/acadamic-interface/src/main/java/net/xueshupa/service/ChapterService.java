@@ -10,6 +10,8 @@ public interface ChapterService {
 	
 	public Chapter saveChapter(Chapter chapter,String courseCode);
 	
+	public List<Chapter> selectListByCourseId(Integer courseId);
+	
 	public List<Chapter> selectListByCourseCode(String courseCode);
 	
 	public Chapter getByCode(String code);

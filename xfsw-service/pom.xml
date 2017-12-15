@@ -9,6 +9,7 @@
 		<module>xfsw-service-session</module>
 		<module>xfsw-service-account</module>
 		<module>xfsw-service-business</module>
+		<module>xfsw-service-order</module>
 	</modules>
 
 	<dependencies>

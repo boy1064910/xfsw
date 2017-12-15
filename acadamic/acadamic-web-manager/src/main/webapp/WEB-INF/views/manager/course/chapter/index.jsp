@@ -29,6 +29,7 @@
 			<input type="hidden" id="id" name="id" />
 	        	<input type="hidden" id="index" />
 	        	<input type="hidden" name="courseCode" id="courseCode" value="${courseCode }" />
+	        	<input type="hidden" name="courseId" value="${courseId }" />
 		</div>
 		<div class="form-group">
             <label class="col-lg-2 col-sm-2 control-label">章节名称</label>

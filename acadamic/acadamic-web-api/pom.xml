@@ -81,6 +81,11 @@
 			<artifactId>acadamic-service</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.xfsw</groupId>
+			<artifactId>xfsw-service-order</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>

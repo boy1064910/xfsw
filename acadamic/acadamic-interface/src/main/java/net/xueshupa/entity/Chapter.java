@@ -9,6 +9,7 @@ import java.util.Date;
 public class Chapter{
 
 	private Integer id;
+	private Integer courseId;
 	private String code;
 	private String name;
 	private String info;
@@ -78,6 +79,12 @@ public class Chapter{
 	}
 	public void setInfo(String info) {
 		this.info = info;
+	}
+	public Integer getCourseId() {
+		return courseId;
+	}
+	public void setCourseId(Integer courseId) {
+		this.courseId = courseId;
 	}
 }
 

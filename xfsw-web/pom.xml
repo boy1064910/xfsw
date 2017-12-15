@@ -17,21 +17,17 @@
 		<module>xfsw-web-gateway</module>
 		<module>xfsw-web-entry</module>
 		<module>xfsw-web-auth</module>
-
-		<module>xfsw-web-fe-order</module>
-
-
 		<!-- 暂时作废 -->
 <!-- 		<module>xfsw-web-config-server</module> -->
 		<module>xfsw-web-manager</module>
 		<module>xfsw-web-business</module>
+		
 	</modules>
 	
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
