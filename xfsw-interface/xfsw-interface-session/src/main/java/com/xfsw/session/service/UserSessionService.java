@@ -6,8 +6,8 @@ package com.xfsw.session.service;
 import java.util.List;
 
 import com.xfsw.account.model.UserAuthorityIdsModel;
-import com.xfsw.account.model.UserPublicInfo;
 import com.xfsw.common.classes.BusinessException;
+import com.xfsw.session.model.UserPublicInfo;
 import com.xfsw.session.model.UserSessionModel;
 
 /**
@@ -57,7 +57,4 @@ public interface UserSessionService {
 	 * @version 0.0.1
 	 */
 	UserPublicInfo getUserPublicInfo(String sessionId);
-//	
-//	void refreshSystemUserSessionAuthorityInfoByRoleId(Integer roleId);
-	
 }

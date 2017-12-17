@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.xfsw.account.entity.User;
 import com.xfsw.account.model.UserModel;
+import com.xfsw.account.model.wx.WxUserInfo;
 import com.xfsw.common.classes.BusinessException;
+import com.xfsw.common.enums.RequestClient;
 
 /**
  * 账号服务接口
@@ -32,7 +34,7 @@ public interface UserService {
 	 * @author xiaopeng.liu
 	 * @version 0.0.1
 	 */
-	UserModel login(String unionId,String ip);
+	UserModel login(WxUserInfo wxUserInfo,RequestClient requestClient,String ip);
 	
 	/**
 	 * 用户切换使用空间

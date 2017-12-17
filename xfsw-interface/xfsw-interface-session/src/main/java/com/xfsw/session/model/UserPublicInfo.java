@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.xfsw.account.model;
+package com.xfsw.session.model;
 
 import java.util.Date;
 

@@ -13,7 +13,7 @@ import com.xfsw.order.enums.Payment;
  * @author xiaopeng.liu
  * @version 
  */
-public class GenerateOrderInfo implements Serializable{
+public abstract class BaseGenerateOrderInfo implements Serializable{
 
 	private static final long serialVersionUID = -2790435330108007095L;
 	
@@ -21,7 +21,8 @@ public class GenerateOrderInfo implements Serializable{
 	Integer tenantId;
 	Payment payment;
 	Double sumCount;
-	List<GenerateOrderDetail> detailList;
+	String operator;
+	List<BaseGenerateOrderDetail> detailList;
 	
 	public Integer getUserId() {
 		return userId;
@@ -47,11 +48,17 @@ public class GenerateOrderInfo implements Serializable{
 	public void setSumCount(Double sumCount) {
 		this.sumCount = sumCount;
 	}
-	public List<GenerateOrderDetail> getDetailList() {
+	public List<BaseGenerateOrderDetail> getDetailList() {
 		return detailList;
 	}
-	public void setDetailList(List<GenerateOrderDetail> detailList) {
+	public void setDetailList(List<BaseGenerateOrderDetail> detailList) {
 		this.detailList = detailList;
+	}
+	public String getOperator() {
+		return operator;
+	}
+	public void setOperator(String operator) {
+		this.operator = operator;
 	}
 	
 }

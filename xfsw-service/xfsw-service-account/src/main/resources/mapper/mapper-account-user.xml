@@ -4,17 +4,12 @@
 
 	<!-- 用户登录逻辑 -->
 	<select id="login" parameterType="User" resultType="User">
-		SELECT * FROM User WHERE
-		<choose>
-			<!-- 账号密码登录 -->
-			<when test="account != null and '' != account and pwd != null and '' != pwd">
-				account = #{account} AND pwd = #{pwd}
-			</when>
-			<!-- 微信登录 -->
-			<otherwise>
-				unionId = #{unionId}
-			</otherwise>
-		</choose>
+		SELECT * FROM User WHERE account = #{account} AND pwd = #{pwd}
+	</select>
+	
+	<!-- 用户微信登录逻辑 -->
+	<select id="wxLogin" parameterType="java.lang.String" resultType="User">
+		SELECT * FROM User WHERE unionId = #{unionId}
 	</select>
 
 <!--   	<select id="checkByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer"> -->

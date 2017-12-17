@@ -12,11 +12,11 @@
 	<context:property-placeholder location="classpath*:conf/${env}/config.properties" />
 
 	<!-- 数据源 org.apache.commons.dbcp.BasicDataSource com.alibaba.druid.pool.DruidDataSource -->
-	<bean id="acadamicDataSource" class="com.alibaba.druid.pool.DruidDataSource">
+	<bean id="orderDataSource" class="com.alibaba.druid.pool.DruidDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://${acadamic.jdbc.host}:${acadamic.jdbc.port}/${acadamic.jdbc.database}?useUnicode=true&amp;characterEncoding=utf8" />
-		<property name="username" value="${acadamic.jdbc.username}" />
-		<property name="password" value="${acadamic.jdbc.password}" />
+		<property name="url" value="jdbc:mysql://${order.jdbc.host}:${order.jdbc.port}/${order.jdbc.database}?useUnicode=true&amp;characterEncoding=utf8" />
+		<property name="username" value="${order.jdbc.username}" />
+		<property name="password" value="${order.jdbc.password}" />
 		<!-- 初始化连接大小 -->
 		<property name="initialSize" value="0" />
 		<!-- 连接池最大使用连接数量 -->
@@ -60,33 +60,33 @@
 		<aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
 	</aop:config>
 
-	<bean id="acadamicTxManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="acadamicDataSource" />
+	<bean id="orderTxManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="orderDataSource" />
 	</bean>
 
 	<!-- 声明式事务 -->
-	<tx:annotation-driven transaction-manager="acadamicTxManager" proxy-target-class="true" />
+	<tx:annotation-driven transaction-manager="orderTxManager" proxy-target-class="true" />
 
-	<bean id="acadamicSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<bean id="orderSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="acadamicDataSource" />
-		<property name="configLocation" value="classpath:spring/mybatis-acadamic.xml" />
+		<property name="configLocation" value="classpath:spring/mybatis-order.xml" />
 		<property name="mapperLocations">
 			<list>
 				<value>classpath*:mapper/mapper-common.xml</value>
-				<value>classpath*:mapper/mapper-acadamic-*.xml</value>
+				<value>classpath*:mapper/mapper-order-*.xml</value>
 			</list>
 		</property>
 	</bean>
 
-	<bean id="acadamicSqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg ref="acadamicSqlSessionFactory" />
+	<bean id="orderSqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="orderSqlSessionFactory" />
 	</bean>
 
-	<bean id="acadamicCommonMapper" class="com.xfsw.common.mapper.CommonMapper">
-		<constructor-arg ref="acadamicSqlSessionTemplate"></constructor-arg>
+	<bean id="orderCommonMapper" class="com.xfsw.common.mapper.CommonMapper">
+		<constructor-arg ref="orderSqlSessionTemplate"></constructor-arg>
 	</bean>
 
 	<!-- 扫描包 -->
 	<context:annotation-config />
-	<context:component-scan base-package="net.xueshupa.acadamic.service" />
+	<context:component-scan base-package="com.xfsw.order.service" />
 </beans>

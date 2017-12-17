@@ -1,9 +1,9 @@
-package com.xfsw.order.model;
+package com.xfsw.order.model.wx.api;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="xml")
-public class WxPayNotifyRequester {
+public class WxNotifyRequester {
 
 	private String return_code;
 	private String return_msg;

@@ -4,7 +4,11 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.xfsw.account.entity.User;
+import com.xfsw.account.model.wx.WxOpenIdExtra;
+import com.xfsw.common.util.JsonUtil;
 
 /**
  * 
@@ -23,6 +27,7 @@ public class UserModel implements Serializable {
 	private String email;
 	private Date registeTime;
 	private Integer status;
+	private WxOpenIdExtra wxOpenIdExtra;
 	private List<UserTenantModel> userTenantRoleList;
 	
 	public UserModel() {}
@@ -36,6 +41,9 @@ public class UserModel implements Serializable {
 		this.email = user.getEmail();
 		this.registeTime = user.getRegisteTime();
 		this.status = user.getStatus();
+		if(!StringUtils.isEmpty(user.getOpenIdExtra())){
+			this.wxOpenIdExtra = JsonUtil.json2Entity(user.getOpenIdExtra(), WxOpenIdExtra.class);
+		}
 	}
 	
 	public Integer getId() {
@@ -109,6 +117,14 @@ public class UserModel implements Serializable {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public WxOpenIdExtra getWxOpenIdExtra() {
+		return wxOpenIdExtra;
+	}
+
+	public void setWxOpenIdExtra(WxOpenIdExtra wxOpenIdExtra) {
+		this.wxOpenIdExtra = wxOpenIdExtra;
 	}
 
 }

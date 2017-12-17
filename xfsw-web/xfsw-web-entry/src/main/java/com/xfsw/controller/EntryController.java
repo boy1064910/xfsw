@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.druid.util.StringUtils;
 import com.xfsw.account.model.UserModel;
+import com.xfsw.account.model.wx.WxUserInfo;
 import com.xfsw.account.service.RoleAuthorityService;
 import com.xfsw.account.service.UserService;
 import com.xfsw.common.classes.ResponseModel;
@@ -45,7 +46,6 @@ import com.xfsw.common.util.JsonUtil;
 import com.xfsw.common.util.RandomUtil;
 import com.xfsw.common.util.StringUtil;
 import com.xfsw.model.wx.WxSessionKeyModel;
-import com.xfsw.model.wx.WxUserInfo;
 import com.xfsw.session.consts.SessionConstant;
 import com.xfsw.session.model.UserSessionModel;
 import com.xfsw.session.service.UserSessionService;
@@ -70,22 +70,7 @@ public class EntryController {
 
 	@Resource(name = "userSessionService")
 	UserSessionService userSessionService;
-//	
-//	@Resource(name="messageCodeService")
-//	private MessageCodeService messageCodeService;
-//	
-//	@Resource(name = "studentService")
-//	StudentService studentService;
-//	
-//	@Resource(name = "guardianService")
-//	GuardianService guardianService;
-//	
-//	@Resource(name = "teacherService")
-//	TeacherService teacherService;
-//	
-//	@Resource(name="systemErrorLogService")
-//	SystemErrorLogService systemErrorLogService;
-//	
+
 	@PostMapping("/wxLogin")
 	public ResponseModel wxLogin(String code,String encryptedData,String iv,HttpServletRequest request) {
 		StringBuffer url = new StringBuffer("https://api.weixin.qq.com/sns/jscode2session?");
@@ -140,9 +125,12 @@ public class EntryController {
         	return new ResponseModel(ErrorConstant.ACCOUNT_WX_LOGIN_FAIL,"微信登录失败,请联系客服");
         }
         
+        //获取微信客户端来源
+        RequestClient requestClient = RequestClient.valuesOf(request.getHeader("X-REQUESTED-CLIENT"));
+        
         // 微信unionId登录
         String ip = HttpServletRequestUtil.getIpAddr(request);
-        UserModel userModel = userService.login(userInfo.getUnionId(),ip);
+        UserModel userModel = userService.login(userInfo,requestClient,ip);
         // 记录登录session信息
  		String sessionId = System.nanoTime() + RandomUtil.getCharAndNumr(8);
  		UserSessionModel userSessionModel = new UserSessionModel(userModel);
@@ -157,39 +145,13 @@ public class EntryController {
 	@PostMapping("/login")
 	public ResponseModel login(String account, String pwd, HttpServletRequest request, HttpServletResponse response) {
 		UserSessionModel userSessionModel = null;
-		
-		//获取请求来源客户端
-		RequestClient requestClient = RequestClient.valuesOf(request.getHeader("X-REQUESTED-CLIENT"));
 		//session id信息
-		String sessionId = null;
-		switch(requestClient) {
-			//默认为浏览器，从cookie中获取sessionId相关信息
-			case Default:{
-				sessionId = CookieUtil.getCookie(SessionConstant.XFSW_SESSION_ID, request);
-				break;
-			}
-			//微信小程序
-			case WxMiniProgram:{
-				sessionId = request.getHeader(SessionConstant.XFSW_SESSION_ID);
-				break;
-			}
-		}
+		String sessionId = request.getHeader(SessionConstant.XFSW_SESSION_ID);
 		
 		if (!StringUtils.isEmpty(sessionId)) {// 如果cookie-dpsessionid不为空，并且cookie-dpsessionid值存在redis中
 			userSessionModel = userSessionService.getUserSession(sessionId);
 			if(userSessionModel!=null){ 
-				switch(requestClient) {
-					//默认为浏览器，从cookie中获取sessionId相关信息
-					case Default:{
-						//刷新cookie过期时间
-						CookieUtil.refreshCookie(request, response, SessionConstant.XFSW_SESSION_ID, SessionConstant.XFSW_SESSION_EXPIRE, HttpServletRequestUtil.getDomain(request), "/");
-						break;
-					}
-					default:{
-						break;
-					}
-				}
-				new ResponseModel(userSessionModel);
+				return new ResponseModel(userSessionModel);
 			}
 		}
 		// session 不存在，验证用户名密码
@@ -200,17 +162,6 @@ public class EntryController {
 		sessionId = System.nanoTime() + RandomUtil.getCharAndNumr(8);
 		userSessionModel = new UserSessionModel(userModel);
 		userSessionService.addUserSession(sessionId, userSessionModel);
-		switch(requestClient) {
-			//默认为浏览器，从cookie中获取sessionId相关信息
-			case Default:{
-				//设置cookie
-				CookieUtil.setCookie(response, SessionConstant.XFSW_SESSION_ID, sessionId, SessionConstant.XFSW_SESSION_EXPIRE, HttpServletRequestUtil.getDomain(request), "/");
-				break;
-			}
-			default:{
-				break;
-			}
-		}
 		return new ResponseModel(userSessionService.getUserPublicInfo(sessionId));
 	}
 
@@ -222,8 +173,6 @@ public class EntryController {
 			// 调用session-redis服务，删除用户的session信息
 			userSessionService.deleteUserSession(sessionidValue);
 		}
-		// 清除cookie信息
-		CookieUtil.delCookie(SessionConstant.XFSW_SESSION_ID, request, response, HttpServletRequestUtil.getDomain(request), path);
 		return new ResponseModel();
 	}
 }

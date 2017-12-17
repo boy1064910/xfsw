@@ -20,11 +20,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.xfsw.account.model.UserAuthorityIdsModel;
-import com.xfsw.account.model.UserPublicInfo;
 import com.xfsw.common.classes.BusinessException;
 import com.xfsw.common.util.JsonUtil;
 import com.xfsw.common.util.StringUtil;
 import com.xfsw.session.consts.SessionConstant;
+import com.xfsw.session.model.UserPublicInfo;
 import com.xfsw.session.model.UserSessionModel;
 
 @Service("userSessionService")

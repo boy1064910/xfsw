@@ -1,4 +1,4 @@
-package com.xfsw.model.wx;
+package com.xfsw.account.model.wx;
 
 /**
  * 微信小程序用户信息水印

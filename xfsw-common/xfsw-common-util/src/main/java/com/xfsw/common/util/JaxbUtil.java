@@ -25,6 +25,7 @@ public class JaxbUtil {
 			if(jaxbContext==null)
 				jaxbContext = JAXBContext.newInstance(types);
 		} catch (JAXBException e) {
+			e.printStackTrace();
 			throw new RuntimeException("JAXBContext初始化失败！" + e.getMessage(), e);
 		}
 	}

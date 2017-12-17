@@ -1,10 +1,15 @@
-package com.xfsw.order.model;
+package com.xfsw.order.model.wx.api;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * 微信统一下单参数结构
+ * @author xiaopeng.liu
+ * @version 0.0.1
+ */
 @XmlRootElement(name="xml")
-public class WxPayOrderRequester {
+public class WxUnionOrderRequester {
 	
 	@XmlElement
 	private String appid;
@@ -32,42 +37,44 @@ public class WxPayOrderRequester {
 	private String product_id;
 	@XmlElement
 	private String openid;
-	
-	
-	public WxPayOrderRequester(String appid, String mch_id, String device_info, String nonce_str, String body, String sign, String out_trade_no, int total_fee, String spbill_create_ip, String notify_url, String trade_type, String product_id) {
-		super();
+	public void setAppid(String appid) {
 		this.appid = appid;
+	}
+	public void setMch_id(String mch_id) {
 		this.mch_id = mch_id;
+	}
+	public void setDevice_info(String device_info) {
 		this.device_info = device_info;
+	}
+	public void setNonce_str(String nonce_str) {
 		this.nonce_str = nonce_str;
+	}
+	public void setBody(String body) {
 		this.body = body;
+	}
+	public void setSign(String sign) {
 		this.sign = sign;
+	}
+	public void setOut_trade_no(String out_trade_no) {
 		this.out_trade_no = out_trade_no;
+	}
+	public void setTotal_fee(int total_fee) {
 		this.total_fee = total_fee;
+	}
+	public void setSpbill_create_ip(String spbill_create_ip) {
 		this.spbill_create_ip = spbill_create_ip;
+	}
+	public void setNotify_url(String notify_url) {
 		this.notify_url = notify_url;
+	}
+	public void setTrade_type(String trade_type) {
 		this.trade_type = trade_type;
+	}
+	public void setProduct_id(String product_id) {
 		this.product_id = product_id;
 	}
-	
-	public WxPayOrderRequester(String appid, String mch_id, String device_info, String nonce_str, String body, String sign, String out_trade_no, int total_fee, String spbill_create_ip, String notify_url, String trade_type, String product_id,String openid) {
-		super();
-		this.appid = appid;
-		this.mch_id = mch_id;
-		this.device_info = device_info;
-		this.nonce_str = nonce_str;
-		this.body = body;
-		this.sign = sign;
-		this.out_trade_no = out_trade_no;
-		this.total_fee = total_fee;
-		this.spbill_create_ip = spbill_create_ip;
-		this.notify_url = notify_url;
-		this.trade_type = trade_type;
-		this.product_id = product_id;
+	public void setOpenid(String openid) {
 		this.openid = openid;
 	}
 	
-	public WxPayOrderRequester() {
-		super();
-	}
 }

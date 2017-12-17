@@ -23,8 +23,7 @@ public class User implements Serializable {
 	private Date registeTime;
 	private String email;
 	private String unionId;
-	private String serviceOpenId;
-	private String miniOpenId;
+	private String openIdExtra;
 	
 	public User() {}
 	
@@ -82,17 +81,11 @@ public class User implements Serializable {
 	public void setUnionId(String unionId) {
 		this.unionId = unionId;
 	}
-	public String getServiceOpenId() {
-		return serviceOpenId;
+	public String getOpenIdExtra() {
+		return openIdExtra;
 	}
-	public void setServiceOpenId(String serviceOpenId) {
-		this.serviceOpenId = serviceOpenId;
-	}
-	public String getMiniOpenId() {
-		return miniOpenId;
-	}
-	public void setMiniOpenId(String miniOpenId) {
-		this.miniOpenId = miniOpenId;
+	public void setOpenIdExtra(String openIdExtra) {
+		this.openIdExtra = openIdExtra;
 	}
 
 }

@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -17,14 +19,20 @@ import com.xfsw.account.entity.UserTenantRole;
 import com.xfsw.account.model.UserAuthorityIdsModel;
 import com.xfsw.account.model.UserModel;
 import com.xfsw.account.model.UserTenantModel;
+import com.xfsw.account.model.wx.WxOpenIdExtra;
+import com.xfsw.account.model.wx.WxUserInfo;
 import com.xfsw.common.classes.BusinessException;
 import com.xfsw.common.consts.ErrorConstant;
+import com.xfsw.common.enums.RequestClient;
 import com.xfsw.common.mapper.ICommonMapper;
+import com.xfsw.common.util.JsonUtil;
 import com.xfsw.common.util.MD5Util;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
+	private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+	
 	@Resource(name = "accountCommonMapper")
 	ICommonMapper commonMapper;
 	
@@ -39,14 +47,87 @@ public class UserServiceImpl implements UserService {
 		User queryUser = new User();
 		queryUser.setAccount(account);
 		queryUser.setPwd(pwd);
-		return this.login(queryUser, ip);
+		
+		List<User> userList = commonMapper.selectList("User.login", queryUser);
+		if(CollectionUtils.isEmpty(userList)){
+			throw new BusinessException(ErrorConstant.ACCOUNT_PWD_ERROR,"账号密码错误，请重试！");
+		}
+		else{
+			if(userList.size()>1) {
+				logger.error("存在两个相同的账号："+account);
+				throw new BusinessException(ErrorConstant.ACCOUNT_EXCEPTION,"账号存在异常，请联系平台客服！");
+			}
+			User user = userList.get(0);
+			if(user.getStatus().intValue()==-1){
+				throw new BusinessException(ErrorConstant.ACCOUNT_FORBIDDEN,"账号被禁用，如有疑问，请联系平台客服！");
+			}
+			else{
+				UserModel userModel = new UserModel(user);
+				//读取空间信息
+				List<UserTenantModel> userTenantModelList = commonMapper.selectList("UserTenant.selectListByUserId", userModel.getId());
+				if(!CollectionUtils.isEmpty(userTenantModelList)) {
+					userTenantModelList.forEach((tenant) -> {
+						//读取空间角色信息
+						tenant.setRoleIdList(commonMapper.selectList("UserTenantRole.selectRoleIdListByUserIdAndTenantId",tenant));
+						//读取用户空间角色下的权限信息
+						UserAuthorityIdsModel userAuthorityIdsModel = roleAuthorityService.selectAllAuthorityHashIdsByUserInfo(tenant.getUserId(), tenant.getTenantId());
+						tenant.setAuthorityIds(userAuthorityIdsModel.getAuthorityIds());
+						tenant.setCategoryAuthorityIds(userAuthorityIdsModel.getCategoryAuthorityIds());
+					});
+					userModel.setUserTenantRoleList(userTenantModelList);
+				}
+				
+				//记录登录日志
+				userLoginRecordService.record(user.getId(),ip);
+				return userModel;
+			}
+		}
 	}
 	
 	@Override
-	public UserModel login(String unionId,String ip) {
-		User user = new User(); 
-		user.setUnionId(unionId);
-		return this.login(user, ip);
+	public UserModel login(WxUserInfo wxUserInfo,RequestClient requestClient,String ip) {
+		List<User> userList = commonMapper.selectList("User.wxLogin", wxUserInfo.getUnionId());
+		if(CollectionUtils.isEmpty(userList)){//微信用户尚未注册
+			//生成用户信息
+			User user = new User();
+			user.setHead(wxUserInfo.getAvatarUrl());
+			user.setNickName(wxUserInfo.getNickName());
+			user.setUnionId(wxUserInfo.getUnionId());
+			
+			WxOpenIdExtra openIdExtra = new WxOpenIdExtra();
+			switch(requestClient){
+				case WxMiniProgram:{
+					openIdExtra.setMiniOpenId(wxUserInfo.getOpenId());
+					break;
+				}
+				default:{
+					break;
+				}
+			}
+			user.setOpenIdExtra(JsonUtil.entity2Json(openIdExtra));
+			user.setRegisteTime(new Date());
+			commonMapper.insert(User.class, user);
+			
+			//记录登录日志
+			userLoginRecordService.record(user.getId(),ip);
+			return new UserModel(user);
+		}
+		else{//已存在微信用户
+			if(userList.size()>1) {
+				logger.error("存在两个相同的账号："+wxUserInfo.getUnionId());
+				throw new BusinessException(ErrorConstant.ACCOUNT_EXCEPTION,"账号存在异常，请联系平台客服！");
+			}
+			
+			User user = userList.get(0);
+			if(user.getStatus().intValue()==-1){
+				throw new BusinessException(ErrorConstant.ACCOUNT_FORBIDDEN,"账号被禁用，如有疑问，请联系平台客服！");
+			}
+			else{
+				//记录登录日志
+				userLoginRecordService.record(user.getId(),ip);
+				return new UserModel(user);
+			}
+		}
 	}
 	
 	public void switchTenant(Integer userTenantId) {
@@ -83,123 +164,4 @@ public class UserServiceImpl implements UserService {
 		commonMapper.insert(UserTenantRole.class, userTenantRole);
 	}
 	
-	
-//	public UserModel wxLogin(String unionId,String ip) {
-//		User queryUser = new User();
-//		queryUser.setUnionId(unionId);
-//		return this.login(queryUser, ip);
-//	}
-//	
-//	
-//	@Transactional
-//	public User wxBindAccount(String account,String unionId,String openId,String nickName,String head,String ip) throws BusinessException{
-//		if(commonMapper.check("User.checkByAccount",account)){
-//			throw new BusinessException("该手机号已被使用，如需解绑，请联系客服！");
-//		}
-//		User user = new User();
-//		user.setAccount(account);
-//		user.setPwd(MD5Util.md5(RandomUtil.getCharAndNumr(8)).toUpperCase());
-//		user.setNickName(nickName);
-//		user.setHead(head);
-//		user.setUnionId(unionId);
-//		user.setMiniOpenId(openId);
-//		commonMapper.insert("User.wxBindAccount", user);
-//		//记录登录日志
-//		userLoginRecordService.record(user.getId(),ip);
-//		return user;
-//	}
-//	
-//	public boolean checkByRoleId(Integer roleId){
-//		return commonMapper.check("User.checkByRoleId", roleId);
-//	}
-//	
-////	@SuppressWarnings("unchecked")
-////	public List<UserInfoModel> selectUserInfoListByIds(Integer[] userIds){
-////		return (List<UserInfoModel>) commonMapper.selectList("User.selectUserInfoListByIds",userIds);
-////	}
-//	
-//	public User getById(Integer id){
-//		return (User) commonMapper.get(User.class,id);
-//	}
-//	
-//	public User getByAccount(String account){
-//		return (User) commonMapper.get("User.getByAccount",account);
-//	}
-//	
-//	public void distributeRoleId(Integer userId,Integer roleId){
-//		Map<String,Object> params = new HashMap<String,Object>();
-//		params.put("roleId", roleId);
-//		params.put("id", userId);
-//		commonMapper.update("User.distributeRoleId",params);
-//	}
-//	
-//	public void updateRoleIdByOldRoleId(Integer oldRoleId,Integer newRoleId){
-//		Map<String,Object> params = new HashMap<String,Object>();
-//		params.put("oldRoleId", oldRoleId);
-//		params.put("newRoleId", newRoleId);
-//		commonMapper.update("User.updateRoleIdByOldRoleId",params);
-//	}
-//	
-//	public List<User> selectUserListByUserIds(Integer[] userIds) {
-//		if(ArrayUtil.isEmpty(userIds)) return null;
-//		return commonMapper.selectList("User.selectUserListByUserIds",userIds);
-//	}
-//
-//	//================================前端接口================================
-//	@Override
-//	public List<User> selectListByUserIds(Integer[] userIds) {
-//		if(ArrayUtil.isEmpty(userIds)) return null;
-//		return commonMapper.selectList("User.selectListByUserIds",userIds);
-//	}
-//	
-//	public String getHeadByUserId(Integer id){
-//		return (String) commonMapper.get("User.getHeadByUserId",id);
-//	}
-	
-	
-	
-	/**
-	 * 登录处理逻辑
-	 * @param queryUser
-	 * @param ip
-	 * @return
-	 * @author xiaopeng.liu
-	 * @version 0.0.1
-	 */
-	private UserModel login(User queryUser,String ip) {
-		List<User> userList = commonMapper.selectList("User.login", queryUser);
-		if(CollectionUtils.isEmpty(userList)){
-			throw new BusinessException(ErrorConstant.ACCOUNT_PWD_ERROR,"账号密码错误，请重试！");
-		}
-		else{
-			if(userList.size()>1) {
-				//TODO 记录错误日志
-				throw new BusinessException(ErrorConstant.ACCOUNT_EXCEPTION,"账号存在异常，请联系平台客服！");
-			}
-			User user = userList.get(0);
-			if(user.getStatus().intValue()==-1){
-				throw new BusinessException(ErrorConstant.ACCOUNT_FORBIDDEN,"账号被禁用，如有疑问，请联系平台客服！");
-			}
-			else{
-				UserModel userModel = new UserModel(user);
-				//读取空间信息
-				List<UserTenantModel> userTenantModelList = commonMapper.selectList("UserTenant.selectListByUserId", userModel.getId());
-				if(!CollectionUtils.isEmpty(userTenantModelList)) {
-					userTenantModelList.forEach((tenant) -> {
-						//读取空间角色信息
-						tenant.setRoleIdList(commonMapper.selectList("UserTenantRole.selectRoleIdListByUserIdAndTenantId",tenant));
-						//读取用户空间角色下的权限信息
-						UserAuthorityIdsModel userAuthorityIdsModel = roleAuthorityService.selectAllAuthorityHashIdsByUserInfo(tenant.getUserId(), tenant.getTenantId());
-						tenant.setAuthorityIds(userAuthorityIdsModel.getAuthorityIds());
-						tenant.setCategoryAuthorityIds(userAuthorityIdsModel.getCategoryAuthorityIds());
-					});
-					userModel.setUserTenantRoleList(userTenantModelList);
-				}
-				
-				//记录登录日志
-				userLoginRecordService.record(user.getId(),ip);
-				return userModel;
-			}
-		}
-	}
 }

@@ -9,6 +9,7 @@ import org.apache.commons.collections.CollectionUtils;
 
 import com.xfsw.account.model.UserModel;
 import com.xfsw.account.model.UserTenantModel;
+import com.xfsw.account.model.wx.WxOpenIdExtra;
 
 /**
  * 
@@ -27,6 +28,7 @@ public class UserSessionModel implements Serializable {
 	private String email;
 	private Date registeTime;
 	private Integer status;
+	private WxOpenIdExtra wxOpenIdExtra;
 	private List<UserTenantSessionModel> userTenantList;
 	
 	//当前空间下的相关数据信息
@@ -48,6 +50,7 @@ public class UserSessionModel implements Serializable {
 		this.email = userModel.getEmail();
 		this.registeTime = userModel.getRegisteTime();
 		this.status = userModel.getStatus();
+		this.wxOpenIdExtra = userModel.getWxOpenIdExtra();
 		
 		if(!CollectionUtils.isEmpty(userModel.getUserTenantRoleList())){
 			this.userTenantList = new ArrayList<UserTenantSessionModel>(userModel.getUserTenantRoleList().size());
@@ -186,6 +189,14 @@ public class UserSessionModel implements Serializable {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public WxOpenIdExtra getWxOpenIdExtra() {
+		return wxOpenIdExtra;
+	}
+
+	public void setWxOpenIdExtra(WxOpenIdExtra wxOpenIdExtra) {
+		this.wxOpenIdExtra = wxOpenIdExtra;
 	}
 
 }

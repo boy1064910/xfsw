@@ -1,17 +1,12 @@
 package com.xfsw.common.util;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -357,36 +352,4 @@ public class HttpRequestUtil {
 			}
 		}
 	}
-	
-	public static void main(String[] args) throws IOException{
-		Map<String,String> params = new HashMap<String,String>();
-		params.put("path","pages/travel/index");
-		
-		//new一个URL对象    
-        URL url = new URL("https://api.weixin.qq.com/cgi-bin/wxaapp/createwxaqrcode?access_token=8lo6x_mOUcDEnes0zZhivQ3pUL3WfC1BkbBMKZuIAol5g86VQFLYjr5fzx9MZ__y_hTyZBd2sug7cV7CghQ1JMhGiaWFHndtSkKSdefxtsKYxhqVFil4j_XUE4WqLPL9RBWcAEAUEZ");    
-        //打开链接    
-        HttpURLConnection conn = (HttpURLConnection)url.openConnection();    
-        //设置请求方式为"GET"    
-        conn.setRequestMethod("POST");   
-        conn.setDoInput(true);
-        conn.connect();
-        DataOutputStream out = new DataOutputStream(conn.getOutputStream());
-        out.writeBytes(JsonUtil.entity2Json(params));
-
-        out.flush();
-        out.close(); 
-		
-        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        String line;
-        
-        while ((line = reader.readLine()) != null){
-            System.out.println(line);
-        }
-      
-        reader.close();
-        conn.disconnect();
-        
-        
-	}
-	
 }
