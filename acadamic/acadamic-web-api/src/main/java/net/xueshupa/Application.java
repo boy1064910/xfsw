@@ -21,13 +21,13 @@ import org.springframework.context.annotation.ImportResource;
 @SpringBootApplication
 @ImportResource(locations={"classpath:spring-web.xml","classpath*:spring/spring-service-*.xml"})
 @EnableAutoConfiguration(exclude={RedisAutoConfiguration.class,RedisRepositoriesAutoConfiguration.class,DataSourceAutoConfiguration.class})
-public class AcadamicApiApplication {
+public class Application {
 
 	public static void main(String[] args) {
 		String env = System.getProperty("env");//加载spring配置文件
 		if (StringUtils.isEmpty(env)){
 			System.setProperty("env", "online");
 		}
-        SpringApplication.run(AcadamicApiApplication.class, args);  
+        SpringApplication.run(Application.class, args);  
     }  
 }

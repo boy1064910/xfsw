@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author xiaopeng.liu
  * @version 
  */
-public abstract class BaseGenerateOrderDetail implements Serializable {
+public class GenerateOrderDetail implements Serializable {
 
 	private static final long serialVersionUID = -6159613211167031309L;
 

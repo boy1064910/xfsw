@@ -11,20 +11,8 @@
 
 	<typeAliases>
 		<!-- entity -->
-		<typeAlias type="net.xueshupa.entity.Course" alias="Course"/>
-		<typeAlias type="net.xueshupa.entity.Chapter" alias="Chapter"/>
-		<typeAlias type="net.xueshupa.entity.Knowledge" alias="Knowledge"/>
-		<typeAlias type="net.xueshupa.entity.KnowledgeInfoDetail" alias="KnowledgeInfoDetail"/>
-		<typeAlias type="net.xueshupa.entity.DiffLevel" alias="DiffLevel"/>
-		<typeAlias type="net.xueshupa.entity.Exercise" alias="Exercise"/>
-		<typeAlias type="net.xueshupa.entity.ExerciseDetail" alias="ExerciseDetail"/>
-		<typeAlias type="net.xueshupa.entity.Answer" alias="Answer"/>
-		<typeAlias type="net.xueshupa.entity.ProgressCourse" alias="ProgressCourse"/>
+<!-- 		<typeAlias type="net.xueshupa.entity.ProgressCourse" alias="ProgressCourse"/> -->
 		<!-- model -->
-		<typeAlias type="net.xueshupa.model.MiniChapterListModel" alias="MiniChapterListModel"/>
-		<typeAlias type="net.xueshupa.model.MiniKnowledgeListModel" alias="MiniKnowledgeListModel"/>
-		<typeAlias type="net.xueshupa.model.MiniKnowledgeInfoModel" alias="MiniKnowledgeInfoModel"/>
-		<typeAlias type="net.xueshupa.model.MiniDiffLevelListModel" alias="MiniDiffLevelListModel"/>
 	</typeAliases>
 
 </configuration>

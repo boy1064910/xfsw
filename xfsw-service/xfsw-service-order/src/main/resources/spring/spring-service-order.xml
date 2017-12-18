@@ -68,7 +68,7 @@
 	<tx:annotation-driven transaction-manager="orderTxManager" proxy-target-class="true" />
 
 	<bean id="orderSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="acadamicDataSource" />
+		<property name="dataSource" ref="orderDataSource" />
 		<property name="configLocation" value="classpath:spring/mybatis-order.xml" />
 		<property name="mapperLocations">
 			<list>

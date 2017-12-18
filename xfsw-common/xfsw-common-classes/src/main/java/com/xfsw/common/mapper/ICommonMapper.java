@@ -69,7 +69,7 @@ public interface ICommonMapper {
 	
 	Object get(Class<? extends Object> clazz,Class<? extends Object> targetClazz,Integer id);
 	
-	Object get(Class<? extends Object> clazz,Map<String,Object> params);
+	<T> T get(Class<T> clazz,Map<String,Object> params);
 	
 	Object get(Class<? extends Object> clazz,Object entity);
 	

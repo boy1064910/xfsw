@@ -4,6 +4,7 @@
 package com.xfsw.order.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -13,6 +14,7 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.xfsw.common.mapper.ICommonMapper;
 import com.xfsw.common.util.DateUtil;
@@ -22,9 +24,10 @@ import com.xfsw.common.util.JsonUtil;
 import com.xfsw.common.util.MD5Util;
 import com.xfsw.common.util.MapUtil;
 import com.xfsw.common.util.RandomUtil;
+import com.xfsw.order.entity.OrderDetail;
 import com.xfsw.order.entity.OrderInfo;
+import com.xfsw.order.enums.OrderStatus;
 import com.xfsw.order.model.wx.WxGenerateOrderInfo;
-import com.xfsw.order.model.wx.WxGenerateOrderResponser;
 import com.xfsw.order.model.wx.WxPayInfo;
 import com.xfsw.order.model.wx.api.WxNotifyRequester;
 import com.xfsw.order.model.wx.api.WxUnionOrderRequester;
@@ -47,7 +50,8 @@ public class OrderServiceImpl implements OrderService {
 	ICommonMapper commonMapper;
 	
 	@Override
-	public WxGenerateOrderResponser generateWxOrder(WxGenerateOrderInfo wxGenerateOrderInfo,WxPayInfo wxPayInfo) {
+	@Transactional(value="orderTxManager")
+	public Map<String, Object> generateWxOrder(WxGenerateOrderInfo wxGenerateOrderInfo,WxPayInfo wxPayInfo) {
 		Date currentTime = new Date();
 		// TODO 参数教研
 		String orderNumber = DateUtil.date2Str(currentTime, "yyyyMMddHHmmSSSS");
@@ -84,22 +88,42 @@ public class OrderServiceImpl implements OrderService {
 		
 		//生成数据库订单信息
 		OrderInfo orderInfo = new OrderInfo();
+		orderInfo.setTenantId(wxGenerateOrderInfo.getTenantId());//机构ID
+		orderInfo.setUserId(wxGenerateOrderInfo.getUserId());
 		orderInfo.setCreateTime(currentTime);
 		orderInfo.setLastUpdater(wxGenerateOrderInfo.getOperator());
 		orderInfo.setLastUpdateTime(currentTime);
 		orderInfo.setOrderNumber(orderNumber);
-
-		WxGenerateOrderResponser wxGenerateOrderResponser = new WxGenerateOrderResponser();
-		wxGenerateOrderResponser.setTimeStamp(String.valueOf(currentTime.getTime()/1000));
-		wxGenerateOrderResponser.setNonceStr(nonceStr);
-		wxGenerateOrderResponser.setPackageInfo("prepay_id="+wxUnionOrderResponser.getPrepay_id());
-		wxGenerateOrderResponser.setSignType("MD5");
+		orderInfo.setPayment(wxGenerateOrderInfo.getPayment().toString());
+		orderInfo.setSumCount(wxGenerateOrderInfo.getSumCount());
+		Map<String,String> paymentExtra = new HashMap<String,String>();
+		paymentExtra.put("openId", wxGenerateOrderInfo.getOpenId());
+		orderInfo.setPaymentExtra(JsonUtil.entity2Json(paymentExtra));
+		commonMapper.insert(OrderInfo.class, orderInfo);
 		
-		SortedMap<String, Object> paySignParams = MapUtil.pojoToSortedMapNotNullField(wxGenerateOrderResponser);
+		wxGenerateOrderInfo.getDetailList().forEach(x->{
+			OrderDetail orderDetail = new OrderDetail();
+			orderDetail.setCount(x.getCount());
+			orderDetail.setDataId(x.getDataId());
+			orderDetail.setDataName(x.getDataName());
+			orderDetail.setDetailExtra(x.getDetailExtra());
+			orderDetail.setLastUpdater(wxGenerateOrderInfo.getOperator());
+			orderDetail.setLastUpdateTime(currentTime);
+			orderDetail.setOrderInfoId(orderInfo.getId());
+			orderDetail.setOriginPrice(x.getOriginPrice());
+			orderDetail.setPrice(x.getPrice());
+			commonMapper.insert(OrderDetail.class, orderDetail);
+		});
+
+		SortedMap<String, Object> paySignParams = new TreeMap<String,Object>();
+		paySignParams.put("timeStamp", String.valueOf(currentTime.getTime()/1000));
+		paySignParams.put("nonceStr", nonceStr);
+		paySignParams.put("package", "prepay_id="+wxUnionOrderResponser.getPrepay_id());
+		paySignParams.put("signType", "MD5");
 		paySignParams.put("appId", wxPayInfo.getAppId());
 		String paySign = this.sign(paySignParams, wxPayInfo.getAppKey());
-		wxGenerateOrderResponser.setPaySign(paySign);
-		return wxGenerateOrderResponser;
+		paySignParams.put("paySign", paySign);
+		return paySignParams;
 	}
 	
 	@Override
@@ -115,18 +139,25 @@ public class OrderServiceImpl implements OrderService {
 			if(checkedSign.equals(resultSign)){//校验通过
 				logger.debug("订单号："+wxNotifyRequester.getOut_trade_no()+"微信回调结果校验通过！");
 				// 商户订单号
-//				String out_trade_no = wxNotifyRequester.getOut_trade_no();
+				String out_trade_no = wxNotifyRequester.getOut_trade_no();
 				// 微信支付订单号
-//				String trade_no = wxNotifyRequester.getTransaction_id();
+				String trade_no = wxNotifyRequester.getTransaction_id();
 				// 用户在商户appid下的唯一标识
 //				String openid = wxNotifyRequester.getOpenid();
 				// 现金支付金额(返回结果以分为单位，换算单位为元)
 				double total_fee = (double)wxNotifyRequester.getTotal_fee()/100;
 				logger.info("交易金额："+total_fee);
 				
-//				OrderPayInfoModel model  = new OrderPayInfoModel(out_trade_no, trade_no, openid, null, null, total_fee, BePaidOrderConstants.ORDER_APPPAYMENT_WX);
-//				jmsTemplate.convertAndSend(QueueDestination.ORDER_PAY_INFO_QUEUE, model);
-				
+				OrderInfo orderInfo = new OrderInfo();
+				Date currentTime = new Date();
+				orderInfo.setOrderNumber(out_trade_no);
+				orderInfo.setPayCount(total_fee);
+				orderInfo.setPayTime(currentTime);
+				orderInfo.setLastUpdateTime(currentTime);
+				orderInfo.setTradeNumber(trade_no);
+				orderInfo.setStatus(OrderStatus.PAYED.getStatus());
+				String sql = "UPDATE OrderInfo SET payCount = #{payCount},payTime = #{payTime},lastUpdateTime = #{lastUpdateTime},tradeNumber = #{tradeNumber} WHERE orderNumber = #{orderNumber}";
+				commonMapper.updateBySql(sql, orderInfo);
 				return true;
 			}
 			else{

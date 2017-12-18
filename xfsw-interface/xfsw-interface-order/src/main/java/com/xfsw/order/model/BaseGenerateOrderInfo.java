@@ -22,7 +22,7 @@ public abstract class BaseGenerateOrderInfo implements Serializable{
 	Payment payment;
 	Double sumCount;
 	String operator;
-	List<BaseGenerateOrderDetail> detailList;
+	List<GenerateOrderDetail> detailList;
 	
 	public Integer getUserId() {
 		return userId;
@@ -48,10 +48,10 @@ public abstract class BaseGenerateOrderInfo implements Serializable{
 	public void setSumCount(Double sumCount) {
 		this.sumCount = sumCount;
 	}
-	public List<BaseGenerateOrderDetail> getDetailList() {
+	public List<GenerateOrderDetail> getDetailList() {
 		return detailList;
 	}
-	public void setDetailList(List<BaseGenerateOrderDetail> detailList) {
+	public void setDetailList(List<GenerateOrderDetail> detailList) {
 		this.detailList = detailList;
 	}
 	public String getOperator() {

@@ -77,38 +77,19 @@
 			<artifactId>tomcat-embed-jasper</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.xueshupa</groupId>
-			<artifactId>acadamic-service</artifactId>
+			<groupId>com.xfsw</groupId>
+			<artifactId>xfsw-service-order</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>com.xfsw</groupId>
-			<artifactId>xfsw-service-order</artifactId>
+			<groupId>net.xueshupa</groupId>
+			<artifactId>acadamic-service</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
-		<resources>
-			<!-- 打包时将jsp文件拷贝到META-INF目录下 -->
-			<resource>
-				<!-- 指定resources插件处理哪个目录下的资源文件 -->
-				<directory>src/main/webapp</directory>
-				<!--注意此次必须要放在此目录下才能被访问到 -->
-				<targetPath>META-INF/resources</targetPath>
-				<includes>
-					<include>**/**</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<includes>
-					<include>**/**</include>
-				</includes>
-				<filtering>false</filtering>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -118,7 +99,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>net.xueshupa.AcadamicWebManagerApplication</mainClass>
+							<mainClass>net.xueshupa.Application</mainClass>
 						</manifest>
 					</archive>
 					<outputDirectory>/server/service/${project.artifactId}</outputDirectory>

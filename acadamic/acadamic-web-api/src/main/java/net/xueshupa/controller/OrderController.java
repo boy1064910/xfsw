@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,10 +21,8 @@ import com.xfsw.common.thread.ThreadUserInfoManager;
 import com.xfsw.common.util.HttpServletRequestUtil;
 import com.xfsw.common.util.JaxbUtil;
 import com.xfsw.order.enums.Payment;
-import com.xfsw.order.model.BaseGenerateOrderDetail;
-import com.xfsw.order.model.wx.WxGenerateOrderDetail;
+import com.xfsw.order.model.GenerateOrderDetail;
 import com.xfsw.order.model.wx.WxGenerateOrderInfo;
-import com.xfsw.order.model.wx.WxGenerateOrderResponser;
 import com.xfsw.order.model.wx.WxPayInfo;
 import com.xfsw.order.service.OrderService;
 import com.xfsw.session.model.UserSessionModel;
@@ -48,6 +45,9 @@ public class OrderController {
 	private String wxMiniKey;
 	@Value("${wx.mini.notify.url}")
 	private String wxNotifyUrl;
+	
+	@Value("${acadamic.tenant.id}")
+	private Integer acadamicTenantId;
 	
 	@Autowired
 	ChapterService chapterService;
@@ -72,23 +72,21 @@ public class OrderController {
 		UserSessionModel u = ThreadUserInfoManager.getUserInfo();
 		WxGenerateOrderInfo orderInfoModel = new WxGenerateOrderInfo();
 		orderInfoModel.setUserId(u.getId());
-		orderInfoModel.setTenantId(u.getTenantId());
+		orderInfoModel.setTenantId(acadamicTenantId);
 		orderInfoModel.setPayment(Payment.WX_MINI);
 		orderInfoModel.setSumCount(chapter.getPrice());
 		//设置openid为小程序的openid，后期接入app或者公众号需要调整
 		orderInfoModel.setOpenId(ThreadUserInfoManager.getUserInfo().getWxOpenIdExtra().getMiniOpenId());
 		
-		List<BaseGenerateOrderDetail> detailList = new ArrayList<BaseGenerateOrderDetail>();
-		WxGenerateOrderDetail detail = new WxGenerateOrderDetail();
+		List<GenerateOrderDetail> detailList = new ArrayList<GenerateOrderDetail>();
+		GenerateOrderDetail detail = new GenerateOrderDetail();
 		detail.setCount(1);
 		detail.setOriginPrice(chapter.getOriginPrice());
 		detail.setPrice(chapter.getPrice());
 		detail.setDataId(chapter.getId());
 		detail.setDataName(chapter.getName());
 		detailList.add(detail);
-		
 		orderInfoModel.setDetailList(detailList);
-		
 		
 		WxPayInfo wxPayInfo = new WxPayInfo();
 		wxPayInfo.setAppId(wxMiniAppId);
@@ -100,11 +98,10 @@ public class OrderController {
 		wxPayInfo.setSpbillCreateIp(HttpServletRequestUtil.getIpAddr(request));
 		wxPayInfo.setTradeType("JSAPI");
 		
-		WxGenerateOrderResponser wxGenerateOrderResponser = orderService.generateWxOrder(orderInfoModel, wxPayInfo);
-		return new ResponseModel(wxGenerateOrderResponser);
+		return new ResponseModel(orderService.generateWxOrder(orderInfoModel, wxPayInfo));
 	}
 	
-	@GetMapping(value="notify")
+	@PostMapping(value="notify")
 	public String notify(HttpServletRequest request,HttpServletRequest response){
 		byte[] buffer = new byte[64*1024];
 		InputStream in;
@@ -157,6 +154,11 @@ class WxNotifyResponser {
 	}
 }
 
+/**
+ * 小程序微信支付统一下单接口返回结构
+ * @author xiaopeng.liu
+ * @version 0.0.1
+ */
 class WxPaymentResponser{
 	String timeStamp;
 	String nonceStr;

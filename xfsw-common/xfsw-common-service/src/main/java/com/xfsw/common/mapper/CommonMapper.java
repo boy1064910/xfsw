@@ -84,7 +84,7 @@ public class CommonMapper implements ICommonMapper {
 		return MapUtil.map2Pojo(result, targetClazz);
 	}
 	
-	public Object get(Class<? extends Object> clazz,Map<String,Object> params){
+	public <T> T get(Class<T> clazz,Map<String,Object> params){
 		if(CollectionUtils.isEmpty(params)) {
 			throw new RuntimeException("查询参数为空！");
 		}
@@ -99,7 +99,7 @@ public class CommonMapper implements ICommonMapper {
 			return null;
 		}
 		this.dealDataResultMap(result);
-		return MapUtil.map2Pojo(result, clazz);
+		return MapUtil.map2Entity(result, clazz);
 	}
 	
 	public Object get(Class<? extends Object> clazz,Object entity){

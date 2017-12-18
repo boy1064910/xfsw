@@ -164,12 +164,15 @@ public class MapUtil {
 		Field[] fields = clazz.getDeclaredFields();
 		logger.debug("类递归加载到map当中----------------方法名称列表-----------");
 		for (Field field : fields) {
-			methodName = new StringBuffer();
-			methodName.append("get").append(StringUtil.initialFirstUppercase(field.getName()));
-			val = ReflectUtil.invoke(entity, methodName.toString());
-			if (val != null) {
-				logger.debug("字段名称：" + field.getName() + ",方法名称：" + methodName.toString());
-				map.put(field.getName(), val);
+			int modifiers = field.getModifiers();
+			if(!Modifier.isStatic(modifiers)){
+				methodName = new StringBuffer();
+				methodName.append("get").append(StringUtil.initialFirstUppercase(field.getName()));
+				val = ReflectUtil.invoke(entity, methodName.toString());
+				if (val != null) {
+					logger.debug("字段名称：" + field.getName() + ",方法名称：" + methodName.toString());
+					map.put(field.getName(), val);
+				}
 			}
 		}
 		logger.debug("类递归加载到map结束---------------------------------");

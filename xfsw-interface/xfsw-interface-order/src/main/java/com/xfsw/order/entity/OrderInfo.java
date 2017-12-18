@@ -15,7 +15,7 @@ public class OrderInfo implements Serializable{
 
 	private static final long serialVersionUID = 2629247077451472835L;
 
-	private Long id;
+	private Integer id;
 	private Integer tenantId;
 	private Integer userId;
 	private String orderNumber;
@@ -30,12 +30,6 @@ public class OrderInfo implements Serializable{
 	private String lastUpdater;
 	private Date lastUpdateTime;
 	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public Integer getUserId() {
 		return userId;
 	}
@@ -113,5 +107,11 @@ public class OrderInfo implements Serializable{
 	}
 	public void setTenantId(Integer tenantId) {
 		this.tenantId = tenantId;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
 	}
 }
