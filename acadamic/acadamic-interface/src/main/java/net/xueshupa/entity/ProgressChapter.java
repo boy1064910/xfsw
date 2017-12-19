@@ -19,6 +19,7 @@ public class ProgressChapter {
 	private Double progressPercent;
 	private Date createTime;
 	private Date lastUpdateTime;
+	private Date buyTime;
 	
 	public Integer getId() {
 		return id;
@@ -67,5 +68,11 @@ public class ProgressChapter {
 	}
 	public void setProgressPercent(Double progressPercent) {
 		this.progressPercent = progressPercent;
+	}
+	public Date getBuyTime() {
+		return buyTime;
+	}
+	public void setBuyTime(Date buyTime) {
+		this.buyTime = buyTime;
 	}
 }

@@ -48,6 +48,17 @@ public class CommonMapper implements ICommonMapper {
 		return false;
 	}
 	
+	public boolean checkBySql(String sql,Map<String,Object> params){
+		Map<String,Object> queryParams = new HashMap<String,Object>();
+		queryParams.putAll(params);
+		queryParams.put("sql", sql);
+		Map<String,Object> result = this.sqlSessionTemplate.selectOne("Common.queryOperation",queryParams);
+		if(result==null||result.size()==0){
+			return false;
+		}
+		return true;
+	}
+	
 	public <T> T get(String sqlId){
 		return this.sqlSessionTemplate.selectOne(sqlId);
 	}

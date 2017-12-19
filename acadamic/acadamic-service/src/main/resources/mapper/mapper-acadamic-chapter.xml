@@ -25,8 +25,15 @@
 		</foreach> 
 	</select>
 	
-	<!-- 前端接口调用 -->
-	<select id="selectMiniChapterList" parameterType="java.lang.String" resultType="MiniChapterListModel">
-		SELECT id,code,sequence,name,knowledgeCount,exampleCount,videoSeconds,buyCount,price FROM Chapter WHERE code LIKE CONCAT(#{courseCode},'%') ORDER BY orderIndex ASC
+	<select id="selectCourseIdListByChapterIdList" resultType="java.lang.Integer">
+		SELECT courseId FROM Chapter WHERE id IN 
+		<foreach collection="list" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+		ORDER BY FIELD(id,
+			<foreach collection="list" item="id" separator=",">
+			#{id}
+			</foreach>
+		)
 	</select>
 </mapper>

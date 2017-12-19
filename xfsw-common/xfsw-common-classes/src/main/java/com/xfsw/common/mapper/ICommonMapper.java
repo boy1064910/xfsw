@@ -19,6 +19,8 @@ public interface ICommonMapper {
 	
 	boolean check(String sqlId,Map<String,Object> params);
 	
+	boolean checkBySql(String sql,Map<String,Object> params);
+	
 	/**
 	 * 通过mybatis定义的sqlId关联语句查询单条数据
 	 * @param sqlId	Mybatis中定义的SQL语句Id

@@ -110,8 +110,6 @@ public class OrderServiceImpl implements OrderService {
 		wxGenerateOrderInfo.getDetailList().forEach(x->{
 			OrderDetail orderDetail = new OrderDetail();
 			orderDetail.setCount(x.getCount());
-			orderDetail.setDataId(x.getDataId());
-			orderDetail.setDataName(x.getDataName());
 			orderDetail.setDetailExtra(x.getDetailExtra());
 			orderDetail.setLastUpdater(wxGenerateOrderInfo.getOperator());
 			orderDetail.setLastUpdateTime(currentTime);

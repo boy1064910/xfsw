@@ -18,5 +18,10 @@
 			<artifactId>acadamic-interface</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.xfsw</groupId>
+			<artifactId>xfsw-common-mq</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

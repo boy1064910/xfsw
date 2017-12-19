@@ -9,7 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.xfsw.common.mq.consts.QueueDestination;
-import com.xfsw.order.service.OrderService;
+import com.xfsw.common.mq.model.OrderReceiverModel;
 
 /**
  * 
@@ -31,5 +31,13 @@ public class OrderTester {
 	public void jms() {
 		WxOrderPayInfo model  = new WxOrderPayInfo("2017121919100499", "4200000038201712197343509514", 0.01);
 		jmsTemplate.convertAndSend(QueueDestination.WX_ORDER_PAY_INFO_QUEUE, model);
+	}
+	
+	@Test
+	public void sendBizCode() {
+		OrderReceiverModel model = new OrderReceiverModel();
+		model.setUserId(1);
+		model.setBizExtra(1);
+		jmsTemplate.convertAndSend(QueueDestination.ACADAMIC_CHAPTER_ORDER, model);
 	}
 }

@@ -14,8 +14,6 @@ public class GenerateOrderDetail implements Serializable {
 
 	private static final long serialVersionUID = -6159613211167031309L;
 
-	Integer dataId;
-	String dataName;
 	Integer count;
 	Double price;
 	Double originPrice;
@@ -44,17 +42,5 @@ public class GenerateOrderDetail implements Serializable {
 	}
 	public void setDetailExtra(String detailExtra) {
 		this.detailExtra = detailExtra;
-	}
-	public Integer getDataId() {
-		return dataId;
-	}
-	public void setDataId(Integer dataId) {
-		this.dataId = dataId;
-	}
-	public String getDataName() {
-		return dataName;
-	}
-	public void setDataName(String dataName) {
-		this.dataName = dataName;
 	}
 }

@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.xfsw.common.classes.ResponseModel;
 import com.xfsw.common.consts.ErrorConstant;
 import com.xfsw.common.thread.ThreadUserInfoManager;
+import com.xfsw.common.util.CookieUtil;
 import com.xfsw.common.util.HttpServletRequestUtil;
 import com.xfsw.common.util.JsonUtil;
 import com.xfsw.common.util.StringUtil;
@@ -36,7 +37,13 @@ public class UniverseLoginInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		logger.info("请求的url:"+request.getRequestURI());
 		//session id信息
-		String sessionId = request.getHeader(SessionConstant.XFSW_SESSION_ID);
+		String sessionId = null;
+		if(HttpServletRequestUtil.isAjaxRequest(request)){
+			sessionId = request.getHeader(SessionConstant.XFSW_SESSION_ID);
+		}
+		else{
+			sessionId = CookieUtil.getCookie(SessionConstant.XFSW_SESSION_ID, request);
+		}
 		
 		if(StringUtil.isEmpty(sessionId)){
 			loginTimeout(request,response,sessionId);

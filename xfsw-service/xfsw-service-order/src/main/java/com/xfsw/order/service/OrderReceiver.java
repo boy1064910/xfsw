@@ -5,6 +5,10 @@ package com.xfsw.order.service;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 import javax.jms.JMSException;
@@ -12,14 +16,18 @@ import javax.jms.Message;
 import javax.jms.Session;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.adapter.MessageListenerAdapter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xfsw.common.mapper.ICommonMapper;
 import com.xfsw.common.mq.consts.QueueDestination;
+import com.xfsw.common.mq.model.OrderReceiverModel;
 import com.xfsw.common.util.JsonUtil;
+import com.xfsw.order.entity.OrderDetail;
 import com.xfsw.order.entity.OrderInfo;
 import com.xfsw.order.enums.OrderStatus;
 
@@ -33,6 +41,9 @@ public class OrderReceiver extends MessageListenerAdapter {
 
 	@Resource(name="orderCommonMapper")
 	ICommonMapper orderCommonMapper;
+	
+	@Autowired
+	JmsTemplate jmsTemplate;
 	
 	@Transactional(value="orderTxManager")
 	@JmsListener(destination = QueueDestination.WX_ORDER_PAY_INFO_QUEUE, concurrency = "1",containerFactory="jmsListenerContainerFactory")
@@ -54,9 +65,16 @@ public class OrderReceiver extends MessageListenerAdapter {
 		//发送业务逻辑
 		String bizCode = orderInfo.getBizCode();
 		if(!StringUtils.isEmpty(bizCode)) {
+			Map<String,Object> params = new HashMap<String,Object>();
+			params.put("orderInfoId", orderInfo.getId());
+			List<OrderDetail> orderDetailList = orderCommonMapper.selectList(OrderDetail.class, params);
+			List<String> orderDetailExtraList = orderDetailList.stream().map(x->x.getDetailExtra()).collect(Collectors.toList());
 			
+			OrderReceiverModel model = new OrderReceiverModel();
+			model.setUserId(orderInfo.getUserId());
+			model.setBizExtra(orderDetailExtraList);
+			jmsTemplate.convertAndSend(bizCode, model);
 		}
-		
 		message.acknowledge();
 	}
 }

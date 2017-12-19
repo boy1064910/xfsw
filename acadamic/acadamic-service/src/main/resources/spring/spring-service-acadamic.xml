@@ -2,12 +2,18 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:amq="http://activemq.apache.org/schema/core"
+	xmlns:jms="http://www.springframework.org/schema/jms"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
 		http://www.springframework.org/schema/aop
-       http://www.springframework.org/schema/aop/spring-aop.xsd">
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/jms
+        http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+        http://activemq.apache.org/schema/core
+        http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd">
 
 	<context:property-placeholder location="classpath*:conf/${env}/config.properties" />
 
@@ -89,4 +95,22 @@
 	<!-- 扫描包 -->
 	<context:annotation-config />
 	<context:component-scan base-package="net.xueshupa.acadamic.service" />
+	
+	<!-- 定義activemq鏈接 start -->
+	<amq:connectionFactory id="amqConnectionFactory" brokerURL="${xfsw.mq.broker.url}" userName="${xfsw.mq.user.name}" password="${xfsw.mq.password}" useAsyncSend="false" />
+
+	<bean id="connectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+		<constructor-arg ref="amqConnectionFactory" />
+		<property name="sessionCacheSize" value="100" />
+	</bean>
+	<!-- 定義activemq鏈接 end -->
+
+	<!-- 定义JmsTemplate的Queue类型 -->
+	<bean id="jmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<constructor-arg ref="connectionFactory" />
+		<!-- 開啟事務模式 -->
+		<property name="sessionTransacted" value="true" />
+		<!-- 非pub/sub模型（发布/订阅），即队列模式 -->
+		<property name="pubSubDomain" value="false" />
+	</bean>
 </beans>

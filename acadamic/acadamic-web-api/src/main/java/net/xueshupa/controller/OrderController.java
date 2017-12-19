@@ -85,8 +85,7 @@ public class OrderController {
 		detail.setCount(1);
 		detail.setOriginPrice(chapter.getOriginPrice());
 		detail.setPrice(chapter.getPrice());
-		detail.setDataId(chapter.getId());
-		detail.setDataName(chapter.getName());
+		detail.setDetailExtra(chapter.getId().toString());
 		detailList.add(detail);
 		orderInfoModel.setDetailList(detailList);
 		

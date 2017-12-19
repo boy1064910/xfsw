@@ -50,10 +50,9 @@ public class CourseController {
 		List<Course> courseList = courseService.selectAll();
 		List<ProgressCourse> progressCourseList = progressCourseService.selectListByUserId(ThreadUserInfoManager.getUserId());
 		if(!CollectionUtils.isEmpty(progressCourseList)){
-			Stream<ProgressCourse> progressCourseStream = progressCourseList.stream();
-			Map<Integer,Integer> courseChapterMap = progressCourseStream.collect(Collectors.toMap(ProgressCourse::getCourseId, ProgressCourse::getChapterId));
-			Set<Integer> courseIdSet = progressCourseStream.map(x->x.getCourseId()).collect(Collectors.toSet());
-			List<Integer> chapterIdList = progressCourseStream.map(x->x.getChapterId()).collect(Collectors.toList());
+			Map<Integer,Integer> courseChapterMap = progressCourseList.stream().collect(Collectors.toMap(ProgressCourse::getCourseId, ProgressCourse::getChapterId));
+			Set<Integer> courseIdSet = progressCourseList.stream().map(x->x.getCourseId()).collect(Collectors.toSet());
+			List<Integer> chapterIdList = progressCourseList.stream().map(x->x.getChapterId()).collect(Collectors.toList());
 			List<Chapter> chapterList = chapterService.selectListByIdList(chapterIdList);
 			//课程章节信息
 			Map<Integer,Chapter> chapterMap = chapterList.stream().collect(Collectors.toMap(Chapter::getId,Function.identity()));

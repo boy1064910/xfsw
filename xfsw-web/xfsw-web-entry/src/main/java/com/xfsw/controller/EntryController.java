@@ -162,7 +162,11 @@ public class EntryController {
 		sessionId = System.nanoTime() + RandomUtil.getCharAndNumr(8);
 		userSessionModel = new UserSessionModel(userModel);
 		userSessionService.addUserSession(sessionId, userSessionModel);
-		return new ResponseModel(userSessionService.getUserPublicInfo(sessionId));
+		
+		Map<String,Object> result = new HashMap<String,Object>();
+ 		result.put("sessionId", sessionId);
+ 		result.put("userInfo", userSessionService.getUserPublicInfo(sessionId));
+		return new ResponseModel(result);
 	}
 
 	@PostMapping("/logout")
