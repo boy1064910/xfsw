@@ -124,6 +124,7 @@ public class CommonMapper implements ICommonMapper {
 		String clazzName = clazz.getSimpleName();
 		String sql = "select * from " + clazzName + " where "+fieldName+" = #{"+fieldName+"}";
 		Map<String,Object> params = new HashMap<String,Object>();
+		params.put(fieldName, value);
 		params.put("sql", sql);
 		Map<String,Object> result = sqlSessionTemplate.selectOne("Common.queryOperation",params);
 		if(result==null||result.size()==0){

@@ -22,6 +22,7 @@ public abstract class BaseGenerateOrderInfo implements Serializable{
 	Payment payment;
 	Double sumCount;
 	String operator;
+	String bizCode;
 	List<GenerateOrderDetail> detailList;
 	
 	public Integer getUserId() {
@@ -59,6 +60,12 @@ public abstract class BaseGenerateOrderInfo implements Serializable{
 	}
 	public void setOperator(String operator) {
 		this.operator = operator;
+	}
+	public String getBizCode() {
+		return bizCode;
+	}
+	public void setBizCode(String bizCode) {
+		this.bizCode = bizCode;
 	}
 	
 }

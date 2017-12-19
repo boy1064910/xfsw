@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.xfsw.common.classes.ResponseModel;
+import com.xfsw.common.mq.consts.QueueDestination;
 import com.xfsw.common.thread.ThreadUserInfoManager;
 import com.xfsw.common.util.HttpServletRequestUtil;
 import com.xfsw.common.util.JaxbUtil;
@@ -75,6 +76,7 @@ public class OrderController {
 		orderInfoModel.setTenantId(acadamicTenantId);
 		orderInfoModel.setPayment(Payment.WX_MINI);
 		orderInfoModel.setSumCount(chapter.getPrice());
+		orderInfoModel.setBizCode(QueueDestination.ACADAMIC_CHAPTER_ORDER);
 		//设置openid为小程序的openid，后期接入app或者公众号需要调整
 		orderInfoModel.setOpenId(ThreadUserInfoManager.getUserInfo().getWxOpenIdExtra().getMiniOpenId());
 		
@@ -112,7 +114,7 @@ public class OrderController {
 			byte[] data = new byte[length];
 			System.arraycopy(buffer, 0, data, 0, length);
 			String context = new String(data, encode);
-			boolean result = orderService.notifyCallback(context, wxMiniKey);
+			boolean result = orderService.wxNotifyCallback(context, wxMiniKey);
 			WxNotifyResponser wx = null;
 			if(result){
 				wx = new WxNotifyResponser("SUCCESS","");
@@ -134,6 +136,10 @@ class WxNotifyResponser {
 
 	private String return_code;
 	private String return_msg;
+	
+	public WxNotifyResponser() {
+		super();
+	}
 	
 	public WxNotifyResponser(String return_code, String return_msg) {
 		super();

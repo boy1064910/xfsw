@@ -17,5 +17,5 @@ public interface OrderService {
 
 	Map<String, Object> generateWxOrder(WxGenerateOrderInfo orderInfo,WxPayInfo wxPayInfo);
 	
-	boolean notifyCallback(String context,String appKey);
+	boolean wxNotifyCallback(String context,String appKey);
 }

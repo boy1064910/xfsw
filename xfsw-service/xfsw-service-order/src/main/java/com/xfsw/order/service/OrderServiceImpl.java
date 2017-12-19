@@ -13,10 +13,13 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.xfsw.common.mapper.ICommonMapper;
+import com.xfsw.common.mq.consts.QueueDestination;
 import com.xfsw.common.util.DateUtil;
 import com.xfsw.common.util.HttpRequestUtil;
 import com.xfsw.common.util.JaxbUtil;
@@ -26,7 +29,6 @@ import com.xfsw.common.util.MapUtil;
 import com.xfsw.common.util.RandomUtil;
 import com.xfsw.order.entity.OrderDetail;
 import com.xfsw.order.entity.OrderInfo;
-import com.xfsw.order.enums.OrderStatus;
 import com.xfsw.order.model.wx.WxGenerateOrderInfo;
 import com.xfsw.order.model.wx.WxPayInfo;
 import com.xfsw.order.model.wx.api.WxNotifyRequester;
@@ -48,6 +50,9 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Resource(name="orderCommonMapper")
 	ICommonMapper commonMapper;
+	
+	@Autowired
+	JmsTemplate jmsTemplate;
 	
 	@Override
 	@Transactional(value="orderTxManager")
@@ -96,6 +101,7 @@ public class OrderServiceImpl implements OrderService {
 		orderInfo.setOrderNumber(orderNumber);
 		orderInfo.setPayment(wxGenerateOrderInfo.getPayment().toString());
 		orderInfo.setSumCount(wxGenerateOrderInfo.getSumCount());
+		orderInfo.setBizCode(wxGenerateOrderInfo.getBizCode());
 		Map<String,String> paymentExtra = new HashMap<String,String>();
 		paymentExtra.put("openId", wxGenerateOrderInfo.getOpenId());
 		orderInfo.setPaymentExtra(JsonUtil.entity2Json(paymentExtra));
@@ -127,7 +133,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 	
 	@Override
-	public boolean notifyCallback(String context,String appKey){
+	public boolean wxNotifyCallback(String context,String appKey){
 		logger.debug("===微信支付notify消息===");
 		logger.debug(context);
 		WxNotifyRequester wxNotifyRequester =new JaxbUtil(WxNotifyRequester.class).fromXml(context);
@@ -148,20 +154,13 @@ public class OrderServiceImpl implements OrderService {
 				double total_fee = (double)wxNotifyRequester.getTotal_fee()/100;
 				logger.info("交易金额："+total_fee);
 				
-				OrderInfo orderInfo = new OrderInfo();
-				Date currentTime = new Date();
-				orderInfo.setOrderNumber(out_trade_no);
-				orderInfo.setPayCount(total_fee);
-				orderInfo.setPayTime(currentTime);
-				orderInfo.setLastUpdateTime(currentTime);
-				orderInfo.setTradeNumber(trade_no);
-				orderInfo.setStatus(OrderStatus.PAYED.getStatus());
-				String sql = "UPDATE OrderInfo SET payCount = #{payCount},payTime = #{payTime},lastUpdateTime = #{lastUpdateTime},tradeNumber = #{tradeNumber} WHERE orderNumber = #{orderNumber}";
-				commonMapper.updateBySql(sql, orderInfo);
+				WxOrderPayInfo model  = new WxOrderPayInfo(out_trade_no, trade_no, total_fee);
+				jmsTemplate.convertAndSend(QueueDestination.WX_ORDER_PAY_INFO_QUEUE, model);
+				
 				return true;
 			}
 			else{
-				logger.error("===微信教研失败===");
+				logger.error("===微信校验失败===");
 				return false;
 			}
 		}

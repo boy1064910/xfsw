@@ -32,6 +32,7 @@ public class WxNotifyRequester {
 	private String out_trade_no;
 	private String attach;
 	private String time_end;
+	private String is_subscribe;
 	public String getAppid() {
 		return appid;
 	}
@@ -187,5 +188,11 @@ public class WxNotifyRequester {
 	}
 	public void setReturn_msg(String return_msg) {
 		this.return_msg = return_msg;
+	}
+	public String getIs_subscribe() {
+		return is_subscribe;
+	}
+	public void setIs_subscribe(String is_subscribe) {
+		this.is_subscribe = is_subscribe;
 	}
 }
