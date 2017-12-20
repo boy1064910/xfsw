@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,7 @@ import net.xueshupa.entity.ProgressChapter;
 import net.xueshupa.entity.ProgressCourse;
 import net.xueshupa.service.ChapterService;
 import net.xueshupa.service.CourseService;
+import net.xueshupa.service.KnowledgeService;
 import net.xueshupa.service.ProgressChapterService;
 import net.xueshupa.service.ProgressCourseService;
 
@@ -37,6 +39,9 @@ public class CourseController {
 	@Resource(name="chapterService")
 	ChapterService chapterService;
 	
+	@Autowired
+	KnowledgeService knowledgeService;
+	
 	@Resource
 	ProgressCourseService progressCourseService;
 	@Resource
@@ -49,7 +54,7 @@ public class CourseController {
 		List<Course> courseList = courseService.selectAll();
 		List<ProgressCourse> progressCourseList = progressCourseService.selectListByUserId(ThreadUserInfoManager.getUserId());
 		if(!CollectionUtils.isEmpty(progressCourseList)){
-			Map<Integer,Integer> courseChapterMap = progressCourseList.stream().collect(Collectors.toMap(ProgressCourse::getCourseId, ProgressCourse::getChapterId));
+			Map<Integer,ProgressCourse> courseChapterMap = progressCourseList.stream().collect(Collectors.toMap(ProgressCourse::getCourseId, Function.identity()));
 			Set<Integer> courseIdSet = progressCourseList.stream().map(x->x.getCourseId()).collect(Collectors.toSet());
 			List<Integer> chapterIdList = progressCourseList.stream().map(x->x.getChapterId()).collect(Collectors.toList());
 			List<Chapter> chapterList = chapterService.selectListByIdList(chapterIdList);
@@ -64,8 +69,9 @@ public class CourseController {
 				buyedCourseModel.setId(x.getId());
 				buyedCourseModel.setName(x.getName());
 				buyedCourseModel.setBuyCount(x.getBuyCount());
-				Integer chapterId = courseChapterMap.get(x.getId());
+				Integer chapterId = courseChapterMap.get(x.getId()).getChapterId();
 				buyedCourseModel.setChapterId(chapterId);
+				buyedCourseModel.setPercent(courseChapterMap.get(x.getId()).getPercent());
 				if(chapterId!=null&&chapterMap.containsKey(chapterId)){
 					Chapter chapter = chapterMap.get(chapterId);
 					buyedCourseModel.setChapterName(chapter.getName());
@@ -79,7 +85,6 @@ public class CourseController {
 		else{
 			resultMap.put("unBuyCourseList", courseList);
 		}
-		
 		return new ResponseModel(resultMap);
 	}
 	
@@ -115,10 +120,11 @@ public class CourseController {
 		return new ResponseModel(resultMap);
 	}
 	
-	@ResponseFilterRetention(ignores = { "userId","code","lastUpdater","lastUpdateTime" })
+	@ResponseFilterRetention(ignores = { "lastUpdater","lastUpdateTime" })
 	@GetMapping(value = "/knowledge/list")
-	public ResponseModel knowledgeList(Integer chapter){
-		return new ResponseModel();
+	public ResponseModel knowledgeList(Integer chapterId){
+		Chapter chapter = chapterService.getById(chapterId);
+		return new ResponseModel(knowledgeService.selectListByChapterCode(chapter.getCode()));
 	}
 }
 
@@ -129,6 +135,7 @@ class BuyedCourseModel{
 	private Integer chapterId;
 	private String chapterName;
 	private Integer chapterOrderIndex;
+	private Double percent;
 	public Integer getId() {
 		return id;
 	}
@@ -164,6 +171,12 @@ class BuyedCourseModel{
 	}
 	public void setChapterOrderIndex(Integer chapterOrderIndex) {
 		this.chapterOrderIndex = chapterOrderIndex;
+	}
+	public Double getPercent() {
+		return percent;
+	}
+	public void setPercent(Double percent) {
+		this.percent = percent;
 	}
 }
 

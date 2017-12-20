@@ -15,6 +15,7 @@ public class ProgressCourse {
 	private Integer userId;
 	private Integer courseId;
 	private Integer chapterId;
+	private Double percent;
 	private Date createTime;
 	private Date lastUpdateTime;
 	
@@ -53,5 +54,11 @@ public class ProgressCourse {
 	}
 	public void setCourseId(Integer courseId) {
 		this.courseId = courseId;
+	}
+	public Double getPercent() {
+		return percent;
+	}
+	public void setPercent(Double percent) {
+		this.percent = percent;
 	}
 }
