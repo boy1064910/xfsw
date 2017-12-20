@@ -45,6 +45,9 @@ public class ChapterServiceImpl implements ChapterService {
 			String code = courseCode + NumberUtil.toZeroCode(orderIndex, 3);
 			chapter.setCode(code);
 			commonMapper.insert("Chapter.insertChapter", chapter);
+			
+			String sql = "UPDATE Course SET chapterCount = (SELECT COUNT(id) FROM Chapter WHERE courseId = #{courseId}) WHERE id = #{courseId}";
+			commonMapper.updateBySql(sql, chapter);
 			return chapter;
 		}
 	}

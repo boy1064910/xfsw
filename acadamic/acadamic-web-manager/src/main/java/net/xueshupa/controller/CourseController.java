@@ -38,6 +38,7 @@ public class CourseController {
 		course.setLastUpdater(user.getAccount());
 		course.setLastUpdateTime(new Date());
 		course.setUserId(user.getId());
+		course.setOriginPrice(course.getPrice());//目前无优惠，课程原价与销售价格一致
 		course = courseService.saveCourse(course);
 		return new ResponseModel(course);
 	}

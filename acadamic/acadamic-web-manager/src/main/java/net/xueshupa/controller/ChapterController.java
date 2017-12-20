@@ -37,6 +37,7 @@ public class ChapterController {
 	@ResponseBody
 	public ResponseModel saveChapter(Chapter chapter,String courseCode){
 		chapter.setLastUpdater(ThreadUserInfoManager.getAccount());
+		chapter.setOriginPrice(chapter.getPrice());//目前无优惠，课程原价与销售价格一致
 		return new ResponseModel(chapterService.saveChapter(chapter, courseCode));
 	}
 	

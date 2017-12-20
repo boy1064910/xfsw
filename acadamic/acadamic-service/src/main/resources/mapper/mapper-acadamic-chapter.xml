@@ -6,8 +6,8 @@
 	</select>
 
 	<insert id="insertChapter" parameterType="Chapter" keyProperty="id" useGeneratedKeys="true">
-		INSERT INTO Chapter(code,name,price,info,orderIndex,lastUpdater,lastUpdateTime)
-		VALUES(#{code},#{name},#{price},#{info},#{orderIndex},#{lastUpdater},NOW())
+		INSERT INTO Chapter(code,courseId,name,price,info,orderIndex,lastUpdater,lastUpdateTime)
+		VALUES(#{code},#{courseId},#{name},#{price},#{info},#{orderIndex},#{lastUpdater},NOW())
 	</insert>
 	
 	<update id="updateChapter" parameterType="Chapter">

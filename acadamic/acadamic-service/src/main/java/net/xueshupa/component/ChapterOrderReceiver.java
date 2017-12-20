@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.xueshupa.service;
+package net.xueshupa.component;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -67,6 +67,10 @@ public class ChapterOrderReceiver extends MessageListenerAdapter {
 			progressChapter.setBuyTime(new Date());
 			commonMapper.insert(ProgressChapter.class, progressChapter);
 		}
+		
+		//更新课程购买数量
+		String courseByCountSql = "UPDATE Course SET buyCount = (SELECT COUNT(courseId) FROM (SELECT userId,courseId FROM progresscourse GROUP BY userId,courseId) AS a WHERE a.courseId =#{courseId} GROUP BY a.courseId) WHERE id = #{courseId}";
+		commonMapper.updateBySql(courseByCountSql, params);
 		message.acknowledge();
 	}
 }

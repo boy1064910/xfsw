@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
@@ -114,6 +113,12 @@ public class CourseController {
 		
 		resultMap.put("chapterList", chapterModelList);
 		return new ResponseModel(resultMap);
+	}
+	
+	@ResponseFilterRetention(ignores = { "userId","code","lastUpdater","lastUpdateTime" })
+	@GetMapping(value = "/knowledge/list")
+	public ResponseModel knowledgeList(Integer chapter){
+		return new ResponseModel();
 	}
 }
 

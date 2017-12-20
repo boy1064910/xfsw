@@ -15,6 +15,7 @@ public class Course{
 	private Double originPrice;
 	private Double price;
 	private Integer buyCount;
+	private Integer chapterCount;
 	private Integer state;
 	private String lastUpdater;
 	private Date lastUpdateTime;
@@ -84,6 +85,14 @@ public class Course{
 	}
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+
+	public Integer getChapterCount() {
+		return chapterCount;
+	}
+
+	public void setChapterCount(Integer chapterCount) {
+		this.chapterCount = chapterCount;
 	}
 }
 

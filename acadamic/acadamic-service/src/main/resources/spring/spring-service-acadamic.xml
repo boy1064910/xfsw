@@ -94,7 +94,7 @@
 
 	<!-- 扫描包 -->
 	<context:annotation-config />
-	<context:component-scan base-package="net.xueshupa.acadamic.service" />
+	<context:component-scan base-package="net.xueshupa.acadamic" />
 	
 	<!-- 定義activemq鏈接 start -->
 	<amq:connectionFactory id="amqConnectionFactory" brokerURL="${xfsw.mq.broker.url}" userName="${xfsw.mq.user.name}" password="${xfsw.mq.password}" useAsyncSend="false" />
