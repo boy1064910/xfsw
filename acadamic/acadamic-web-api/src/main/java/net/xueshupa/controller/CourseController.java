@@ -20,6 +20,7 @@ import com.xfsw.common.classes.ResponseModel;
 import com.xfsw.common.consts.ErrorConstant;
 import com.xfsw.common.filter.response.ResponseFilterRetention;
 import com.xfsw.common.thread.ThreadUserInfoManager;
+import com.xfsw.common.util.FileUtil;
 
 import net.xueshupa.entity.Chapter;
 import net.xueshupa.entity.Course;
@@ -135,6 +136,13 @@ public class CourseController {
 		Chapter chapter = chapterService.getById(chapterId);
 		resultMap.put("knowledgeList", knowledgeService.selectListByChapterCode(chapter.getCode()));
 		return new ResponseModel(resultMap);
+	}
+	
+	@ResponseFilterRetention(ignores = { "lastUpdater","lastUpdateTime" })
+	@GetMapping(value = "/chapter/knowledge/info")
+	public ResponseModel knowledgeInfo(Integer knowledgeId){
+		String ss = FileUtil.readFile("/Users/lxp/Desktop/1.tex", "UTF-8", true);
+		return new ResponseModel(ss);
 	}
 }
 

@@ -23,6 +23,7 @@
 			<mvc:mapping path="/**" />
 			<mvc:exclude-mapping path="/error"/>
 			<mvc:exclude-mapping path="/order/notify.shtml"/>
+			<mvc:exclude-mapping path="/course/chapter/knowledge/info.shtml"/>
 			<bean class="com.xfsw.common.interceptor.UniverseLoginInterceptor">
 				<property name="userSessionService" ref="userSessionService"></property>
 				<property name="urlPrefix" value="/acadamic-web-api"></property>

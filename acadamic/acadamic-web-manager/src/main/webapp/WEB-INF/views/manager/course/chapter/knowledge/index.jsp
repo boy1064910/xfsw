@@ -37,7 +37,7 @@
 		<div class="form-group">
             <label class="col-lg-2 col-sm-2 control-label">标题</label>
             <div class="col-lg-8">
-            	<input class="form-control" type="text" id="name" name="name" validations="required&&vComplexMaxLength=40" validationTips="名称不能为空&&长度不能超过20个中文字符或者40个英文字符"  />
+            	<input class="form-control" type="text" id="name" name="name" validations="required&&vComplexMaxLength=100" validationTips="名称不能为空&&长度不能超过20个中文字符或者40个英文字符"  />
             </div>
         </div>
 	</form>

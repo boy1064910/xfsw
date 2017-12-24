@@ -21,7 +21,7 @@ import com.xfsw.common.filter.WebSiteMeshFilter;
 @SpringBootApplication
 @ImportResource(locations={"classpath:spring-web.xml"})
 @EnableAutoConfiguration(exclude={RedisAutoConfiguration.class,RedisRepositoriesAutoConfiguration.class})
-public class WebAuthApplication {
+public class Application {
 	
 	/**
 	 * spirng boot的标准入口
@@ -32,9 +32,9 @@ public class WebAuthApplication {
 	public static void main(String[] args) {
 		String env = System.getProperty("env");//加载spring配置文件
 		if (StringUtils.isEmpty(env)){
-			System.setProperty("env", "online");
+			System.setProperty("env", "dev");
 		}
-		SpringApplication.run(WebAuthApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 	
 	@Bean

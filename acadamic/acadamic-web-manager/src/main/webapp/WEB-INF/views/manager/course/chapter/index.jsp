@@ -34,7 +34,7 @@
 		<div class="form-group">
             <label class="col-lg-2 col-sm-2 control-label">章节名称</label>
             <div class="col-lg-8">
-            	<input class="form-control" type="text" id="name" name="name" validations="vComplexMaxLength=40" validationTips="长度不能超过20个中文字符或者40个英文字符"  />
+            	<input class="form-control" type="text" id="name" name="name" validations="vComplexMaxLength=100" validationTips="长度不能超过20个中文字符或者40个英文字符"  />
             </div>
         </div>
         <div class="form-group">
