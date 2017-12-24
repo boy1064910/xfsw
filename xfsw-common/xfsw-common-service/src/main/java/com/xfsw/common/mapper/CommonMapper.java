@@ -113,11 +113,11 @@ public class CommonMapper implements ICommonMapper {
 		return MapUtil.map2Entity(result, clazz);
 	}
 	
-	public Object get(Class<? extends Object> clazz,Object entity){
+	public <T> T get(Class<T> clazz,Object entity){
 		if(entity==null){
 			throw new RuntimeException("查询对象实例参数为空！");
 		}
-		Map<String,Object> params = MapUtil.pojoToMapNotNullField(entity);
+		Map<String,Object> params = MapUtil.entityToMapInNotNullField(entity);
 		return this.get(clazz, params);
 	}
 	

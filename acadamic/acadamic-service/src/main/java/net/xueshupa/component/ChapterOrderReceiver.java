@@ -54,9 +54,9 @@ public class ChapterOrderReceiver extends MessageListenerAdapter {
 		progrssCourse.setChapterId(chapterId);
 		commonMapper.insert(ProgressCourse.class, progrssCourse);
 		
-		String sql = "SELECT COUNT(id) FROM ProgressChapter WHERE courseId = #{courseId} AND userId = #{userId}";
+		String sql = "SELECT COUNT(id) FROM ProgressChapter WHERE chapterId = #{chapterId} AND userId = #{userId}";
 		Map<String,Object> params = new HashMap<String,Object>();
-		params.put("courseId", courseId);
+		params.put("chapterId", chapterId);
 		params.put("userId", userId);
 		boolean isExsit = commonMapper.checkBySql(sql,params);
 		if(!isExsit){

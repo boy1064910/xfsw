@@ -73,7 +73,7 @@ public interface ICommonMapper {
 	
 	<T> T get(Class<T> clazz,Map<String,Object> params);
 	
-	Object get(Class<? extends Object> clazz,Object entity);
+	<T> T get(Class<T> clazz,Object entity);
 	
 	/**
 	 * 通过SQL获取单个数据

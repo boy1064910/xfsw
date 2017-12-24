@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xfsw.common.classes.BusinessException;
 import com.xfsw.common.classes.ResponseModel;
+import com.xfsw.common.consts.ErrorConstant;
 import com.xfsw.common.filter.response.ResponseFilterRetention;
 import com.xfsw.common.thread.ThreadUserInfoManager;
 
@@ -121,10 +123,18 @@ public class CourseController {
 	}
 	
 	@ResponseFilterRetention(ignores = { "lastUpdater","lastUpdateTime" })
-	@GetMapping(value = "/knowledge/list")
+	@GetMapping(value = "/chapter/knowledge/list")
 	public ResponseModel knowledgeList(Integer chapterId){
+		//TODO 校验是否已购买该章节
+		ProgressChapter progressChapter = progressChapterService.getByInfo(ThreadUserInfoManager.getUserId(), chapterId);
+		if(progressChapter==null){
+			throw new BusinessException(ErrorConstant.ERROR_BUSINESS_KNOWN,"您尚未购买该章节！");
+		}
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		resultMap.put("progressChapter", progressChapter);
 		Chapter chapter = chapterService.getById(chapterId);
-		return new ResponseModel(knowledgeService.selectListByChapterCode(chapter.getCode()));
+		resultMap.put("knowledgeList", knowledgeService.selectListByChapterCode(chapter.getCode()));
+		return new ResponseModel(resultMap);
 	}
 }
 
