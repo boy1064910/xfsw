@@ -21,6 +21,7 @@
 		<typeAlias type="net.xueshupa.entity.Answer" alias="Answer"/>
 		<typeAlias type="net.xueshupa.entity.ProgressCourse" alias="ProgressCourse"/>
 		<typeAlias type="net.xueshupa.entity.KnowledgePointContent" alias="KnowledgePointContent"/>
+		<typeAlias type="net.xueshupa.entity.KnowledgeQuestion" alias="KnowledgeQuestion"/>
 		<!-- model -->
 		<typeAlias type="net.xueshupa.model.MiniChapterListModel" alias="MiniChapterListModel"/>
 		<typeAlias type="net.xueshupa.model.MiniKnowledgeListModel" alias="MiniKnowledgeListModel"/>

@@ -5,6 +5,7 @@ package net.xueshupa.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -17,10 +18,14 @@ public class KnowledgePointContent implements Serializable {
 
 	private Integer id;
 	private Integer knowledgePointId;
+	private String code;
 	private String type;
 	private String content;
 	private String lastUpdater;
 	private Date lastUpdateTime;
+	
+	private List<KnowledgeQuestion> questionList;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -56,5 +61,17 @@ public class KnowledgePointContent implements Serializable {
 	}
 	public void setLastUpdateTime(Date lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
+	}
+	public List<KnowledgeQuestion> getQuestionList() {
+		return questionList;
+	}
+	public void setQuestionList(List<KnowledgeQuestion> questionList) {
+		this.questionList = questionList;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
 	}
 }

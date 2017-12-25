@@ -18,6 +18,7 @@ public class KnowledgePoint implements Serializable {
 
 	private Integer id;
 	private Integer knowledgeId;
+	private String code;
 	private String title;
 	private Integer orderIndex;
 	private String lastUpdater;
@@ -66,6 +67,12 @@ public class KnowledgePoint implements Serializable {
 	}
 	public void setContentList(List<KnowledgePointContent> contentList) {
 		this.contentList = contentList;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
 	}
 	
 }

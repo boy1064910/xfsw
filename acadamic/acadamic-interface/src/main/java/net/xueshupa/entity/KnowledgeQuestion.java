@@ -17,8 +17,7 @@ public class KnowledgeQuestion implements Serializable {
 
 	private Integer id;
 	private Integer knowledgeContentId;
-	private String code;
-	private String rightAnswer;
+	private String content;
 	private String lastUpdater;
 	private Date lastUpdateTime;
 	public Integer getId() {
@@ -33,18 +32,6 @@ public class KnowledgeQuestion implements Serializable {
 	public void setKnowledgeContentId(Integer knowledgeContentId) {
 		this.knowledgeContentId = knowledgeContentId;
 	}
-	public String getCode() {
-		return code;
-	}
-	public void setCode(String code) {
-		this.code = code;
-	}
-	public String getRightAnswer() {
-		return rightAnswer;
-	}
-	public void setRightAnswer(String rightAnswer) {
-		this.rightAnswer = rightAnswer;
-	}
 	public String getLastUpdater() {
 		return lastUpdater;
 	}
@@ -56,5 +43,11 @@ public class KnowledgeQuestion implements Serializable {
 	}
 	public void setLastUpdateTime(Date lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
 	}
 }
