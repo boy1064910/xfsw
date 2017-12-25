@@ -20,14 +20,15 @@ import com.xfsw.common.classes.ResponseModel;
 import com.xfsw.common.consts.ErrorConstant;
 import com.xfsw.common.filter.response.ResponseFilterRetention;
 import com.xfsw.common.thread.ThreadUserInfoManager;
-import com.xfsw.common.util.FileUtil;
 
 import net.xueshupa.entity.Chapter;
 import net.xueshupa.entity.Course;
+import net.xueshupa.entity.KnowledgePoint;
 import net.xueshupa.entity.ProgressChapter;
 import net.xueshupa.entity.ProgressCourse;
 import net.xueshupa.service.ChapterService;
 import net.xueshupa.service.CourseService;
+import net.xueshupa.service.KnowledgePointService;
 import net.xueshupa.service.KnowledgeService;
 import net.xueshupa.service.ProgressChapterService;
 import net.xueshupa.service.ProgressCourseService;
@@ -49,6 +50,9 @@ public class CourseController {
 	ProgressCourseService progressCourseService;
 	@Resource
 	ProgressChapterService progressChapterService;
+	
+	@Autowired
+	KnowledgePointService knowledgePointService;
 	
 	@ResponseFilterRetention(ignores = { "userId","code","state","lastUpdater","lastUpdateTime" })
 	@GetMapping(value = "/list")
@@ -141,8 +145,10 @@ public class CourseController {
 	@ResponseFilterRetention(ignores = { "lastUpdater","lastUpdateTime" })
 	@GetMapping(value = "/chapter/knowledge/info")
 	public ResponseModel knowledgeInfo(Integer knowledgeId){
-		String ss = FileUtil.readFile("/Users/lxp/Desktop/1.tex", "UTF-8", true);
-		return new ResponseModel(ss);
+		List<KnowledgePoint> knowledgePointList = knowledgePointService.selectListByKnowledgeId(knowledgeId);
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("knowledgePointList", knowledgePointList);
+		return new ResponseModel(result);
 	}
 }
 
