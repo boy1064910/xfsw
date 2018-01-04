@@ -25,6 +25,7 @@ public class KnowledgePointContent implements Serializable {
 	private Date lastUpdateTime;
 	
 	private List<KnowledgeQuestion> questionList;
+	private List<KnowledgePointContentAnswer> contentAnswerList;
 	
 	public Integer getId() {
 		return id;
@@ -73,5 +74,11 @@ public class KnowledgePointContent implements Serializable {
 	}
 	public void setCode(String code) {
 		this.code = code;
+	}
+	public List<KnowledgePointContentAnswer> getContentAnswerList() {
+		return contentAnswerList;
+	}
+	public void setContentAnswerList(List<KnowledgePointContentAnswer> contentAnswerList) {
+		this.contentAnswerList = contentAnswerList;
 	}
 }

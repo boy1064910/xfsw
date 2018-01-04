@@ -7,26 +7,21 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 知识点练习题答案
+ * 知识点内容答案
  * @author xiaopeng.liu
  * @version 0.0.1
  */
-public class KnowledgeQuestionAnswer implements Serializable {
+public class KnowledgePointContentAnswer implements Serializable {
 
 	private static final long serialVersionUID = -7021852154603365470L;
 
-	private String knowledgeQuestionId;
+	private Integer id;
+	private Integer knowledgePointContentId;
 	private String code;
 	private String rightAnswer;
 	private String lastUpdater;
 	private Date lastUpdateTime;
 	
-	public String getKnowledgeQuestionId() {
-		return knowledgeQuestionId;
-	}
-	public void setKnowledgeQuestionId(String knowledgeQuestionId) {
-		this.knowledgeQuestionId = knowledgeQuestionId;
-	}
 	public String getCode() {
 		return code;
 	}
@@ -50,5 +45,17 @@ public class KnowledgeQuestionAnswer implements Serializable {
 	}
 	public void setLastUpdateTime(Date lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public Integer getKnowledgePointContentId() {
+		return knowledgePointContentId;
+	}
+	public void setKnowledgePointContentId(Integer knowledgePointContentId) {
+		this.knowledgePointContentId = knowledgePointContentId;
 	}
 }

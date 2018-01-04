@@ -21,7 +21,7 @@ import com.xfsw.common.filter.WebSiteMeshFilter;
 @SpringBootApplication
 @ImportResource(locations={"classpath:spring-web.xml"})
 @EnableAutoConfiguration(exclude={RedisAutoConfiguration.class,RedisRepositoriesAutoConfiguration.class})
-public class WebManagerApplication {
+public class Application {
 	
 	/**
 	 * spirng boot的标准入口
@@ -34,7 +34,7 @@ public class WebManagerApplication {
 		if (StringUtils.isEmpty(env)){
 			System.setProperty("env", "online");
 		}
-		SpringApplication.run(WebManagerApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 	
 	@Bean
