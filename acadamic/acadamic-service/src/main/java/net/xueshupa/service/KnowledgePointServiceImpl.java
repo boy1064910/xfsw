@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xfsw.common.mapper.ICommonMapper;
@@ -20,6 +21,7 @@ import net.xueshupa.entity.KnowledgePoint;
 import net.xueshupa.entity.KnowledgePointContent;
 import net.xueshupa.entity.KnowledgePointContentAnswer;
 import net.xueshupa.entity.KnowledgeQuestion;
+import net.xueshupa.entity.KnowledgeQuestionAnswer;
 
 /**
  * 
@@ -31,6 +33,9 @@ public class KnowledgePointServiceImpl implements KnowledgePointService {
 
 	@Resource(name="acadamicCommonMapper")
 	ICommonMapper commonMapper;
+	
+	@Autowired
+	KnowledgeQuestionAnswerService knowledgeQuestionAnswerService;
 	
 	@Override
 	public List<KnowledgePoint> selectListByKnowledgeId(Integer knowledgeId) {
@@ -69,15 +74,20 @@ public class KnowledgePointServiceImpl implements KnowledgePointService {
 		
 		//设置question和content的主从数据
 		List<KnowledgeQuestion> questionList = commonMapper.selectList("KnowledgeQuestion.selectListByKnowledgePointContentIds", knowledgePointContentIdList);
+		List<Integer> questionIdList = questionList.stream().map(x->x.getId()).collect(Collectors.toList());
+		//获取所有问题的答案列表并分组
+		Map<Integer,List<KnowledgeQuestionAnswer>> knowledgeQuestionAnswerMap = knowledgeQuestionAnswerService.selectListByKnowledgeQuestionIds(questionIdList);
 		Map<Integer,List<KnowledgeQuestion>> questionListMap = new HashMap<Integer,List<KnowledgeQuestion>>();
 		for(KnowledgeQuestion c:questionList) {
-			if(questionListMap.containsKey(c.getKnowledgeContentId())) {
-				questionListMap.get(c.getKnowledgeContentId()).add(c);
+			//为问题设置答案
+			c.setAnswerList(knowledgeQuestionAnswerMap.get(c.getId()));
+			if(questionListMap.containsKey(c.getKnowledgePointContentId())) {
+				questionListMap.get(c.getKnowledgePointContentId()).add(c);
 			}
 			else {
 				List<KnowledgeQuestion> klist = new ArrayList<KnowledgeQuestion>();
 				klist.add(c);
-				questionListMap.put(c.getKnowledgeContentId(), klist);
+				questionListMap.put(c.getKnowledgePointContentId(), klist);
 			}
 		}
 		contentList.stream().forEach(x->{

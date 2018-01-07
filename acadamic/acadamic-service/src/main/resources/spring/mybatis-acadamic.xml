@@ -23,6 +23,7 @@
 		<typeAlias type="net.xueshupa.entity.KnowledgePointContent" alias="KnowledgePointContent"/>
 		<typeAlias type="net.xueshupa.entity.KnowledgePointContentAnswer" alias="KnowledgePointContentAnswer"/>
 		<typeAlias type="net.xueshupa.entity.KnowledgeQuestion" alias="KnowledgeQuestion"/>
+		<typeAlias type="net.xueshupa.entity.KnowledgeQuestionAnswer" alias="KnowledgeQuestionAnswer"/>
 		
 		<!-- model -->
 		<typeAlias type="net.xueshupa.model.MiniChapterListModel" alias="MiniChapterListModel"/>

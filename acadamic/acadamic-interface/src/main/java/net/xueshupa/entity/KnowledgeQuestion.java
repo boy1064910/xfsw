@@ -5,6 +5,7 @@ package net.xueshupa.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -16,21 +17,18 @@ public class KnowledgeQuestion implements Serializable {
 	private static final long serialVersionUID = -1107072027994848053L;
 
 	private Integer id;
-	private Integer knowledgeContentId;
+	private Integer knowledgePointContentId;
 	private String content;
 	private String lastUpdater;
 	private Date lastUpdateTime;
+	
+	private List<KnowledgeQuestionAnswer> answerList;
+	
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
-	}
-	public Integer getKnowledgeContentId() {
-		return knowledgeContentId;
-	}
-	public void setKnowledgeContentId(Integer knowledgeContentId) {
-		this.knowledgeContentId = knowledgeContentId;
 	}
 	public String getLastUpdater() {
 		return lastUpdater;
@@ -49,5 +47,17 @@ public class KnowledgeQuestion implements Serializable {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	public List<KnowledgeQuestionAnswer> getAnswerList() {
+		return answerList;
+	}
+	public void setAnswerList(List<KnowledgeQuestionAnswer> answerList) {
+		this.answerList = answerList;
+	}
+	public Integer getKnowledgePointContentId() {
+		return knowledgePointContentId;
+	}
+	public void setKnowledgePointContentId(Integer knowledgePointContentId) {
+		this.knowledgePointContentId = knowledgePointContentId;
 	}
 }

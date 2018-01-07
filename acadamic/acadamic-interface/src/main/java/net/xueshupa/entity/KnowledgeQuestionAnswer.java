@@ -15,16 +15,16 @@ public class KnowledgeQuestionAnswer implements Serializable {
 
 	private static final long serialVersionUID = -7021852154603365470L;
 
-	private String knowledgeQuestionId;
+	private Integer knowledgeQuestionId;
 	private String code;
 	private String rightAnswer;
 	private String lastUpdater;
 	private Date lastUpdateTime;
 	
-	public String getKnowledgeQuestionId() {
+	public Integer getKnowledgeQuestionId() {
 		return knowledgeQuestionId;
 	}
-	public void setKnowledgeQuestionId(String knowledgeQuestionId) {
+	public void setKnowledgeQuestionId(Integer knowledgeQuestionId) {
 		this.knowledgeQuestionId = knowledgeQuestionId;
 	}
 	public String getCode() {
