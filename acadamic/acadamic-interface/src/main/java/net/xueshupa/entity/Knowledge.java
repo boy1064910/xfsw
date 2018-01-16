@@ -1,5 +1,6 @@
 package net.xueshupa.entity;
 import java.util.Date;
+import java.util.List;
 
 /**
 * Knowledge 
@@ -14,6 +15,9 @@ public class Knowledge{
 	private Integer orderIndex;
 	private String lastUpdater;
 	private Date lastUpdateTime;
+	
+	//辅助字段
+	private List<KnowledgePoint> knowledgePointList;
 
 	public void setId(Integer id){
 		this.id=id;
@@ -50,6 +54,12 @@ public class Knowledge{
 	}
 	public Date getLastUpdateTime(){
 		return lastUpdateTime;
+	}
+	public List<KnowledgePoint> getKnowledgePointList() {
+		return knowledgePointList;
+	}
+	public void setKnowledgePointList(List<KnowledgePoint> knowledgePointList) {
+		this.knowledgePointList = knowledgePointList;
 	}
 }
 

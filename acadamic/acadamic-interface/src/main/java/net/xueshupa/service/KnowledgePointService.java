@@ -3,8 +3,6 @@
  */
 package net.xueshupa.service;
 
-import java.util.List;
-
 import net.xueshupa.entity.KnowledgePoint;
 
 /**
@@ -14,5 +12,5 @@ import net.xueshupa.entity.KnowledgePoint;
  */
 public interface KnowledgePointService {
 
-	List<KnowledgePoint> selectListByKnowledgeId(Integer knowledgeId);
+	KnowledgePoint getKnowledgePointInfo(Integer id);
 }

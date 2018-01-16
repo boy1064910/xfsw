@@ -20,7 +20,7 @@
 		<typeAlias type="net.xueshupa.entity.ExerciseDetail" alias="ExerciseDetail"/>
 		<typeAlias type="net.xueshupa.entity.Answer" alias="Answer"/>
 		<typeAlias type="net.xueshupa.entity.ProgressCourse" alias="ProgressCourse"/>
-		<typeAlias type="net.xueshupa.entity.KnowledgePointContent" alias="KnowledgePointContent"/>
+		<typeAlias type="net.xueshupa.entity.KnowledgePoint" alias="KnowledgePoint"/>
 		<typeAlias type="net.xueshupa.entity.KnowledgeQuestion" alias="KnowledgeQuestion"/>
 		<typeAlias type="net.xueshupa.entity.KnowledgeQuestionAnswer" alias="KnowledgeQuestionAnswer"/>
 		

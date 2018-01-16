@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="KnowledgePointContent">
-	<select id="selectListByKnowledgePointIds" parameterType="java.util.List" resultType="KnowledgePointContent">
-		SELECT * FROM KnowledgePointContent WHERE knowledgePointId IN
+<mapper namespace="KnowledgePoint">
+	<select id="selectListByKnowledgeIdList" resultType="KnowledgePoint">
+		SELECT * FROM KnowledgePoint WHERE knowledgeId IN
 		<foreach collection="list" item="id" open="(" close=")" separator=",">
 			#{id}
 		</foreach>
+		ORDER BY orderIndex ASC
 	</select>
 </mapper>

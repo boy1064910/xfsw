@@ -23,7 +23,6 @@ import com.xfsw.common.thread.ThreadUserInfoManager;
 
 import net.xueshupa.entity.Chapter;
 import net.xueshupa.entity.Course;
-import net.xueshupa.entity.KnowledgePoint;
 import net.xueshupa.entity.ProgressChapter;
 import net.xueshupa.entity.ProgressCourse;
 import net.xueshupa.service.ChapterService;
@@ -144,11 +143,8 @@ public class CourseController {
 	
 	@ResponseFilterRetention(ignores = { "lastUpdater","lastUpdateTime" })
 	@GetMapping(value = "/chapter/knowledge/info")
-	public ResponseModel knowledgeInfo(Integer knowledgeId){
-		List<KnowledgePoint> knowledgePointList = knowledgePointService.selectListByKnowledgeId(knowledgeId);
-		Map<String,Object> result = new HashMap<String,Object>();
-		result.put("knowledgePointList", knowledgePointList);
-		return new ResponseModel(result);
+	public ResponseModel knowledgeInfo(Integer knowledgePointId){
+		return new ResponseModel(knowledgePointService.getKnowledgePointInfo(knowledgePointId));
 	}
 }
 

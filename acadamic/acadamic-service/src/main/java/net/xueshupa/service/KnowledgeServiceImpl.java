@@ -1,11 +1,14 @@
 package net.xueshupa.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +16,7 @@ import com.xfsw.common.mapper.ICommonMapper;
 import com.xfsw.common.util.NumberUtil;
 
 import net.xueshupa.entity.Knowledge;
+import net.xueshupa.entity.KnowledgePoint;
 import net.xueshupa.model.KnowledgeModel;
 import net.xueshupa.model.MiniKnowledgeInfoModel;
 import net.xueshupa.model.MiniKnowledgeListModel;
@@ -37,7 +41,26 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 	}
 	
 	public List<Knowledge> selectListByChapterCode(String chapterCode){
-		return commonMapper.selectList("Knowledge.selectListByChapterCode", chapterCode);
+		List<Knowledge> knowledgeList = commonMapper.selectList("Knowledge.selectListByChapterCode", chapterCode);
+		List<Integer> knowledgeIdList = knowledgeList.stream().map(x->x.getId()).collect(Collectors.toList());
+		if(!CollectionUtils.isEmpty(knowledgeIdList)){
+			List<KnowledgePoint> knowledgePointList = commonMapper.selectList("KnowledgePoint.selectListByKnowledgeIdList",knowledgeIdList);
+			Map<Integer,List<KnowledgePoint>> knowledgePointMap = new HashMap<Integer,List<KnowledgePoint>>();
+			for(KnowledgePoint c:knowledgePointList) {
+				//为问题设置答案
+				if(!knowledgePointMap.containsKey(c.getKnowledgeId())) {
+					knowledgePointMap.put(c.getKnowledgeId(), new ArrayList<KnowledgePoint>());
+				}
+				knowledgePointMap.get(c.getKnowledgeId()).add(c);
+			}
+			
+			knowledgeList.stream().forEach(x->{
+				if(knowledgePointMap.containsKey(x.getId())) {
+					x.setKnowledgePointList(knowledgePointMap.get(x.getId()));
+				}
+			});
+		}
+		return knowledgeList;
 	}
 	
 	public Knowledge saveKnowledge(String chapterCode,Knowledge knowledge){
