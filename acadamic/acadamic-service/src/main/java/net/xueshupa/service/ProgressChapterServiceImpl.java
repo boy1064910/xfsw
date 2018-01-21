@@ -35,11 +35,4 @@ public class ProgressChapterServiceImpl implements ProgressChapterService {
 		return commonMapper.selectListBySql(sql, params, ProgressChapter.class);
 	}
 
-	@Override
-	public ProgressChapter getByInfo(Integer userId,Integer chapterId){
-		ProgressChapter entity = new ProgressChapter();
-		entity.setUserId(userId);
-		entity.setChapterId(chapterId);
-		return commonMapper.get(ProgressChapter.class, entity);
-	}
 }

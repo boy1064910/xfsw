@@ -15,4 +15,8 @@ import net.xueshupa.entity.ProgressCourse;
 public interface ProgressCourseService {
 
 	List<ProgressCourse> selectListByUserId(Integer userId);
+	
+	List<ProgressCourse> selectLearningList(Integer userId);
+	
+	ProgressCourse getByInfo(Integer userId,Integer chapterId);
 }

@@ -23,6 +23,7 @@ public abstract class BaseGenerateOrderInfo implements Serializable{
 	Double sumCount;
 	String operator;
 	String bizCode;
+	String bizExtra;//业务扩展参数
 	List<GenerateOrderDetail> detailList;
 	
 	public Integer getUserId() {
@@ -66,6 +67,12 @@ public abstract class BaseGenerateOrderInfo implements Serializable{
 	}
 	public void setBizCode(String bizCode) {
 		this.bizCode = bizCode;
+	}
+	public String getBizExtra() {
+		return bizExtra;
+	}
+	public void setBizExtra(String bizExtra) {
+		this.bizExtra = bizExtra;
 	}
 	
 }

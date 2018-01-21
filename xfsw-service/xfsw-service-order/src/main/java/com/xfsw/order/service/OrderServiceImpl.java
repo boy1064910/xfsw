@@ -102,6 +102,7 @@ public class OrderServiceImpl implements OrderService {
 		orderInfo.setPayment(wxGenerateOrderInfo.getPayment().toString());
 		orderInfo.setSumCount(wxGenerateOrderInfo.getSumCount());
 		orderInfo.setBizCode(wxGenerateOrderInfo.getBizCode());
+		orderInfo.setBizExtra(wxGenerateOrderInfo.getBizExtra());
 		Map<String,String> paymentExtra = new HashMap<String,String>();
 		paymentExtra.put("openId", wxGenerateOrderInfo.getOpenId());
 		orderInfo.setPaymentExtra(JsonUtil.entity2Json(paymentExtra));

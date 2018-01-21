@@ -20,6 +20,7 @@ public class OrderInfo implements Serializable{
 	private Integer userId;
 	private String orderNumber;
 	private String bizCode;//业务代码，用作于mq参数传递，如无mq业务处理，则可为空
+	private String bizExtra;//业务扩展参数
 	private String payment;
 	private Double sumCount;
 	private Double payCount;
@@ -120,5 +121,11 @@ public class OrderInfo implements Serializable{
 	}
 	public void setBizCode(String bizCode) {
 		this.bizCode = bizCode;
+	}
+	public String getBizExtra() {
+		return bizExtra;
+	}
+	public void setBizExtra(String bizExtra) {
+		this.bizExtra = bizExtra;
 	}
 }

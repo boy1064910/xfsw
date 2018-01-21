@@ -23,7 +23,6 @@ import com.xfsw.common.thread.ThreadUserInfoManager;
 
 import net.xueshupa.entity.Chapter;
 import net.xueshupa.entity.Course;
-import net.xueshupa.entity.ProgressChapter;
 import net.xueshupa.entity.ProgressCourse;
 import net.xueshupa.service.ChapterService;
 import net.xueshupa.service.CourseService;
@@ -58,7 +57,7 @@ public class CourseController {
 	public ResponseModel list(){
 		Map<String,Object> resultMap = new HashMap<String,Object>();
 		List<Course> courseList = courseService.selectAll();
-		List<ProgressCourse> progressCourseList = progressCourseService.selectListByUserId(ThreadUserInfoManager.getUserId());
+		List<ProgressCourse> progressCourseList = progressCourseService.selectLearningList(ThreadUserInfoManager.getUserId());
 		if(!CollectionUtils.isEmpty(progressCourseList)){
 			Map<Integer,ProgressCourse> courseChapterMap = progressCourseList.stream().collect(Collectors.toMap(ProgressCourse::getCourseId, Function.identity()));
 			Set<Integer> courseIdSet = progressCourseList.stream().map(x->x.getCourseId()).collect(Collectors.toSet());
@@ -107,9 +106,9 @@ public class CourseController {
 		}
 		
 		List<ChapterModel> chapterModelList = null;
-		List<ProgressChapter> progressChapterList = progressChapterService.selectListByInfo(ThreadUserInfoManager.getUserId(), courseId);
-		if(!CollectionUtils.isEmpty(progressChapterList)) {
-			Set<Integer> buyedChapterIdSet = progressChapterList.stream().map(x->x.getChapterId()).collect(Collectors.toSet());
+		List<ProgressCourse> progressCourseList = progressCourseService.selectListByUserId(ThreadUserInfoManager.getUserId());
+		if(!CollectionUtils.isEmpty(progressCourseList)) {
+			Set<Integer> buyedChapterIdSet = progressCourseList.stream().map(x->x.getChapterId()).collect(Collectors.toSet());
 			chapterModelList = chapterList.stream().map(x->{
 				ChapterModel chapterModel = new ChapterModel(x);
 				if(buyedChapterIdSet.contains(x.getId())) {
@@ -130,12 +129,12 @@ public class CourseController {
 	@GetMapping(value = "/chapter/knowledge/list")
 	public ResponseModel knowledgeList(Integer chapterId){
 		//TODO 校验是否已购买该章节
-		ProgressChapter progressChapter = progressChapterService.getByInfo(ThreadUserInfoManager.getUserId(), chapterId);
-		if(progressChapter==null){
+		ProgressCourse progressCourse = progressCourseService.getByInfo(ThreadUserInfoManager.getUserId(), chapterId);
+		if(progressCourse==null){
 			throw new BusinessException(ErrorConstant.ERROR_BUSINESS_KNOWN,"您尚未购买该章节！");
 		}
 		Map<String,Object> resultMap = new HashMap<String,Object>();
-		resultMap.put("progressChapter", progressChapter);
+		resultMap.put("progressCourse", progressCourse);
 		Chapter chapter = chapterService.getById(chapterId);
 		resultMap.put("knowledgeList", knowledgeService.selectListByChapterCode(chapter.getCode()));
 		return new ResponseModel(resultMap);

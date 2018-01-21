@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ProgressCourse">
+	<insert id="insertProgressCourseList" parameterType="java.util.Map">
+		INSERT INTO ProgressCourse(userId,courseId,chapterId,createTime)
+		(
+			SELECT #{userId},courseId,id AS chapterId,NOW() FROM Chapter WHERE id IN
+			<foreach collection="chapterIdList" item="id" open="(" close=")" separator=",">
+				#{id}
+			</foreach>
+		)
+	</insert>
+</mapper>

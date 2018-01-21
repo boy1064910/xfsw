@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 import javax.jms.JMSException;
@@ -67,10 +68,12 @@ public class OrderReceiver extends MessageListenerAdapter {
 			Map<String,Object> params = new HashMap<String,Object>();
 			params.put("orderInfoId", orderInfo.getId());
 			List<OrderDetail> orderDetailList = orderCommonMapper.selectList(OrderDetail.class, params);
+			List<String> detailBizExtra = orderDetailList.stream().map(x->x.getDetailExtra()).collect(Collectors.toList());
 			
 			OrderReceiverModel model = new OrderReceiverModel();
 			model.setUserId(orderInfo.getUserId());
-			model.setBizExtra(orderDetailList.get(0).getDetailExtra());
+			model.setBizExtra(orderInfo.getBizExtra());
+			model.setDetailBizExtra(detailBizExtra);
 			jmsTemplate.convertAndSend(bizCode, model);
 		}
 		message.acknowledge();

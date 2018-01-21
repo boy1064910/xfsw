@@ -37,7 +37,7 @@ public class OrderTester {
 	public void sendBizCode() {
 		OrderReceiverModel model = new OrderReceiverModel();
 		model.setUserId(1);
-		model.setBizExtra(1);
+		model.setBizExtra("1");
 		jmsTemplate.convertAndSend(QueueDestination.ACADAMIC_CHAPTER_ORDER, model);
 	}
 }

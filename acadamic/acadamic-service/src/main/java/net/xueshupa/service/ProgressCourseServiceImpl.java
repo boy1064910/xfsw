@@ -34,4 +34,20 @@ public class ProgressCourseServiceImpl implements ProgressCourseService {
 		return commonMapper.selectListBySql(sql, params, ProgressCourse.class);
 	}
 
+	@Override
+	public List<ProgressCourse> selectLearningList(Integer userId) {
+		String sql = "SELECT * FROM ProgressCourse WHERE userId = #{userId} GROUP BY courseId ORDER BY createTime ASC";
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("userId",userId);
+		return commonMapper.selectListBySql(sql, params, ProgressCourse.class);
+	}
+	
+	@Override
+	public ProgressCourse getByInfo(Integer userId,Integer chapterId){
+		ProgressCourse entity = new ProgressCourse();
+		entity.setUserId(userId);
+		entity.setChapterId(chapterId);
+		return commonMapper.get(ProgressCourse.class, entity);
+	}
+	
 }

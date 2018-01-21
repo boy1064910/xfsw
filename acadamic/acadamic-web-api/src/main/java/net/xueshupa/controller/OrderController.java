@@ -3,7 +3,9 @@ package net.xueshupa.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,7 +32,9 @@ import com.xfsw.session.model.UserSessionModel;
 import com.xfsw.session.service.UserSessionService;
 
 import net.xueshupa.entity.Chapter;
+import net.xueshupa.entity.Course;
 import net.xueshupa.service.ChapterService;
+import net.xueshupa.service.CourseService;
 
 @RestController
 @RequestMapping("/order")
@@ -49,6 +53,9 @@ public class OrderController {
 	
 	@Value("${acadamic.tenant.id}")
 	private Integer acadamicTenantId;
+	
+	@Autowired
+	CourseService courseService;
 	
 	@Autowired
 	ChapterService chapterService;
@@ -77,6 +84,7 @@ public class OrderController {
 		orderInfoModel.setPayment(Payment.WX_MINI);
 		orderInfoModel.setSumCount(chapter.getPrice());
 		orderInfoModel.setBizCode(QueueDestination.ACADAMIC_CHAPTER_ORDER);
+		orderInfoModel.setBizExtra(chapter.getCourseId().toString());
 		//设置openid为小程序的openid，后期接入app或者公众号需要调整
 		orderInfoModel.setOpenId(ThreadUserInfoManager.getUserInfo().getWxOpenIdExtra().getMiniOpenId());
 		
@@ -93,6 +101,62 @@ public class OrderController {
 		wxPayInfo.setAppId(wxMiniAppId);
 		wxPayInfo.setAppKey(wxMiniKey);
 		wxPayInfo.setBody(chapter.getName());
+		wxPayInfo.setDeviceInfo("WEB");
+		wxPayInfo.setMchId(wxMiniPartnerid);
+		wxPayInfo.setNotifyUrl(wxNotifyUrl);
+		wxPayInfo.setSpbillCreateIp(HttpServletRequestUtil.getIpAddr(request));
+		wxPayInfo.setTradeType("JSAPI");
+		
+		return new ResponseModel(orderService.generateWxOrder(orderInfoModel, wxPayInfo));
+	}
+	
+	/**
+	 * 
+	 * @param chapterIds
+	 * @param courseId
+	 * @param allBuyed
+	 * @param request
+	 * @return
+	 * @author xiaopeng.liu
+	 * @version 0.0.1
+	 */
+	@PostMapping(value="orderChapterList")
+	public ResponseModel orderChapterList(Integer[] chapterIds,Integer courseId,boolean allBuyed,HttpServletRequest request) {
+		Course course = courseService.getById(courseId);
+		List<Integer> chapterIdList = Arrays.asList(chapterIds);
+		List<Chapter> chapterList = chapterService.selectListByIdList(chapterIdList);
+		Double sumPrice = chapterList.stream().mapToDouble(x->x.getPrice()).sum();
+		
+		UserSessionModel u = ThreadUserInfoManager.getUserInfo();
+		WxGenerateOrderInfo orderInfoModel = new WxGenerateOrderInfo();
+		orderInfoModel.setUserId(u.getId());
+		orderInfoModel.setTenantId(acadamicTenantId);
+		orderInfoModel.setPayment(Payment.WX_MINI);
+		orderInfoModel.setSumCount(sumPrice);
+		orderInfoModel.setBizCode(QueueDestination.ACADAMIC_CHAPTER_ORDER);
+		orderInfoModel.setBizExtra(courseId.toString());
+		//设置openid为小程序的openid，后期接入app或者公众号需要调整
+		orderInfoModel.setOpenId(ThreadUserInfoManager.getUserInfo().getWxOpenIdExtra().getMiniOpenId());
+		
+		List<GenerateOrderDetail> detailList = chapterList.stream().map(x->{
+			GenerateOrderDetail detail = new GenerateOrderDetail();
+			detail.setCount(1);
+			detail.setOriginPrice(x.getOriginPrice());
+			detail.setPrice(x.getPrice());
+			detail.setDetailExtra(x.getId().toString());
+			return detail;
+		}).collect(Collectors.toList());
+		orderInfoModel.setDetailList(detailList);
+		
+		WxPayInfo wxPayInfo = new WxPayInfo();
+		wxPayInfo.setAppId(wxMiniAppId);
+		wxPayInfo.setAppKey(wxMiniKey);
+		if(!allBuyed){//部分章节批量购买
+			wxPayInfo.setBody(course.getName()+"(部分购买)");
+		}
+		else{
+			wxPayInfo.setBody(course.getName());
+		}
 		wxPayInfo.setDeviceInfo("WEB");
 		wxPayInfo.setMchId(wxMiniPartnerid);
 		wxPayInfo.setNotifyUrl(wxNotifyUrl);

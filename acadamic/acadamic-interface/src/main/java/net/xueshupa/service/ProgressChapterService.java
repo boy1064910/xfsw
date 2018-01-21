@@ -16,5 +16,4 @@ public interface ProgressChapterService {
 
 	List<ProgressChapter> selectListByInfo(Integer userId,Integer courseId);
 	
-	ProgressChapter getByInfo(Integer userId,Integer chapterId);
 }
