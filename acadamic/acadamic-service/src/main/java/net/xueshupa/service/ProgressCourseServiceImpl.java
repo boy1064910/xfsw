@@ -36,7 +36,9 @@ public class ProgressCourseServiceImpl implements ProgressCourseService {
 
 	@Override
 	public List<ProgressCourse> selectLearningList(Integer userId) {
-		String sql = "SELECT * FROM ProgressCourse WHERE userId = #{userId} GROUP BY courseId ORDER BY createTime ASC";
+		String sql = "SELECT p.* FROM ProgressCourse AS p RIGHT JOIN " + 
+				"(SELECT courseId,MAX(lastUpdateTime) AS lastUpdateTime FROM ProgressCourse WHERE userId = #{userId} group by courseId) AS a ON a.courseId = p.courseId AND a.lastUpdateTime = p.lastUpdateTime " + 
+				"ORDER BY p.lastUpdateTime desc";
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("userId",userId);
 		return commonMapper.selectListBySql(sql, params, ProgressCourse.class);
