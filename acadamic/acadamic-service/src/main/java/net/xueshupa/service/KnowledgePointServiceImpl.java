@@ -89,4 +89,9 @@ public class KnowledgePointServiceImpl implements KnowledgePointService {
 		}
 		return knowledgePoint;
 	}
+
+	@Override
+	public List<KnowledgePoint> selectListByChapterCode(String knowledgeCode) {
+		return commonMapper.selectList("KnowledgePoint.selectListByChapterCode", knowledgeCode);
+	}
 }

@@ -6,22 +6,12 @@ columns.push({
 });
 columns.push({
     field: 'code',
-    title: '章节编号',
+    title: '知识点编号',
     align: 'center'
 });
 columns.push({
     field: 'name',
-    title: '章节名称',
-    align: 'center'
-});
-columns.push({
-    field: 'info',
-    title: '章节介绍',
-    align: 'center'
-});
-columns.push({
-    field: 'price',
-    title: '单价',
+    title: '知识点标题',
     align: 'center'
 });
 columns.push({
@@ -57,46 +47,42 @@ Ding.ready(function(){
     });
 
     Ding.ajax({
-        'url' : "/acadamic-web-manager/manager/course/chapter/list.shtml?courseCode="+Ding.getQueryParameterByName("code"),
+        'url' : "/acadamic-web-manager/manager/course/chapter/knowledge/point/list.shtml?chapterCode="+Ding.getQueryParameterByName("chapterCode"),
         'successCallback' : function(result){
             var data = {};
             data.rows = result.data;
             $("#dataTable").bootstrapTable('load',data);
         }
-    })
+    });
 });
-
+//弹出窗口，添加知识点
+function initAdd(){
+	openModal({
+		'title' : '添加知识点',
+		'targetId' : 'form',
+		'sureBtnText' : '保存'
+	});
+}
+//重置弹出窗口表单内容
 function resetForm(){
     $("#name").val('');
-    $("#price").val('');
-    $("#info").val('');
     $("#id").val('');
     $("#index").val('');
-}
-
-function initAdd(){
-    openModal({
-        'title':'添加章节信息',
-        'targetId':'form',
-        'sureBtnText':'保存'
-    });
 }
 
 function initEdit(id,index){
     $("#index").val(index);
     $("#id").val(id);
     Ding.ajax({
-        'url' :  '/acadamic-web-manager/manager/course/chapter/getById.shtml',
+        'url' : '/acadamic-web-manager/manager/course/chapter/knowledge/getKnowledgeById.shtml',
         'params' : {
-            'id' : id
+            'knowledgeId' : id
         },
         'successCallback' : function(result){
             var data = result.data;
             $("#name").val(data.name);
-            $("#price").val(data.price);
-            $("#info").val(data.info);
             openModal({
-                'title':'编辑章节信息',
+                'title':'编辑知识点',
                 'targetId':'form',
                 'sureBtnText':'保存'
             });
@@ -121,16 +107,16 @@ function saveSuccess(result){
 function initDelete(id){
     $.confirm({
         backgroundDismiss: true,
-        title:'删除章节信息',
-        content: '是否删除章节信息 ?',
+        title:'删除知识点',
+        content: '是否删除知识点 ?',
         confirmButton:'删除',
         cancelButton:'取消',
         confirmButtonClass:'btn-success',
         confirm:function(){
             Ding.ajax({
-                'url':'/acadamic-web-manager/manager/course/chapter/deleteChapter.shtml',
+                'url':'/acadamic-web-manager/manager/course/chapter/knowledge/deleteKnowledgeById.shtml',
                 'params':{
-                    'id' : id
+                    'knowledgeId' : id
                 },
                 'method':'post',
                 'successCallback':function(result){
@@ -142,5 +128,5 @@ function initDelete(id){
 }
 
 function initSettle(id,code){
-    this.location = '/acadamic-web-manager/manager/course/chapter/knowledge/index.shtml?chapterId='+id+'&chapterCode='+code+'&breadSequence=1';
+    this.location = '/acadamic-web-manager/manager/course/chapter/knowledge/point/index.shtml?knowledgeId='+id+'&knowledgeCode='+code+'&breadSequence=1';
 }

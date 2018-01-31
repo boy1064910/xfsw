@@ -89,6 +89,7 @@ Ding.ready(function(){
 				}
 				else{
 					breadSequences = JSON.parse(breadSequences);
+					console.log(breadSequences);
 					var isExsit = false;
 					var breadIndex = 0;
 					for(var i=0;i<breadSequences.length;i++){
@@ -126,7 +127,10 @@ Ding.ready(function(){
 
 function pushBreadSequences(breadSequences){
 	if(breadSequences.length!=0)
-		$.cookie('breadSequences',JSON.stringify(breadSequences));
+		$.cookie('breadSequences',JSON.stringify(breadSequences),{
+			'path':'/',
+			'domain':window.domainName
+		});
 }
 
 function showBreadSequences(breadSequences){

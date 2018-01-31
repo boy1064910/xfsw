@@ -8,4 +8,8 @@
 		</foreach>
 		ORDER BY orderIndex ASC
 	</select>
+	
+	<select id="selectListByChapterCode" parameterType="java.lang.String" resultType="KnowledgePoint">
+		SELECT * FROM KnowledgePoint WHERE code LIKE CONCAT(#{chapterCode},'%') ORDER BY orderIndex ASC 
+	</select>
 </mapper>

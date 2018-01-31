@@ -21,7 +21,7 @@ columns.push({
     formatter:function(value,row,index){
         var result ;
         result = '<a href="javascript:void(0)" onclick="initEdit('+row.id+','+index+')" title="编辑">编辑</a>';
-        result += '<a href="javascript:void(0)" onclick="initSettle('+row.id+',\''+row.code+'\')" title="设置知识点内容">内容设置</a>';
+        result += '<a href="javascript:void(0)" onclick="initSettle('+row.id+',\''+row.code+'\')" title="知识模块设置">知识模块设置</a>';
         result +='<a href="javascript:void(0)" onclick="initDelete('+row.id+')" title="删除">删除</a>';
         return result;
     }
@@ -128,5 +128,5 @@ function initDelete(id){
 }
 
 function initSettle(id,code){
-    this.location = '/acadamic-web-manager/manager/course/chapter/knowledge/initSettle.shtml?knowledgeId='+id+'&breadSequence=1';
+    this.location = '/acadamic-web-manager/manager/course/chapter/knowledge/point/index.shtml?knowledgeId='+id+'&knowledgeCode='+code+'&breadSequence=1';
 }

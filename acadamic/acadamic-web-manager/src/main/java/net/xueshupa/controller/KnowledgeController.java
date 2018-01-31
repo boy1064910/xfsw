@@ -24,18 +24,6 @@ import net.xueshupa.service.KnowledgeService;
 @RequestMapping("/manager/course/chapter/knowledge")
 public class KnowledgeController {
 
-//	@Value("${ali.oss.define.domain}")
-//	String defineDomain;
-//	@Value("${ali.oss.bucket}")
-//	String bucketName;
-//	@Value("${ali.oss.tmp.dir}")
-//	String tmpDir;
-//	@Value("${ali.oss.knowledge.dir}")
-//	String knowledgeDir;
-	
-//	@Resource(name="ossService")
-//	OssService ossService;
-	
 	@Resource(name="knowledgeService")
 	KnowledgeService knowledgeService;
 	
