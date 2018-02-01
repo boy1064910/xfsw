@@ -6,12 +6,12 @@ columns.push({
 });
 columns.push({
     field: 'code',
-    title: '知识点编号',
+    title: '知识模块编号',
     align: 'center'
 });
 columns.push({
     field: 'name',
-    title: '知识点标题',
+    title: '知识模块标题',
     align: 'center'
 });
 columns.push({

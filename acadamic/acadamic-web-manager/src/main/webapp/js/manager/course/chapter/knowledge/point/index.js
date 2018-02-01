@@ -10,7 +10,7 @@ columns.push({
     align: 'center'
 });
 columns.push({
-    field: 'name',
+    field: 'title',
     title: '知识点标题',
     align: 'center'
 });
@@ -21,7 +21,7 @@ columns.push({
     formatter:function(value,row,index){
         var result ;
         result = '<a href="javascript:void(0)" onclick="initEdit('+row.id+','+index+')" title="编辑">编辑</a>';
-        result += '<a href="javascript:void(0)" onclick="initSettle('+row.id+',\''+row.code+'\')" title="知识点设置">知识点设置</a>';
+        result += '<a href="javascript:void(0)" onclick="initSettle('+row.id+',\''+row.code+'\')" title="知识模块设置">知识模块设置</a>';
         result +='<a href="javascript:void(0)" onclick="initDelete('+row.id+')" title="删除">删除</a>';
         return result;
     }
@@ -47,7 +47,7 @@ Ding.ready(function(){
     });
 
     Ding.ajax({
-        'url' : "/acadamic-web-manager/manager/course/chapter/knowledge/point/list.shtml?chapterCode="+Ding.getQueryParameterByName("chapterCode"),
+        'url' : "/acadamic-web-manager/manager/course/chapter/knowledge/point/list.shtml?knowledgeCode="+Ding.getQueryParameterByName("knowledgeCode"),
         'successCallback' : function(result){
             var data = {};
             data.rows = result.data;
