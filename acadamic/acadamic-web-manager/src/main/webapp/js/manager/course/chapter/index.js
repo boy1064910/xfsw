@@ -31,7 +31,7 @@ columns.push({
     formatter:function(value,row,index){
         var result ;
         result = '<a href="javascript:void(0)" onclick="initEdit('+row.id+','+index+')" title="编辑">编辑</a>';
-        result += '<a href="javascript:void(0)" onclick="initSettle('+row.id+',\''+row.code+'\')" title="知识点设置">知识点设置</a>';
+        result += '<a href="javascript:void(0)" onclick="initSettle('+row.id+',\''+row.code+'\')" title="知识模块设置">知识模块设置</a>';
         result +='<a href="javascript:void(0)" onclick="initDelete('+row.id+')" title="删除">删除</a>';
         return result;
     }

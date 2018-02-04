@@ -34,7 +34,7 @@ public class KnowledgePointController {
 	@RequestMapping("/list")
 	@ResponseBody
 	public ResponseModel list(String knowledgeCode){
-		return new ResponseModel(knowledgePointService.selectListByChapterCode(knowledgeCode));
+		return new ResponseModel(knowledgePointService.selectListByKnowledgeCode(knowledgeCode));
 	}
 	
 }

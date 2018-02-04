@@ -16,5 +16,5 @@ public interface KnowledgePointService {
 
 	KnowledgePoint getKnowledgePointInfo(Integer id);
 	
-	List<KnowledgePoint> selectListByChapterCode(String knowledgeCode);
+	List<KnowledgePoint> selectListByKnowledgeCode(String knowledgeCode);
 }

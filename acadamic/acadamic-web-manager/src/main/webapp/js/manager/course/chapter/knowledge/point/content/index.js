@@ -6,12 +6,12 @@ columns.push({
 });
 columns.push({
     field: 'code',
-    title: '知识点编号',
+    title: '知识内容编号',
     align: 'center'
 });
 columns.push({
-    field: 'title',
-    title: '知识点标题',
+    field: 'type',
+    title: '知识内容类型',
     align: 'center'
 });
 columns.push({
@@ -21,37 +21,42 @@ columns.push({
     formatter:function(value,row,index){
         var result ;
         result = '<a href="javascript:void(0)" onclick="initEdit('+row.id+','+index+')" title="编辑">编辑</a>';
-        result += '<a href="javascript:void(0)" onclick="initSettle('+row.id+',\''+row.code+'\')" title="知识内容设置">知识内容设置</a>';
+        result += '<a href="javascript:void(0)" onclick="initSettle('+row.id+',\''+row.code+'\')" title="问题设置">问题设置</a>';
         result +='<a href="javascript:void(0)" onclick="initDelete('+row.id+')" title="删除">删除</a>';
         return result;
     }
 });
 
 Ding.ready(function(){
-    $("#dataTable").bootstrapTable({
-        method: 'get',
-        striped: true,
-        cache: false,    
-        pagination: false,   
-        sortable: false,    
-        sortOrder: "asc",    
-        showRefresh:false,
-        singleSelect: false,
-        sidePagination: "server",
-        search: false,
-        searchOnEnterKey:false,
-        idField : "id",
-        uniqueId: "id",
-        url: '',
-        columns: columns
-    });
-
     Ding.ajax({
-        'url' : "/acadamic-web-manager/manager/course/chapter/knowledge/point/list.shtml?knowledgeCode="+Ding.getQueryParameterByName("knowledgeCode"),
+        'url' : "/acadamic-web-manager/manager/course/chapter/knowledge/point/content/list.shtml?knowledgePointCode="+Ding.getQueryParameterByName("knowledgePointCode"),
         'successCallback' : function(result){
-            var data = {};
-            data.rows = result.data;
-            $("#dataTable").bootstrapTable('load',data);
+            for(var i=0;i<result.data.length;i++){
+            	var content = result.data[i];
+            	var div = $('<div><div>'+content.type+'</div></div>');
+            	$("#panelBody").append(div);
+            	
+            	var questionDiv = $('<div></div>');
+            	div.append(questionDiv);
+            	
+            	var questionList = content.questionList;
+            	for(var j=0;j<questionList.length;j++){
+            		var qDiv = $('<div></div>');
+            		questionDiv.append(qDiv);
+            		
+            		var textarea = $('<textarea class="editor"></textarea>');
+            		textarea.html(questionList[j].content);
+            		qDiv.append(textarea);
+            		
+            		ClassicEditor.create( textarea[0] ).then( editor => {
+        				console.log( editor );
+        			} ).catch( error => {
+        			    console.error( error );
+        			} );
+            	}
+            }
+            
+			
         }
     });
 });
@@ -128,5 +133,5 @@ function initDelete(id){
 }
 
 function initSettle(id,code){
-    this.location = '/acadamic-web-manager/manager/course/chapter/knowledge/point/content/index.shtml?knowledgePointId='+id+'&knowledgePointCode='+code+'&breadSequence=1';
+    this.location = '/acadamic-web-manager/manager/course/chapter/knowledge/point/index.shtml?knowledgeId='+id+'&knowledgeCode='+code+'&breadSequence=1';
 }

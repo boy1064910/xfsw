@@ -21,6 +21,7 @@ public class KnowledgePointContent implements Serializable {
 	private String code;
 	private String type;
 	private String content;
+	private Integer orderIndex;
 	private String lastUpdater;
 	private Date lastUpdateTime;
 	
@@ -73,5 +74,11 @@ public class KnowledgePointContent implements Serializable {
 	}
 	public void setCode(String code) {
 		this.code = code;
+	}
+	public Integer getOrderIndex() {
+		return orderIndex;
+	}
+	public void setOrderIndex(Integer orderIndex) {
+		this.orderIndex = orderIndex;
 	}
 }

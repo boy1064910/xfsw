@@ -51,7 +51,7 @@ public class KnowledgePointServiceImpl implements KnowledgePointService {
 			List<Integer> knowledgePointContentIdList = contentList.stream().map(x->x.getId()).collect(Collectors.toList());
 			
 			//设置question和content的主从数据
-			List<KnowledgeQuestion> questionList = commonMapper.selectList("KnowledgeQuestion.selectListByKnowledgePointContentIds", knowledgePointContentIdList);
+			List<KnowledgeQuestion> questionList = commonMapper.selectList("KnowledgeQuestion.selectListByKnowledgePointContentIdList", knowledgePointContentIdList);
 			List<Integer> questionIdList = questionList.stream().map(x->x.getId()).collect(Collectors.toList());
 			//获取所有问题的答案列表并分组
 			Map<Integer,List<KnowledgeQuestionAnswer>> knowledgeQuestionAnswerMap = knowledgeQuestionAnswerService.selectListByKnowledgeQuestionIds(questionIdList);
@@ -91,7 +91,7 @@ public class KnowledgePointServiceImpl implements KnowledgePointService {
 	}
 
 	@Override
-	public List<KnowledgePoint> selectListByChapterCode(String knowledgeCode) {
-		return commonMapper.selectList("KnowledgePoint.selectListByChapterCode", knowledgeCode);
+	public List<KnowledgePoint> selectListByKnowledgeCode(String knowledgeCode) {
+		return commonMapper.selectList("KnowledgePoint.selectListByKnowledgeCode", knowledgeCode);
 	}
 }
