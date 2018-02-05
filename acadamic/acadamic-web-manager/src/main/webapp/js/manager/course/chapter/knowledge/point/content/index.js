@@ -33,30 +33,50 @@ Ding.ready(function(){
         'successCallback' : function(result){
             for(var i=0;i<result.data.length;i++){
             	var content = result.data[i];
-            	var div = $('<div><div>'+content.type+'</div></div>');
+            	var div = $('<div><div class="content-title">'+content.type+'</div></div>');
             	$("#panelBody").append(div);
             	
-            	var questionDiv = $('<div></div>');
-            	div.append(questionDiv);
+            	var questionListDiv = $('<div class="question-list-div"></div>');
+            	div.append(questionListDiv);
             	
             	var questionList = content.questionList;
             	for(var j=0;j<questionList.length;j++){
-            		var qDiv = $('<div></div>');
-            		questionDiv.append(qDiv);
+            		var questionDiv = $('<div class="question-div"></div>');
+            		questionListDiv.append(questionDiv);
+            		
+            		var textareaDiv = $('<div class="textarea-div"></div>');
+            		questionDiv.append(textareaDiv);
+            		
+            		var previewDiv = $('<div class="preview-div"></div>');
+            		questionDiv.append(previewDiv);
             		
             		var textarea = $('<textarea class="editor"></textarea>');
-            		textarea.html(questionList[j].content);
-            		qDiv.append(textarea);
+            		textareaDiv.append(textarea);
             		
-            		ClassicEditor.create( textarea[0] ).then( editor => {
-        				console.log( editor );
-        			} ).catch( error => {
-        			    console.error( error );
-        			} );
+            		textarea.html(questionList[j].content);
+            		previewDiv.html(questionList[j].content);
+            		
+            		CKEDITOR.replace( textarea[0],{
+            			toolbar: [
+            				{ name: 'document', items: [ 'Source' ] },
+            				{ name: 'clipboard', items: [ 'Undo', 'Redo' ] },
+            				{ name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
+            				{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'CopyFormatting' ] },
+            				{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+            				{ name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+            				{ name: 'links', items: [ 'Link', 'Unlink' ] },
+            				{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
+            				{ name: 'insert', items: [ 'Image', 'Table' ] },
+            				{ name: 'tools', items: [ 'Maximize' ] },
+            				{ name: 'editing', items: [ 'Scayt' ] }
+            			],
+            			bodyClass: 'document-editor',
+            			height: 400,
+            			width:500
+            		} );
             	}
             }
-            
-			
+            MathJax.Hub.Configured();
         }
     });
 });

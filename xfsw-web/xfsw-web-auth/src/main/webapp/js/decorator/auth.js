@@ -89,11 +89,12 @@ Ding.ready(function(){
 				}
 				else{
 					breadSequences = JSON.parse(breadSequences);
-					console.log(breadSequences);
 					var isExsit = false;
 					var breadIndex = 0;
+					var windowLocationHrefs = window.location.href.split("?");
 					for(var i=0;i<breadSequences.length;i++){
-						if(breadSequences[i].url==window.location.href){
+						var breadSequenceUrls = breadSequences[i].url.split("?");
+						if(breadSequenceUrls[0]==windowLocationHrefs[0]){
 							isExsit = true;
 							breadIndex = i;
 							break;

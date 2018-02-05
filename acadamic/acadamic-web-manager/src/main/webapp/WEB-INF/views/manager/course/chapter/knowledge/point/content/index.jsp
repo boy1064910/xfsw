@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<script src="/widgets/ckeditor5/ckeditor.js"></script>
+<script src="/widgets/ckeditor/ckeditor.js"></script>
+<link rel="stylesheet" href="/acadamic-web-manager/js/manager/course/chapter/knowledge/point/content/index.css">
 
 <script type="text/javascript" src="/acadamic-web-manager/js/manager/course/chapter/knowledge/point/content/index.js"></script>
 </head>
@@ -32,6 +33,29 @@
             </div>
         </div>
 	</form>
-	
+<script type="text/javascript" src="http://mini.xueshupa.net/MathJax/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    jax: ["input/TeX", "output/CommonHTML"],
+    TeX: { extensions: ["forminput.js"] },
+    tex2jax: {
+        inlineMath: [
+            ['$', '$'],
+            ["\\(", "\\)"]
+        ],
+        displayMath: [
+            ['$$', '$$'],
+            ["\\[", "\\]"]
+        ],
+        processEscapes: false
+    },
+    "HTML-CSS": {
+        availableFonts: ["STIX","TeX"],
+        showMathMenu: false
+    },
+    showProcessingMessages: false,
+    messageStyle: "none"
+});
+</script>
 </body>
 </html>
