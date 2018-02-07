@@ -58,17 +58,12 @@ Ding.ready(function(){
             		
             		CKEDITOR.replace( textarea[0],{
             			toolbar: [
-            				{ name: 'document', items: [ 'Source' ] },
-            				{ name: 'clipboard', items: [ 'Undo', 'Redo' ] },
-            				{ name: 'styles', items: [ 'Format', 'Font', 'FontSize' ] },
+            				{ name: 'styles', items: [ 'Source','Undo', 'Redo','Format', 'Font', 'FontSize' ] },
             				{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'CopyFormatting' ] },
             				{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
             				{ name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
-            				{ name: 'links', items: [ 'Link', 'Unlink' ] },
-            				{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
-            				{ name: 'insert', items: [ 'Image', 'Table' ] },
-            				{ name: 'tools', items: [ 'Maximize' ] },
-            				{ name: 'editing', items: [ 'Scayt' ] }
+            				{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', 'Outdent', 'Indent' ] },
+            				{ name: 'insert', items: [ 'Image', 'Table', 'TextField' ] }
             			],
             			bodyClass: 'document-editor',
             			height: 400,

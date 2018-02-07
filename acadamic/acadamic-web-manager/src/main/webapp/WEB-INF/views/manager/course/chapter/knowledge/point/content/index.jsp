@@ -4,6 +4,7 @@
 <head>
 <script src="/widgets/ckeditor/ckeditor.js"></script>
 <link rel="stylesheet" href="/acadamic-web-manager/js/manager/course/chapter/knowledge/point/content/index.css">
+<link rel="stylesheet" href="http://mini.xueshupa.net/latex.css" />
 
 <script type="text/javascript" src="/acadamic-web-manager/js/manager/course/chapter/knowledge/point/content/index.js"></script>
 </head>
@@ -33,7 +34,7 @@
             </div>
         </div>
 	</form>
-<script type="text/javascript" src="http://mini.xueshupa.net/MathJax/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured"></script>
+<script type="text/javascript" src="/MathJax/MathJax.js?config=TeX-AMS_HTML&delayStartupUntil=configured"></script>
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
     jax: ["input/TeX", "output/CommonHTML"],
