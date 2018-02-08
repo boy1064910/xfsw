@@ -56,19 +56,24 @@ Ding.ready(function(){
             		textarea.html(questionList[j].content);
             		previewDiv.html(questionList[j].content);
             		
-            		CKEDITOR.replace( textarea[0],{
-            			toolbar: [
-            				{ name: 'styles', items: [ 'Source','Undo', 'Redo','Format', 'Font', 'FontSize' ] },
-            				{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'CopyFormatting' ] },
-            				{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-            				{ name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
-            				{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', 'Outdent', 'Indent' ] },
-            				{ name: 'insert', items: [ 'Image', 'Table', 'TextField' ] }
-            			],
+            		var editor = CKEDITOR.replace( textarea[0],{
+//            			toolbar: [
+//            				{ name: 'styles', items: [ 'Source','Undo', 'Redo','Format', 'Font', 'FontSize' ] },
+//            				{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat', 'CopyFormatting' ] },
+//            				{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+//            				{ name: 'align', items: [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+//            				{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', 'Outdent', 'Indent' ] },
+//            				{ name: 'insert', items: [ 'Image', 'Table', 'TextField' ] }
+//            			],
             			bodyClass: 'document-editor',
             			height: 400,
             			width:500
             		} );
+            		
+            		editor.on( 'change', function( event ) {    
+            		    var data = this.getData();//内容
+            		    console.log(data);
+            		});
             	}
             }
             MathJax.Hub.Configured();
