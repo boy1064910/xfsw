@@ -1,31 +1,4 @@
-var columns = [];
-columns.push({
-    field: 'id',
-    title: 'ID',
-    align: 'center'
-});
-columns.push({
-    field: 'code',
-    title: '知识内容编号',
-    align: 'center'
-});
-columns.push({
-    field: 'type',
-    title: '知识内容类型',
-    align: 'center'
-});
-columns.push({
-    field: 'id',
-    title: '操作',
-    align: 'center',
-    formatter:function(value,row,index){
-        var result ;
-        result = '<a href="javascript:void(0)" onclick="initEdit('+row.id+','+index+')" title="编辑">编辑</a>';
-        result += '<a href="javascript:void(0)" onclick="initSettle('+row.id+',\''+row.code+'\')" title="问题设置">问题设置</a>';
-        result +='<a href="javascript:void(0)" onclick="initDelete('+row.id+')" title="删除">删除</a>';
-        return result;
-    }
-});
+var answerCodeMap = {};
 
 Ding.ready(function(){
     Ding.ajax({
@@ -48,9 +21,12 @@ Ding.ready(function(){
             		questionDiv.append(textareaDiv);
             		
             		var previewDiv = $('<div class="preview-div"></div>');
+            		previewDiv.attr("id","preview-"+questionList[j].id);
             		questionDiv.append(previewDiv);
             		
             		var textarea = $('<textarea class="editor"></textarea>');
+            		textarea.attr("name","editor-"+questionList[j].id);
+            		textarea.attr('questionId',questionList[j].id);
             		textareaDiv.append(textarea);
             		
             		textarea.html(questionList[j].content);
@@ -70,9 +46,27 @@ Ding.ready(function(){
             			width:500
             		} );
             		
+            		//编辑器on change 事件
             		editor.on( 'change', function( event ) {    
-            		    var data = this.getData();//内容
-            		    console.log(data);
+            		    var data = this.getData();//内容          		    
+//            		    var tmpDiv = $('<div></div>');
+//            		    tmpDiv.append(data);
+//            		    console.log(tmpDiv[0]);
+//            		    
+//            		    //TODO 修改Input样式
+//            		    var inputList = tmpDiv.find('input[type="text"]');
+//            		    console.log(inputList);
+//            		    for(var i=0;i<inputList.length;i++){
+//            		    	$(inputList[i]).addClass("weui-input");
+//            		    }
+//            		    
+//            		    this.setData(tmpDiv.html());
+            			//TODO 预览更新内容
+            			$('#preview-'+$('textarea[name="'+this.name+'"]').attr("questionId")).html(data);
+            			//TODO mathjax刷新
+            			
+            			//TODO 解析答案，查找answerType的标签，normalInput为普通输入，numberInput为输入数字，fomulaSelector为公式选择器
+            			
             		});
             	}
             }
